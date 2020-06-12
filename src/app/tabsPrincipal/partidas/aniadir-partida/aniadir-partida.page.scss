@@ -1,0 +1,37 @@
+p {
+    font-size: 0.8em;
+    color: #d2d2d2;
+}
+
+ion-slides {
+    min-height: 100%;
+    overflow-y: scroll;
+}
+
+ion-slide {
+    display: block;
+}
+
+ion-label, .select-text {
+    margin-left: 10px;
+}
+
+.invalid {
+    border: 1px solid #ea6153;
+}
+
+#aniadirPartidaContent {
+    --background: #546083;
+}
+
+section { --background: transparent;}
+
+ion-item-group { --background: transparent;}
+
+.caracteristica {
+    background-color: white;
+}
+
+#listaCaracteristicas {
+    background-color: transparent;
+}

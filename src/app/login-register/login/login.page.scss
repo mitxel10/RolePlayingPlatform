@@ -1,0 +1,59 @@
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10%;
+  }
+
+#loginForm {
+    padding-top: 15%;  
+}
+
+#loginContent {
+    --background: rgb(83, 96, 131);
+}
+
+#loginButton {
+    --background: #A5ABBE;
+}
+
+#loginContent {
+    height: 100%;
+}
+
+#googleLoginForm {
+    background-color: rgb(83, 96, 131);
+}
+
+#googleLoginButton {
+    --background: #233259;
+}
+
+.divider {
+    display: flex;
+    
+    &:before,
+    &:after {
+      content: "";
+      flex: 1;
+    }
+}
+  
+.line {
+    align-items: center;
+    margin: 1em -1em;
+    color: #cccccc;
+    
+    &:before,
+    &:after {
+      height: 1px;
+      margin: 0 1em;
+    }
+} 
+
+.one-line {
+    &:before,
+    &:after {
+       background: #cccccc;
+    }
+}

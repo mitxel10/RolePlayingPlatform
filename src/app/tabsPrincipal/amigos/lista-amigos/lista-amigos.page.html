@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Lista de amigos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card *ngFor="let amigo of amigosData">
+    <ion-card-header>
+      {{ amigo.displayName }}
+    </ion-card-header>
+    <ion-card-content>
+      {{ amigo.email }}
+    </ion-card-content>
+  </ion-card>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="add" (click)="irAniadirAmigo()"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>

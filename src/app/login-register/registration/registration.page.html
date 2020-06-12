@@ -1,0 +1,33 @@
+<ion-header class="header">
+  <ion-toolbar class="header">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Register User</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content id="registerContent">
+  <form>    
+    <ion-item lines="full" class="inputs">
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input type="text" #username required></ion-input>
+    </ion-item> 
+
+    <ion-item lines="full" class="inputs">
+      <ion-label position="floating">Email</ion-label>
+      <ion-input type="text" #email required></ion-input>
+    </ion-item> 
+
+    <ion-item lines="full" class="inputs">
+      <ion-label position="floating">Password</ion-label>
+      <ion-input type="password" #password required></ion-input>
+    </ion-item>
+
+    <ion-row>
+      <ion-col> 
+      <ion-button type="submit" id="registerButton" (click)="signUp(username, email, password)" expand="block">Register</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content>

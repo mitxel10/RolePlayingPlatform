@@ -1,0 +1,102 @@
+<!-- <ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Sign in User</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form>    
+    <ion-item lines="full">
+      <ion-label position="floating">Email</ion-label>
+      <ion-input type="text" #email required></ion-input>
+    </ion-item> 
+
+    <ion-item lines="full">
+      <ion-label position="floating">Password</ion-label>
+      <ion-input type="password" #password required></ion-input>
+    </ion-item>
+
+    <ion-row>
+      <ion-col> 
+      <ion-button type="submit" (click)="logIn(email, password)" expand="block">Login</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content>
+
+<ion-content>
+  <form>
+    <ion-row>
+      <ion-col> 
+        <ion-button 
+         type="submit" 
+         color="danger"
+         (click)="authService.GoogleAuth()" 
+         expand="block">
+           Login with Google
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content> -->
+
+<ion-content padding id="loginContent">
+  <img src="assets/img/logoBlue.png" width="40%" class="center"/>
+  <form id="loginForm" class="form" #loginForm="ngForm" autocomplete="off">
+    <section>
+      <ion-row>
+        <ion-col>
+          <ion-list inset>  
+            <ion-item class="ion-no-color">
+              <ion-label position="floating" color="app-background">Correo electrónico</ion-label>
+              <ion-input name="username" id="loginField" type="text" required #email></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating" color="app-background">Contraseña</ion-label>
+              <ion-input name="password" id="passwordField" type="password" required #password></ion-input>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    </section>
+    <section>
+      <ion-row>
+        <ion-col class="ml-3">
+          <ion-button id="loginButton" type="submit" class="submit-btn" (click)="logIn(email, password)">Iniciar sesión</ion-button>
+        </ion-col>
+        <ion-col class="ml-9 float-right text-white" (click)="resetPassword()">
+          Si no recuerdas la contraseña, pulsa aquí.
+        </ion-col>
+      </ion-row>
+    </section>    
+  </form>  
+
+  <form id="googleLoginForm">
+    <ion-row>
+      <ion-col> 
+        <ion-button id="googleLoginButton" type="submit" (click)="authService.GoogleAuth()" expand="block">
+           Inicia sesión con Google
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+
+
+  <span class="divider line one-line">Si aún no te has registrado...</span>
+
+  <form id="googleLoginForm">
+    <ion-row>
+      <ion-col> 
+        <ion-button type="submit" (click)="register()" expand="block">
+            Registrate
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content>
+
+
+  

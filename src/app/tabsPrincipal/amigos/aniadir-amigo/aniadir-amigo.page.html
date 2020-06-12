@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>aniadirAmigo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<!-- <ion-content>
+  <form (ngSubmit)="submitSearch($event)">
+    <ion-searchbar [(ngModel)]="searchQuery" [showCancelButton]="true" placeholder="Buscar amigos"
+    (ionCancel)="clearSearch($event)">
+    </ion-searchbar>
+  </form>
+
+</ion-content> -->
+
+<!-- <form (ngSubmit)="submitSearch($event)">
+  <ion-searchbar [(ngModel)]="searchQuery" [ngModelOptions]="{standalone: true}" [showCancelButton]="true" placeholder="Global Search"
+  (ionCancel)="clearSearch($event)"
+  (ionInput)="menuFocusMode($event)"
+  (ionFocus)="menuFocusMode($event)">
+  </ion-searchbar>
+</form> -->
+
+<ion-content class="ion-padding">
+ 
+  <!-- Search Bar -->
+  <ion-searchbar placeholder="Filtrar" [(ngModel)]="term" animated="true"></ion-searchbar>
+ 
+  <!-- List Items -->
+  <!-- <ion-list>
+    <ion-item *ngFor="let item of filterData | filter:term">
+      <ion-label>{{item.firstName}} {{item.lastName}}</ion-label>
+    </ion-item>
+  </ion-list> -->
+
+  <ion-card *ngFor="let user of usersData | filter:term" (click)="presentConfirm(user.uid, user.displayName)">
+    <ion-card-header>
+      {{ user.displayName }}
+    </ion-card-header>
+    <ion-card-content>
+      {{ user.email }}
+    </ion-card-content>
+  </ion-card>
+</ion-content>

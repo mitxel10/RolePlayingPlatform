@@ -1,0 +1,238 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Nueva partida</ion-title>
+
+    <ion-buttons slot="start">
+      <ion-button (click)="prev()"><ion-icon slot="start" name="arrow-back"></ion-icon> Atras</ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="next()">Siguiente <ion-icon slot="end" name="arrow-forward"></ion-icon></ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content id="aniadirPartidaContent">
+
+  <ion-slides #formSlider pager>
+
+    <ion-slide>
+
+      <p *ngIf="submitAttempt" style="color: #ea6153;">Por favor, rellena los datos del formulario correctamente.</p>
+
+      <ion-list lines="none">
+          <form [formGroup]="slideOneForm">
+              <ion-item>
+                  <ion-label position="floating">First Name</ion-label>
+                  <ion-input formControlName="firstName" type="text" [class.invalid]="!slideOneForm.controls.firstName.valid && (slideOneForm.controls.firstName.dirty || submitAttempt)"></ion-input>
+              </ion-item>
+
+              <ion-item *ngIf="!slideOneForm.controls.firstName.valid  && (slideOneForm.controls.firstName.dirty || submitAttempt)">
+                  <p>Please enter a valid name.</p>
+              </ion-item>
+
+              <ion-item>
+                  <ion-label position="floating">Last Name</ion-label>
+                  <ion-input formControlName="lastName" type="text" [class.invalid]="!slideOneForm.controls.lastName.valid && (slideOneForm.controls.age.dirty || submitAttempt)"></ion-input>
+              </ion-item>
+
+              <ion-item *ngIf="!slideOneForm.controls.lastName.valid  && (slideOneForm.controls.lastName.dirty || submitAttempt)">
+                  <p>Please enter a valid name.</p>
+              </ion-item>
+
+              <ion-item>
+                  <ion-label position="floating">Age</ion-label>
+                  <ion-input formControlName="age" type="number" [class.invalid]="!slideOneForm.controls.age.valid && (slideOneForm.controls.age.dirty || submitAttempt)"></ion-input>
+              </ion-item>
+
+              <ion-item *ngIf="!slideOneForm.controls.age.valid  && (slideOneForm.controls.age.dirty || submitAttempt)">
+                  <p>Please enter a valid age.</p>
+              </ion-item>
+          </form>
+      </ion-list>
+    </ion-slide>
+
+    <ion-slide>
+      <ion-list lines="none">
+          <form [formGroup]="slideTwoForm">
+              <ion-item>
+                  <ion-label position="floating">Username</ion-label>
+                  <ion-input [class.invalid]="!slideTwoForm.controls.username.valid && (slideTwoForm.controls.username.dirty || submitAttempt)" formControlName="username" type="text"></ion-input>
+              </ion-item>
+
+              <ion-item *ngIf="slideTwoForm.controls.username.pending">
+                  <p>Checking username...</p>
+              </ion-item>
+
+              <ion-item *ngIf="!slideTwoForm.controls.username.valid && !slideTwoForm.controls.username.pending && (slideTwoForm.controls.username.dirty || submitAttempt)">
+                  <p>Sorry, that username can not be used!</p>
+              </ion-item>
+
+              <ion-item>
+                  <ion-label position="floating">Privacy</ion-label>
+                  <ion-select [class.invalid]="!slideTwoForm.controls.privacy.valid && (slideTwoForm.controls.privacy.dirty || submitAttempt)" formControlName="privacy">
+                      <ion-select-option value="public" checked="true">Public</ion-select-option>
+                      <ion-select-option value="friends">Friends Only</ion-select-option>
+                      <ion-select-option value="private">Private</ion-select-option>
+                  </ion-select>
+              </ion-item>
+
+              <ion-item>
+                  <ion-label position="floating">Bio</ion-label>
+                  <ion-textarea formControlName="bio"></ion-textarea>
+              </ion-item>
+          </form>
+      </ion-list>
+
+      <ion-button expand="full" color="primary" (click)="save()">Crear partida!</ion-button>
+    </ion-slide>
+
+    <ion-slide>
+      <h3 class="text-center text-white">Jugadores participantes</h3>
+      <div style="padding: 5%">
+
+        <ion-item *ngIf="selectedUsersValid === false">
+          <p>Escoge al menos a un amigo con el que jugar la partida.</p>
+        </ion-item>
+
+        <app-multi-select
+          [placeholder]="'Nombres'"
+          [data]="usersList"
+          [settings]="dropdownSettings"
+          (select)="onItemSelect($event)"
+          (deSelect)="onItemSelect($event)"
+          (selectAll)="onSelectAll($event)"
+          (deSelectAll)="onDeSelectAll($event)"
+        >
+        </app-multi-select>
+      </div>
+    </ion-slide>
+
+    <ion-slide>
+      <h3 class="text-center text-white">Diseño de los personajes</h3>
+      <!-- <form [formGroup]="inputsCaracteristicasPersonajesForm" (ngSubmit)="manage(inputsCaracteristicasPersonajesForm.value)">
+        <ion-list margin-bottom>
+          <ion-item margin-bottom no-lines>
+              <ion-label floating>Framework name:</ion-label>
+
+              <ion-input type="text" maxlength="40" formControlName="name"></ion-input>
+              
+          </ion-item>
+
+          <div formArrayName="caracteristicas" margin-bottom>
+            <section [formGroupName]="i" *ngFor="let tech of inputsCaracteristicasPersonajesForm.controls.caracteristicas.controls; let i = index">
+                <ion-item-group>
+                    <ion-item-divider color="light">Característica #{{ i + 1 }}</ion-item-divider>
+                    <ion-item>
+                      <ion-label floating>Nombre:</ion-label>   
+                      <ion-input type="text" maxlength="50" formControlName="name"></ion-input>
+                    </ion-item>
+
+                    <ion-item>
+                      <ion-label floating>Tipo:</ion-label>   
+                      <ion-input type="text" maxlength="50" formControlName="type"></ion-input>
+                    </ion-item>
+
+                    <ion-item>
+                      <ion-label floating>Opciones:</ion-label>   
+                      <ion-input type="text" maxlength="50" formControlName="name"></ion-input>
+                    </ion-item>
+                    
+                    <span float-right ion-button icon-left clear *ngIf="inputsCaracteristicasPersonajesForm.controls.caracteristicas.length > 1" (click)="removeInputField(i)">
+                      <ion-icon name="close"></ion-icon>Borrar
+                    </span>  
+                </ion-item-group>    
+              </section>
+          </div>
+
+          <span ion-button float-left icon-left clear (click)="addNewInputField()">
+                <ion-icon name="add"></ion-icon>
+                Añadir nueva característica
+          </span>
+        </ion-list>
+
+        <button ion-button block margin-top color="primary" text-center [disabled]="!inputsCaracteristicasPersonajesForm.valid">Submit</button>
+      </form> -->
+
+
+      <form [formGroup]="inputsCaracteristicasPersonajesForm" novalidate (ngSubmit)="onSubmit(inputsCaracteristicasPersonajesForm)" style="padding: 5%">     
+        <ion-list margin-bottom id="listaCaracteristicas">
+          <div formArrayName="questions" margin-bottom>
+            <section [formGroupName]="j" *ngFor="let question of getQuestions(inputsCaracteristicasPersonajesForm); let j = index">
+              <ion-item-group>
+                <div class="caracteristica">
+                  <ion-item-divider color="light">Característica #{{ j + 1 }}</ion-item-divider>
+
+                  <ion-item class="mr-3">
+                    <ion-label position="floating" color="app-background">Nombre</ion-label>
+                    <ion-input type="text" maxlength="50" formControlName="name"></ion-input>
+                  </ion-item>
+
+                  <ion-item class="mr-3"><ion-label floating>Tipo:</ion-label></ion-item>
+                  <!-- <ion-item class="mr-3"> -->
+                    <!-- <ion-label floating>Tipo:</ion-label>   
+                    <ion-select class="col-9 pr-1" okText="Okay" cancelText="Dismiss" formControlName="type" (ionChange)="tipoCaracteristicaSeleccionado(j, $event.target.value)">
+                      <ion-select-option value="freeText">Texto libre</ion-select-option>
+                      <ion-select-option value="select">Única opcion a escoger</ion-select-option>
+                      <ion-select-option value="checkbox">Varias opciones a escoger</ion-select-option>
+                    </ion-select> -->
+
+                    
+                    <ion-list class="mr-3">
+                      <ion-radio-group class="" formControlName="type" (ionChange)="tipoCaracteristicaSeleccionado(j, $event.target.value)">
+                        <ion-item>
+                          <ion-label>Texto libre</ion-label>
+                          <ion-radio slot="start" value="textbox"></ion-radio>
+                        </ion-item>
+                    
+                        <ion-item>
+                          <ion-label>Única opcion a escoger</ion-label>
+                          <ion-radio slot="start" value="dropdown"></ion-radio>
+                        </ion-item>
+                    
+                        <ion-item>
+                          <ion-label>Varias opciones a escoger</ion-label>
+                          <ion-radio slot="start" value=""></ion-radio>
+                        </ion-item>
+                      </ion-radio-group>
+                    </ion-list>
+                  <!-- </ion-item> -->
+      
+                  <div *ngIf="inputsCaracteristicasPersonajesForm.errors" class="alert alert-danger">
+                    {{ inputsCaracteristicasPersonajesForm.errors }}
+                  </div>
+                  
+                  <div *ngIf="tiposCaracteristica[j] == 'dropdown' || tiposCaracteristica[j] == 'checkbox'">
+                    <ion-item-divider color="light" class="ml-3 mr-3 mt-2 col-11 font-italic font-weight-normal">Opciones</ion-item-divider>
+                      
+                    <div formArrayName="options" class="mr-3 ml-3">
+                      <section [formGroupName]="k" *ngFor="let option of getOptions(question); let k=index">
+                        <ion-item class="col-11 float-left">
+                          <ion-label floating>Nombre:</ion-label>   
+                          <ion-input type="text" maxlength="50" formControlName="key"></ion-input>
+                        </ion-item>
+                        <ion-icon name="remove-circle" *ngIf="getOptions(question).length > 0" (click)="removeOption(j,k)" class="text-danger float-right mt-3"></ion-icon>
+                      </section>
+                    </div>
+                    <ion-button (click)="add(j)" size="small" color="success">Añadir opción</ion-button>
+                  </div>
+                </div>
+              </ion-item-group> 
+
+              <!-- <span *ngIf="getQuestions(inputsCaracteristicasPersonajesForm).length > 1" (click)="removeQuestion(i)">Remove Question</span> -->
+              <ion-button *ngIf="getQuestions(inputsCaracteristicasPersonajesForm).length > 1" (click)="removeQuestion(j)" size="small" color="danger">Eliminar característica</ion-button>
+            </section>
+            <ion-button (click)="addQuestion()" class="mt-3">Añadir característica</ion-button>
+          </div>
+        </ion-list>
+      </form>
+
+      <ion-button (click)="saveForm()" size="small">Guardar</ion-button>
+      <!-- <pre> {{inputsCaracteristicasPersonajesForm.value | json}} </pre> -->
+      <div *ngIf="(questions.length > 0)" style="padding: 5%">
+        <h2>Formulario</h2>
+        <app-dynamic-form [questions]="questions"></app-dynamic-form>
+      </div>
+    </ion-slide>
+  </ion-slides>
+
+</ion-content>
