@@ -1,4 +1,5 @@
-export class QuestionBase<T> {
+export class PreguntaCaracteristica<T> {
+    idPartida: string;
     value: T;
     key: string;
     label: string;
@@ -9,6 +10,7 @@ export class QuestionBase<T> {
     options: {key: string, value: string}[];
   
     constructor(options: {
+        idPartida?: string,
         value?: T,
         key?: string,
         label?: string,
@@ -17,6 +19,7 @@ export class QuestionBase<T> {
         controlType?: string,
         type?: string
       } = {}) {
+      this.idPartida = options.idPartida || '';
       this.value = options.value;
       this.key = options.key || '';
       this.label = options.label || '';

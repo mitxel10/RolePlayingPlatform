@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { QuestionBase } from 'src/app/models/question-base';
+import { PreguntaCaracteristica } from 'src/app/models/pregunta-caracteristica';
 import { DropdownQuestion } from 'src/app/models/question-dropdown';
 import { TextboxQuestion } from 'src/app/models/question-textbox';
 import { of } from 'rxjs';
@@ -12,7 +12,7 @@ export class PreguntasCaracteristicasService {
 
   constructor(private fireStore: AngularFirestore) { }
 
-  getQuestions() {
+  /* getQuestions() {
 
     let questions: QuestionBase<string>[] = [
 
@@ -45,9 +45,9 @@ export class PreguntasCaracteristicasService {
     ];
 
     return of(questions.sort((a, b) => a.order - b.order));
-  }
+  } */
 
   getQuestionsList() {
-    return this.fireStore.collection('caracteristicasPersonaje', ref => ref.where('idPartida', '==', "1")).valueChanges();
+    return this.fireStore.collection('preguntasCaracteristicas', ref => ref.where('idPartida', '==', "1")).valueChanges();
   }
 }

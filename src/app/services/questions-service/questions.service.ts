@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { QuestionBase } from '../../models/question-base';
+import { PreguntaCaracteristica } from '../../models/pregunta-caracteristica';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,7 @@ export class QuestionsService {
 
   constructor() { }
 
-  toFormGroup(questions: QuestionBase<string>[] ) {
+  toFormGroup(questions: PreguntaCaracteristica<string>[] ) {
     let group: any = {};
 
     questions.forEach(question => {

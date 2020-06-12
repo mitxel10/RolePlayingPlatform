@@ -1,7 +1,7 @@
 import { Component, Input, OnInit }  from '@angular/core';
 import { FormGroup }                 from '@angular/forms';
 
-import { QuestionBase }              from '../../../models/question-base';
+import { PreguntaCaracteristica }              from '../../../models/pregunta-caracteristica';
 import { QuestionsService }    from '../../../services/questions-service/questions.service';
 
 @Component({
@@ -12,7 +12,7 @@ import { QuestionsService }    from '../../../services/questions-service/questio
 })
 export class DynamicFormComponent implements OnInit {
 
-  @Input() questions: QuestionBase<string>[] = [];
+  @Input() questions: PreguntaCaracteristica<string>[] = [];
   form: FormGroup;
   payLoad = '';
 

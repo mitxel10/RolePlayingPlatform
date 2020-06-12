@@ -6,7 +6,7 @@ import { User } from 'firebase';
 import { AmigosService } from 'src/app/services/amigos-service/amigos.service';
 import { AuthenticationService } from 'src/app/services/authentication-service/authentication.service';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { QuestionBase } from 'src/app/models/question-base';
+import { PreguntaCaracteristica } from 'src/app/models/pregunta-caracteristica';
 import { TextboxQuestion } from 'src/app/models/question-textbox';
 import { DropdownQuestion } from 'src/app/models/question-dropdown';
 import { Observable } from 'rxjs';
@@ -35,7 +35,7 @@ export class AniadirPartidaPage implements OnInit {
   public selectedUsersValid: boolean;
 
   public tiposCaracteristica = [];
-  public questions: QuestionBase<any>[];
+  public questions: PreguntaCaracteristica<any>[];
 
   constructor(
     private amigosService: AmigosService,
@@ -250,7 +250,7 @@ export class AniadirPartidaPage implements OnInit {
     for(let caracteristica of arrayCaracteristicas.controls) {
       console.log(caracteristica.value.options.controls);
       let numero = Math.floor(Math.random() * (10000 - 0 + 1)) + 0;
-      this.fireStore.collection("preguntasCaracteristica").doc("idPartida" + "-" + numero).set({
+      /* this.fireStore.collection("preguntasCaracteristicas").doc("idPartida" + "-" + numero).set({
         idPartida: "1",
         key: caracteristica.value.name,
         label: caracteristica.value.name,
@@ -262,9 +262,10 @@ export class AniadirPartidaPage implements OnInit {
       })
       .catch(function(error) {
           console.error("Error añadiendo amigo: ", error);
-      });
+      }); */
     }
 
+    this.dibujarFormulario();
   }
 
   dibujarFormulario() {
@@ -302,7 +303,7 @@ export class AniadirPartidaPage implements OnInit {
     /* this.questions = this.preguntasCaracteristicasService.getQuestionsList(); */
     let contadorCaracteristica = 1;
     this.preguntasCaracteristicasService.getQuestionsList().subscribe((resultadoConsulta) => {
-      resultadoConsulta.forEach((caracteristica: QuestionBase<String>) => {
+      resultadoConsulta.forEach((caracteristica: PreguntaCaracteristica<String>) => {
         if(caracteristica.controlType == "textbox") {
           console.log("anadiendoText");
           this.questions.push(new TextboxQuestion({
