@@ -140,42 +140,7 @@ export class AniadirPartidaPage implements OnInit {
     this.selectedUsers = [];
   }
 
-  // ------------ GESTIÓN DE LA INSERCION DE CARACTERÍSTICAS PARA EL DISEÑO DE LA PARTIDA ------------
-
-  /* initInputsCaracteristicasPersonajes() {
-    return this.formBuilder.group({
-      name 		: ['', Validators.required],
-      type 		: ['', Validators.required],
-      opcionesCaracteristica     : this.formBuilder.array([
-        this.initInputsOpcionesCaracteristica()
-     ])
-   });
-  }
-
-  initInputsOpcionesCaracteristica() {
-    return this.formBuilder.group({
-      optionName 		: ['', Validators.required]
-   });
-  }
-
-  addNewInputField() : void
-  {
-    const control = <FormArray>this.inputsCaracteristicasPersonajesForm.controls.caracteristicas;
-    control.push(this.initInputsCaracteristicasPersonajes());
-  }
-
-  removeInputField(i : number) : void
-   {
-      const control = <FormArray>this.inputsCaracteristicasPersonajesForm.controls.caracteristicas;
-      control.removeAt(i);
-   }
-
-   manage(val : any) : void
-   {
-      console.dir(val);
-   } */
-
-   
+  // ------------ GESTIÓN DE LA INSERCION DE CARACTERÍSTICAS PARA EL DISEÑO DE LA PARTIDA ------------   
   initQuestion() {
     return new FormGroup({
       name: new FormControl('',Validators.required),
@@ -195,26 +160,20 @@ export class AniadirPartidaPage implements OnInit {
 
   addQuestion() {
     const control = <FormArray>this.inputsCaracteristicasPersonajesForm.get(['questions']);
-   // console.log(control);
     control.push(this.initQuestion());
     
   }
 
   add(j) {
-    //console.log(k);
-    //const control = <FormArray>this.inputsCaracteristicasPersonajesForm.get('sections').controls[i].get('questions').controls[j].get('options');
-
-    const control = <FormArray>this.inputsCaracteristicasPersonajesForm.get(['questions',j,'options']); // also try this new syntax
-    //console.log(control);
+    const control = <FormArray>this.inputsCaracteristicasPersonajesForm.get(['questions',j,'options']);
     control.push(this.initOptions());
   }
 
   getQuestions(form) {
-   //console.log(form.controls.questions.controls);
     return form.controls.questions.controls;
   }
+
   getOptions(form) {
-    //console.log(form.get('options').controls);
     return form.controls.options.controls;
 
   }
@@ -225,7 +184,7 @@ export class AniadirPartidaPage implements OnInit {
   }
 
   removeOption(j,k){
-   const control = <FormArray>this.inputsCaracteristicasPersonajesForm.get(['questions',j,'options']); // also try this new syntax
+   const control = <FormArray>this.inputsCaracteristicasPersonajesForm.get(['questions',j,'options']);
    control.removeAt(k);
   }
 
@@ -282,7 +241,7 @@ export class AniadirPartidaPage implements OnInit {
       .catch(function(error) {
           console.error("Error añadiendo amigo: ", error);
       });
-      
+
       contadorCaracteristica++;
     }
 
@@ -290,39 +249,6 @@ export class AniadirPartidaPage implements OnInit {
   }
 
   dibujarFormulario() {
-    /* let contadorCaracteristica = 1;
-    const arrayCaracteristicas = this.inputsCaracteristicasPersonajesForm.controls.questions as FormArray;
-    console.log(this.questions);
-    for(let caracteristica of arrayCaracteristicas.controls) {
-      if(caracteristica.value.type == "freeText") {
-        
-        this.questions.push(new TextboxQuestion({
-          key: caracteristica.value.name,
-          label: caracteristica.value.name,
-          value: '',
-          required: true,
-          order: contadorCaracteristica
-        }));
-      } else {
-        let arrayOpciones = [];
-        console.log(caracteristica.value.options);
-        if(caracteristica.value.options) {
-          for(let option of caracteristica.value.options) {
-            arrayOpciones.push({key: option.key, value:''});
-          }
-        }
-        this.questions.push(new DropdownQuestion({
-          key: caracteristica.value.name,
-          label: caracteristica.value.name,
-          options: arrayOpciones,
-          order: contadorCaracteristica
-        }));
-      }
-      contadorCaracteristica++;
-    } */
-
-    /* this.questions = this.preguntasCaracteristicasService.getQuestionsList(); */
-    
     this.preguntasCaracteristicasService.getQuestionsList().subscribe((resultadoConsulta) => {
       resultadoConsulta.forEach((caracteristica: PreguntaCaracteristica<String>) => {
         if(caracteristica.controlType == "textbox") {
@@ -355,8 +281,6 @@ export class AniadirPartidaPage implements OnInit {
       });
     });
   }
-
-  
 
   // ------------ GESTIÓN DE LA NAVEGACIÓN EN LOS SLIDES ------------
 
