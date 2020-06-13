@@ -178,8 +178,9 @@ export class AniadirPartidaPage implements OnInit {
    
   initQuestion() {
     return new FormGroup({
-      name: new FormControl(''),
+      name: new FormControl('',Validators.required),
       type: new FormControl('',Validators.required),
+      required: new FormControl('',Validators.required),
       options: new FormArray([
         this.initOptions()
       ])
@@ -250,7 +251,7 @@ export class AniadirPartidaPage implements OnInit {
     for(let caracteristica of arrayCaracteristicas.controls) {
       console.log(caracteristica.value.options.controls);
       let numero = Math.floor(Math.random() * (10000 - 0 + 1)) + 0;
-      /* this.fireStore.collection("preguntasCaracteristicas").doc("idPartida" + "-" + numero).set({
+      this.fireStore.collection("preguntasCaracteristicas").add({
         idPartida: "1",
         key: caracteristica.value.name,
         label: caracteristica.value.name,
@@ -262,7 +263,7 @@ export class AniadirPartidaPage implements OnInit {
       })
       .catch(function(error) {
           console.error("Error añadiendo amigo: ", error);
-      }); */
+      });
     }
 
     this.dibujarFormulario();
