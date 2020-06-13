@@ -18,6 +18,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 import { DynamicFormComponent } from './components/dynamic-form-component/dynamic-form/dynamic-form.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   imports: [
@@ -28,7 +29,8 @@ import { DynamicFormComponent } from './components/dynamic-form-component/dynami
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    DragDropModule
   ],
   declarations: [AppComponent],
   entryComponents: [],

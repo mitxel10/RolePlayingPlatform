@@ -240,6 +240,21 @@ export class AniadirPartidaPage implements OnInit {
     control.controls = [];
   }
 
+  move(shift, currentIndex) {
+    const rules = this.inputsCaracteristicasPersonajesForm.get('questions') as FormArray;
+  
+    let newIndex: number = currentIndex + shift;
+    if(newIndex === -1) {
+      newIndex = rules.length - 1;
+    } else if(newIndex == rules.length) {
+      newIndex = 0;
+    }
+  
+    const currentGroup = rules.at(currentIndex);
+    rules.removeAt(currentIndex);
+    rules.insert(newIndex, currentGroup)
+  }
+
   onSubmit(form){
     
   }
@@ -248,6 +263,7 @@ export class AniadirPartidaPage implements OnInit {
     console.log(this.inputsCaracteristicasPersonajesForm.getRawValue());
 
     const arrayCaracteristicas = this.inputsCaracteristicasPersonajesForm.controls.questions as FormArray;
+    let contadorCaracteristica = 1;
     for(let caracteristica of arrayCaracteristicas.controls) {
       console.log(caracteristica.value.options.controls);
       let numero = Math.floor(Math.random() * (10000 - 0 + 1)) + 0;
@@ -256,7 +272,9 @@ export class AniadirPartidaPage implements OnInit {
         key: caracteristica.value.name,
         label: caracteristica.value.name,
         controlType: caracteristica.value.type,
-        options: caracteristica.value.options
+        required: caracteristica.value.required,
+        options: caracteristica.value.options,
+        order: contadorCaracteristica
       })
       .then(function() {
           console.log("Amigo añadido correctamente!");
@@ -264,6 +282,8 @@ export class AniadirPartidaPage implements OnInit {
       .catch(function(error) {
           console.error("Error añadiendo amigo: ", error);
       });
+      
+      contadorCaracteristica++;
     }
 
     this.dibujarFormulario();
@@ -302,7 +322,7 @@ export class AniadirPartidaPage implements OnInit {
     } */
 
     /* this.questions = this.preguntasCaracteristicasService.getQuestionsList(); */
-    let contadorCaracteristica = 1;
+    
     this.preguntasCaracteristicasService.getQuestionsList().subscribe((resultadoConsulta) => {
       resultadoConsulta.forEach((caracteristica: PreguntaCaracteristica<String>) => {
         if(caracteristica.controlType == "textbox") {
@@ -311,8 +331,8 @@ export class AniadirPartidaPage implements OnInit {
             key: caracteristica.key,
             label: caracteristica.label,
             value: '',
-            required: true,
-            order: contadorCaracteristica
+            required: caracteristica.required,
+            order: caracteristica.order
           }));
         } else {
           console.log("anadiendoSelect");
@@ -327,10 +347,11 @@ export class AniadirPartidaPage implements OnInit {
             key: caracteristica.label,
             label: caracteristica.label,
             options: arrayOpciones,
-            order: contadorCaracteristica
+            required: true,
+            order: caracteristica.order
           }));
+          this.questions.sort((a, b) => a.order - b.order);
         }
-        contadorCaracteristica++;
       });
     });
   }

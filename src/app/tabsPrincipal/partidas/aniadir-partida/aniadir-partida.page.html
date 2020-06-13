@@ -160,7 +160,15 @@
             <section [formGroupName]="j" *ngFor="let question of getQuestions(inputsCaracteristicasPersonajesForm); let j = index">
               <ion-item-group>
                 <div class="caracteristica">
-                  <ion-item-divider color="light">Característica #{{ j + 1 }}</ion-item-divider>
+                  <ion-item-divider color="light">
+                    <div class="col-10">
+                      Característica #{{ j + 1 }}
+                    </div>
+                    <div class="float-right">
+                      <ion-icon name="arrow-up" class="mr-2" (click)="move(-1, j)"></ion-icon>
+                      <ion-icon name="arrow-down" (click)="move(1, j)"></ion-icon>
+                    </div>
+                  </ion-item-divider>
 
                   <ion-item class="mr-3">
                     <ion-label position="floating" color="app-background">Nombre</ion-label>
