@@ -56,19 +56,12 @@ export class AniadirPartidaPage implements OnInit {
         bio: ['']
     });
 
-    /* this.inputsCaracteristicasPersonajesForm = this.formBuilder.group({
-      caracteristicas: new FormArray([
-        this.initInputsCaracteristicasPersonajes(),
-      ]),
-    }); */
-
     this.inputsCaracteristicasPersonajesForm = new FormGroup({
       questions: new FormArray([
         this.initQuestion(),
       ]),
     });
     this.questions = [];
-    /* this.questions$ = preguntasCaracteristicasService.getQuestions(); */
   }
 
   ngOnInit() {
