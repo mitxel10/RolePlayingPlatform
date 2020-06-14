@@ -1,6 +1,6 @@
 import { FormControl } from '@angular/forms';
 
-export class AgeValidator {
+export class NumeroLadosValidator {
 
     static isValid(control: FormControl): any {
 
@@ -16,15 +16,15 @@ export class AgeValidator {
             };
         }
 
-        if(control.value < 18){
+        if(control.value < 2){
             return {
-                "too young": true
+                "not much": true
             };
         }
 
-        if (control.value > 120){
+        if (control.value > 20){
             return {
-                "not realistic": true
+                "too much": true
             };
         }
 

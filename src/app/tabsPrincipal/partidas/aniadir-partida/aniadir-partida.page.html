@@ -20,32 +20,32 @@
       <p *ngIf="submitAttempt" style="color: #ea6153;">Por favor, rellena los datos del formulario correctamente.</p>
 
       <ion-list lines="none">
-          <form [formGroup]="slideOneForm">
+          <form [formGroup]="datosBasicosForm">
               <ion-item>
-                  <ion-label position="floating">First Name</ion-label>
-                  <ion-input formControlName="firstName" type="text" [class.invalid]="!slideOneForm.controls.firstName.valid && (slideOneForm.controls.firstName.dirty || submitAttempt)"></ion-input>
+                  <ion-label position="floating">Título de la partida</ion-label>
+                  <ion-input formControlName="tituloPartida" type="text" [class.invalid]="!datosBasicosForm.controls.tituloPartida.valid && (datosBasicosForm.controls.tituloPartida.dirty || submitAttempt)"></ion-input>
               </ion-item>
 
-              <ion-item *ngIf="!slideOneForm.controls.firstName.valid  && (slideOneForm.controls.firstName.dirty || submitAttempt)">
-                  <p>Please enter a valid name.</p>
-              </ion-item>
-
-              <ion-item>
-                  <ion-label position="floating">Last Name</ion-label>
-                  <ion-input formControlName="lastName" type="text" [class.invalid]="!slideOneForm.controls.lastName.valid && (slideOneForm.controls.age.dirty || submitAttempt)"></ion-input>
-              </ion-item>
-
-              <ion-item *ngIf="!slideOneForm.controls.lastName.valid  && (slideOneForm.controls.lastName.dirty || submitAttempt)">
-                  <p>Please enter a valid name.</p>
+              <ion-item *ngIf="!datosBasicosForm.controls.tituloPartida.valid  && (datosBasicosForm.controls.tituloPartida.dirty || submitAttempt)">
+                  <p>Por favor, introduce un título válido.</p>
               </ion-item>
 
               <ion-item>
-                  <ion-label position="floating">Age</ion-label>
-                  <ion-input formControlName="age" type="number" [class.invalid]="!slideOneForm.controls.age.valid && (slideOneForm.controls.age.dirty || submitAttempt)"></ion-input>
+                  <ion-label position="floating">Género</ion-label>
+                  <ion-input formControlName="genero" type="text" [class.invalid]="!datosBasicosForm.controls.genero.valid && (datosBasicosForm.controls.genero.dirty || submitAttempt)"></ion-input>
               </ion-item>
 
-              <ion-item *ngIf="!slideOneForm.controls.age.valid  && (slideOneForm.controls.age.dirty || submitAttempt)">
-                  <p>Please enter a valid age.</p>
+              <ion-item *ngIf="!datosBasicosForm.controls.genero.valid  && (datosBasicosForm.controls.genero.dirty || submitAttempt)">
+                  <p>Por favor, introduce un género válido.</p>
+              </ion-item>
+
+              <ion-item>
+                <ion-label position="floating">Historia</ion-label>
+                <ion-input formControlName="historia" type="text" [class.invalid]="!datosBasicosForm.controls.historia.valid && (datosBasicosForm.controls.historia.dirty || submitAttempt)"></ion-input>
+              </ion-item>
+
+              <ion-item *ngIf="!datosBasicosForm.controls.historia.valid  && (datosBasicosForm.controls.historia.dirty || submitAttempt)">
+                  <p>Por favor, introduce una historia válida.</p>
               </ion-item>
           </form>
       </ion-list>
@@ -53,37 +53,48 @@
 
     <ion-slide>
       <ion-list lines="none">
-          <form [formGroup]="slideTwoForm">
-              <ion-item>
+          <form [formGroup]="configuracionDadosForm">
+              <!-- <ion-item>
                   <ion-label position="floating">Username</ion-label>
-                  <ion-input [class.invalid]="!slideTwoForm.controls.username.valid && (slideTwoForm.controls.username.dirty || submitAttempt)" formControlName="username" type="text"></ion-input>
+                  <ion-input [class.invalid]="!configuracionDadosForm.controls.username.valid && (configuracionDadosForm.controls.username.dirty || submitAttempt)" formControlName="username" type="text"></ion-input>
               </ion-item>
 
-              <ion-item *ngIf="slideTwoForm.controls.username.pending">
+              <ion-item *ngIf="configuracionDadosForm.controls.username.pending">
                   <p>Checking username...</p>
               </ion-item>
 
-              <ion-item *ngIf="!slideTwoForm.controls.username.valid && !slideTwoForm.controls.username.pending && (slideTwoForm.controls.username.dirty || submitAttempt)">
+              <ion-item *ngIf="!configuracionDadosForm.controls.username.valid && !configuracionDadosForm.controls.username.pending && (configuracionDadosForm.controls.username.dirty || submitAttempt)">
                   <p>Sorry, that username can not be used!</p>
-              </ion-item>
+              </ion-item> -->
 
-              <ion-item>
+              <!-- <ion-item>
                   <ion-label position="floating">Privacy</ion-label>
-                  <ion-select [class.invalid]="!slideTwoForm.controls.privacy.valid && (slideTwoForm.controls.privacy.dirty || submitAttempt)" formControlName="privacy">
+                  <ion-select [class.invalid]="!configuracionDadosForm.controls.privacy.valid && (configuracionDadosForm.controls.privacy.dirty || submitAttempt)" formControlName="privacy">
                       <ion-select-option value="public" checked="true">Public</ion-select-option>
                       <ion-select-option value="friends">Friends Only</ion-select-option>
                       <ion-select-option value="private">Private</ion-select-option>
                   </ion-select>
+              </ion-item> -->
+
+              <ion-item>
+                <ion-label position="floating">Número de dados</ion-label>
+                <ion-input formControlName="numDados" type="number" [class.invalid]="!configuracionDadosForm.controls.numDados.valid && (configuracionDadosForm.controls.numDados.dirty || submitAttempt)"></ion-input>
+              </ion-item>
+
+              <ion-item *ngIf="!configuracionDadosForm.controls.numDados.valid  && (configuracionDadosForm.controls.numDados.dirty || submitAttempt)">
+                <p>Por favor, introduce un número de dados válido (entero y al menos uno).</p>
               </ion-item>
 
               <ion-item>
-                  <ion-label position="floating">Bio</ion-label>
-                  <ion-textarea formControlName="bio"></ion-textarea>
+                <ion-label position="floating">Número de lados</ion-label>
+                <ion-input formControlName="numLados" type="number" [class.invalid]="!configuracionDadosForm.controls.numLados.valid && (configuracionDadosForm.controls.numLados.dirty || submitAttempt)"></ion-input>
+              </ion-item>
+
+              <ion-item *ngIf="!configuracionDadosForm.controls.numLados.valid  && (configuracionDadosForm.controls.numLados.dirty || submitAttempt)">
+                <p>Por favor, introduce un número de lados válido (entero y al menos una cara).</p>
               </ion-item>
           </form>
-      </ion-list>
-
-      <ion-button expand="full" color="primary" (click)="save()">Crear partida!</ion-button>
+      </ion-list>      
     </ion-slide>
 
     <ion-slide>
@@ -109,51 +120,6 @@
 
     <ion-slide>
       <h3 class="text-center text-white">Diseño de los personajes</h3>
-      <!-- <form [formGroup]="inputsCaracteristicasPersonajesForm" (ngSubmit)="manage(inputsCaracteristicasPersonajesForm.value)">
-        <ion-list margin-bottom>
-          <ion-item margin-bottom no-lines>
-              <ion-label floating>Framework name:</ion-label>
-
-              <ion-input type="text" maxlength="40" formControlName="name"></ion-input>
-              
-          </ion-item>
-
-          <div formArrayName="caracteristicas" margin-bottom>
-            <section [formGroupName]="i" *ngFor="let tech of inputsCaracteristicasPersonajesForm.controls.caracteristicas.controls; let i = index">
-                <ion-item-group>
-                    <ion-item-divider color="light">Característica #{{ i + 1 }}</ion-item-divider>
-                    <ion-item>
-                      <ion-label floating>Nombre:</ion-label>   
-                      <ion-input type="text" maxlength="50" formControlName="name"></ion-input>
-                    </ion-item>
-
-                    <ion-item>
-                      <ion-label floating>Tipo:</ion-label>   
-                      <ion-input type="text" maxlength="50" formControlName="type"></ion-input>
-                    </ion-item>
-
-                    <ion-item>
-                      <ion-label floating>Opciones:</ion-label>   
-                      <ion-input type="text" maxlength="50" formControlName="name"></ion-input>
-                    </ion-item>
-                    
-                    <span float-right ion-button icon-left clear *ngIf="inputsCaracteristicasPersonajesForm.controls.caracteristicas.length > 1" (click)="removeInputField(i)">
-                      <ion-icon name="close"></ion-icon>Borrar
-                    </span>  
-                </ion-item-group>    
-              </section>
-          </div>
-
-          <span ion-button float-left icon-left clear (click)="addNewInputField()">
-                <ion-icon name="add"></ion-icon>
-                Añadir nueva característica
-          </span>
-        </ion-list>
-
-        <button ion-button block margin-top color="primary" text-center [disabled]="!inputsCaracteristicasPersonajesForm.valid">Submit</button>
-      </form> -->
-
-
       <form [formGroup]="inputsCaracteristicasPersonajesForm" novalidate (ngSubmit)="onSubmit(inputsCaracteristicasPersonajesForm)" style="padding: 5%">     
         <ion-list margin-bottom id="listaCaracteristicas">
           <div formArrayName="questions" margin-bottom>
@@ -181,15 +147,6 @@
                   </ion-item>
 
                   <ion-item class="mr-3"><ion-label floating>Tipo:</ion-label></ion-item>
-                  <!-- <ion-item class="mr-3"> -->
-                    <!-- <ion-label floating>Tipo:</ion-label>   
-                    <ion-select class="col-9 pr-1" okText="Okay" cancelText="Dismiss" formControlName="type" (ionChange)="tipoCaracteristicaSeleccionado(j, $event.target.value)">
-                      <ion-select-option value="freeText">Texto libre</ion-select-option>
-                      <ion-select-option value="select">Única opcion a escoger</ion-select-option>
-                      <ion-select-option value="checkbox">Varias opciones a escoger</ion-select-option>
-                    </ion-select> -->
-
-                    
                     <ion-list class="mr-3">
                       <ion-radio-group class="" formControlName="type" (ionChange)="tipoCaracteristicaSeleccionado(j, $event.target.value)">
                         <ion-item>
@@ -208,7 +165,6 @@
                         </ion-item>
                       </ion-radio-group>
                     </ion-list>
-                  <!-- </ion-item> -->
       
                   <div *ngIf="inputsCaracteristicasPersonajesForm.errors" class="alert alert-danger">
                     {{ inputsCaracteristicasPersonajesForm.errors }}
@@ -231,7 +187,6 @@
                 </div>
               </ion-item-group> 
 
-              <!-- <span *ngIf="getQuestions(inputsCaracteristicasPersonajesForm).length > 1" (click)="removeQuestion(i)">Remove Question</span> -->
               <ion-button *ngIf="getQuestions(inputsCaracteristicasPersonajesForm).length > 1" (click)="removeQuestion(j)" size="small" color="danger">Eliminar característica</ion-button>
             </section>
             <ion-button (click)="addQuestion()" class="mt-3">Añadir característica</ion-button>
@@ -239,12 +194,18 @@
         </ion-list>
       </form>
 
-      <ion-button (click)="saveForm()" size="small">Guardar</ion-button>
+      <!-- <ion-button (click)="saveForm()" size="small">Guardar</ion-button> -->
       <!-- <pre> {{inputsCaracteristicasPersonajesForm.value | json}} </pre> -->
-      <div *ngIf="(questions.length > 0)" style="padding: 5%">
+      <!-- <div *ngIf="(questions.length > 0)" style="padding: 5%">
         <h2>Formulario</h2>
         <app-dynamic-form [questions]="questions"></app-dynamic-form>
-      </div>
+      </div> -->
+    </ion-slide>
+
+    <ion-slide class="mt-auto mb-auto">
+
+      <ion-button expand="full" class="ml-3 mr-3" color="primary" (click)="save()">Crear partida!</ion-button>
+
     </ion-slide>
   </ion-slides>
 

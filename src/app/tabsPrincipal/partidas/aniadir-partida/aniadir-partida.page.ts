@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
-import { AgeValidator } from  '../validators/ageValidator';
 import { UsernameValidator } from  '../validators/usernameValidator';
+import { NumeroDadosValidator } from  '../validators/numeroDadosValidator';
+import { NumeroLadosValidator } from '../validators/numeroLadosValidator';
 import { User } from 'firebase';
 import { AmigosService } from 'src/app/services/amigos-service/amigos.service';
 import { AuthenticationService } from 'src/app/services/authentication-service/authentication.service';
@@ -22,8 +23,8 @@ export class AniadirPartidaPage implements OnInit {
 
   @ViewChild('formSlider', {static: false}) formSlider;
 
-	public slideOneForm: FormGroup;
-  public slideTwoForm: FormGroup;
+	public datosBasicosForm: FormGroup;
+  public configuracionDadosForm: FormGroup;
   public inputsCaracteristicasPersonajesForm: FormGroup;
 
   public submitAttempt: boolean = false;
@@ -37,31 +38,27 @@ export class AniadirPartidaPage implements OnInit {
   public tiposCaracteristica = [];
   public questions: PreguntaCaracteristica<any>[];
 
-  constructor(
-    private amigosService: AmigosService,
-    public formBuilder: FormBuilder,
-    private fireStore: AngularFirestore,
-    private authService: AuthenticationService,
-    private preguntasCaracteristicasService: PreguntasCaracteristicasService
-    ) {
-    this.slideOneForm = formBuilder.group({
-      firstName: ['', Validators.compose([Validators.maxLength(30), Validators.pattern('[a-zA-Z ]*'), Validators.required])],
-      lastName: ['', Validators.compose([Validators.maxLength(30), Validators.pattern('[a-zA-Z ]*'), Validators.required])],
-      age: ['', AgeValidator.isValid]
-    });
+  constructor(private amigosService: AmigosService, public formBuilder: FormBuilder, private fireStore: AngularFirestore, 
+    private authService: AuthenticationService, private preguntasCaracteristicasService: PreguntasCaracteristicasService) {
+      
+      this.datosBasicosForm = formBuilder.group({
+        tituloPartida: ['', Validators.compose([Validators.maxLength(100), Validators.required])],
+        historia: ['', Validators.compose([Validators.maxLength(3000), Validators.required])],
+        genero: ['', Validators.compose([Validators.maxLength(100), Validators.required])]
+      });
 
-    this.slideTwoForm = formBuilder.group({
-        username: ['', Validators.compose([Validators.required, Validators.pattern('[a-zA-Z]*')]), UsernameValidator.checkUsername],
-        privacy: ['', Validators.required],
-        bio: ['']
-    });
+      this.configuracionDadosForm = formBuilder.group({
+          /* username: ['', Validators.compose([Validators.required, Validators.pattern('[a-zA-Z]*')]), UsernameValidator.checkUsername], */
+          numDados: ['', [Validators.required, NumeroDadosValidator.isValid]],
+          numLados: ['', [Validators.required, NumeroLadosValidator.isValid]]
+      });
 
-    this.inputsCaracteristicasPersonajesForm = new FormGroup({
-      questions: new FormArray([
-        this.initQuestion(),
-      ]),
-    });
-    this.questions = [];
+      this.inputsCaracteristicasPersonajesForm = new FormGroup({
+        questions: new FormArray([
+          this.initQuestion(),
+        ]),
+      });
+      this.questions = [];
   }
 
   ngOnInit() {
@@ -290,16 +287,22 @@ export class AniadirPartidaPage implements OnInit {
   save(){
     this.submitAttempt = true;
 
-    if(!this.slideOneForm.valid){
+    if(!this.datosBasicosForm.valid){
         this.formSlider.slideTo(0);
-    } else if(!this.slideTwoForm.valid){
+    } else if(!this.configuracionDadosForm.valid){
         this.formSlider.slideTo(1);
     } else if(this.selectedUsers.length < 1) {
         this.formSlider.slideTo(2);
     } else {
         console.log("success!")
-        console.log(this.slideOneForm.value);
-        console.log(this.slideTwoForm.value);
+        console.log(this.datosBasicosForm.value);
+        console.log(this.configuracionDadosForm.value);
+        
+        this.crearPartida();
     }
+  }
+
+  crearPartida() {
+    throw new Error("Method not implemented.");
   }
 }
