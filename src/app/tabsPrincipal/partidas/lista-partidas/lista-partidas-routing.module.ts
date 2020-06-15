@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { ListaPartidasPage } from './lista-partidas.page';
 import { AniadirPartidaPage } from '../aniadir-partida/aniadir-partida.page';
+import { CrearPersonajePage } from '../crear-personaje/crear-personaje/crear-personaje.page';
 
 const routes: Routes = [
   {
@@ -12,6 +13,10 @@ const routes: Routes = [
   {
     path: 'aniadir',
     component: AniadirPartidaPage
+  },
+  {
+    path: ':idPartida/crear-personaje',
+    component: CrearPersonajePage
   }
 ];
 

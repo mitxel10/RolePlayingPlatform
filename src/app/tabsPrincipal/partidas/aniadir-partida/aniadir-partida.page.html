@@ -120,7 +120,7 @@
 
     <ion-slide>
       <h3 class="text-center text-white">Diseño de los personajes</h3>
-      <form [formGroup]="inputsCaracteristicasPersonajesForm" novalidate (ngSubmit)="onSubmit(inputsCaracteristicasPersonajesForm)" style="padding: 5%">     
+      <form [formGroup]="inputsCaracteristicasPersonajesForm" novalidate (ngSubmit)="onSubmit(inputsCaracteristicasPersonajesForm)" style="padding-top: 5%; padding-left: 5%; padding-right: 5%; padding-bottom: 8%;">     
         <ion-list margin-bottom id="listaCaracteristicas">
           <div formArrayName="questions" margin-bottom>
             <section [formGroupName]="j" *ngFor="let question of getQuestions(inputsCaracteristicasPersonajesForm); let j = index">
@@ -202,7 +202,7 @@
       </div> -->
     </ion-slide>
 
-    <ion-slide class="mt-auto mb-auto">
+    <ion-slide class="mt-auto mb-5">
 
       <ion-button expand="full" class="ml-3 mr-3" color="primary" (click)="save()">Crear partida!</ion-button>
 

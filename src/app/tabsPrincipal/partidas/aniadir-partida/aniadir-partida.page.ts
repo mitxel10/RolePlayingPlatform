@@ -13,6 +13,13 @@ import { DropdownQuestion } from 'src/app/models/question-dropdown';
 import { Observable } from 'rxjs';
 import { PreguntasCaracteristicasService } from 'src/app/services/preguntas-caracteristicas-service/preguntas-caracteristicas.service';
 import { map } from 'rxjs/operators';
+import { PartidasService } from 'src/app/services/partidas-service/partidas.service';
+import { Partida } from 'src/app/models/partida';
+import { EstadosPartida } from 'src/app/enums/EstadosPartida';
+import { Personaje } from 'src/app/models/personaje';
+import { EstadosPersonaje } from 'src/app/enums/EstadosPersonaje';
+import { PersonajesService } from 'src/app/services/personajes-service/personajes.service';
+import { ConfiguracionDados } from 'src/app/models/configuracionDados';
 
 @Component({
   selector: 'app-aniadir-partida',
@@ -39,7 +46,8 @@ export class AniadirPartidaPage implements OnInit {
   public questions: PreguntaCaracteristica<any>[];
 
   constructor(private amigosService: AmigosService, public formBuilder: FormBuilder, private fireStore: AngularFirestore, 
-    private authService: AuthenticationService, private preguntasCaracteristicasService: PreguntasCaracteristicasService) {
+    private authService: AuthenticationService, private preguntasCaracteristicasService: PreguntasCaracteristicasService,
+    private partidasService: PartidasService, private personajesService: PersonajesService) {
       
       this.datosBasicosForm = formBuilder.group({
         tituloPartida: ['', Validators.compose([Validators.maxLength(100), Validators.required])],
@@ -190,18 +198,18 @@ export class AniadirPartidaPage implements OnInit {
   }
 
   move(shift, currentIndex) {
-    const rules = this.inputsCaracteristicasPersonajesForm.get('questions') as FormArray;
+    const questions = this.inputsCaracteristicasPersonajesForm.get('questions') as FormArray;
   
     let newIndex: number = currentIndex + shift;
     if(newIndex === -1) {
-      newIndex = rules.length - 1;
-    } else if(newIndex == rules.length) {
+      newIndex = questions.length - 1;
+    } else if(newIndex == questions.length) {
       newIndex = 0;
     }
   
-    const currentGroup = rules.at(currentIndex);
-    rules.removeAt(currentIndex);
-    rules.insert(newIndex, currentGroup)
+    const currentGroup = questions.at(currentIndex);
+    questions.removeAt(currentIndex);
+    questions.insert(newIndex, currentGroup)
   }
 
   onSubmit(form){
@@ -285,7 +293,7 @@ export class AniadirPartidaPage implements OnInit {
   // ------------ GUARDADO DE LA PARTIDA ------------
 
   save(){
-    this.submitAttempt = true;
+    /* this.submitAttempt = true;
 
     if(!this.datosBasicosForm.valid){
         this.formSlider.slideTo(0);
@@ -297,12 +305,73 @@ export class AniadirPartidaPage implements OnInit {
         console.log("success!")
         console.log(this.datosBasicosForm.value);
         console.log(this.configuracionDadosForm.value);
-        
+
         this.crearPartida();
-    }
+    } */
+
+    /* this.crearPartida(); */
+    this.crearPartida();
   }
 
   crearPartida() {
-    throw new Error("Method not implemented.");
+    var partida = new Partida;
+    partida.director = this.authService.currentUserId;
+    partida.estado = EstadosPartida.CREADA;
+    partida.nombre = this.datosBasicosForm.get('tituloPartida').value;
+    partida.historia = this.datosBasicosForm.get('historia').value;
+
+    this.partidasService.aniadirPartida(partida).then((data => {
+      let idPartida = data.id;
+
+      this.crearPersonajes(idPartida);
+      this.crearConfiguracionDados(idPartida);
+      this.crearPreguntasCaracteristicas(idPartida);
+    }));
+  }
+    
+  crearPersonajes(idPartida) {
+    this.selectedUsers.forEach(usuario => {
+      let personaje = new Personaje;
+      personaje.idPartida = idPartida;
+      personaje.idUsuario = usuario.item_id;
+      personaje.estado = EstadosPersonaje.CREADO;
+      
+      this.personajesService.aniadirPersonaje(personaje);
+    });
+  }
+  
+  crearConfiguracionDados(idPartida) {
+    let configuracionDados = new ConfiguracionDados;
+    configuracionDados.idPartida = idPartida;
+    configuracionDados.numDados = this.configuracionDadosForm.get('numDados').value;
+    configuracionDados.numLados = this.configuracionDadosForm.get('numLados').value;
+    
+    this.partidasService.aniadirConfiguracionDados(configuracionDados);
+  }
+
+  crearPreguntasCaracteristicas(idPartida) {
+    const arrayCaracteristicas = this.inputsCaracteristicasPersonajesForm.controls.questions as FormArray;
+    let contadorCaracteristica = 1;
+
+    for(let caracteristica of arrayCaracteristicas.controls) {
+      this.fireStore.collection("preguntasCaracteristicas").add({
+        idPartida: idPartida,
+        key: caracteristica.value.name,
+        label: caracteristica.value.name,
+        controlType: caracteristica.value.type,
+        required: caracteristica.value.required,
+        options: caracteristica.value.options,
+        order: contadorCaracteristica
+      })
+      .then(function() {
+          console.log("PreguntaCaracteristica añadido correctamente!");
+      })
+      .catch(function(error) {
+          console.error("Error añadiendo PreguntaCaracteristica: ", error);
+      });
+
+      contadorCaracteristica++;
+    }
+    this.dibujarFormulario();
   }
 }

@@ -8,6 +8,7 @@ import { ListaPartidasPageRoutingModule } from './lista-partidas-routing.module'
 
 import { ListaPartidasPage } from './lista-partidas.page';
 import { AniadirPartidaPageModule } from '../aniadir-partida/aniadir-partida.module';
+import { CrearPersonajePageModule } from '../crear-personaje/crear-personaje/crear-personaje.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { AniadirPartidaPageModule } from '../aniadir-partida/aniadir-partida.mod
     FormsModule,
     IonicModule,
     ListaPartidasPageRoutingModule,
-    AniadirPartidaPageModule
+    AniadirPartidaPageModule,
+    CrearPersonajePageModule
   ],
   declarations: [ListaPartidasPage]
 })

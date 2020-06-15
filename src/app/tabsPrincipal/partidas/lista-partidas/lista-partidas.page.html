@@ -5,6 +5,28 @@
 </ion-header>
 
 <ion-content>
+  <ion-list class="mr-3">
+    <ion-item *ngFor="let partida of partidasUsuario">
+      <ion-avatar slot="start" *ngIf="esDirector(partida); else noDirector">
+        <img src="assets/img/imageMaster.png">
+      </ion-avatar>
+      <ng-template #noDirector>
+        <ion-avatar slot="start">
+          <img src="assets/img/imagePlayer.jpg">
+        </ion-avatar>
+      </ng-template>
+      
+      <ion-label>
+        <h2>{{partida.nombre}}</h2>
+        <h3>{{partida.estado | titlecase}}</h3>
+        <p *ngIf="esDirector(partida); else noMaster">Master de la partida</p>
+        <ng-template #noMaster>
+          <p>Personaje Jugador</p>
+          <ion-button class="float-right" size="small" (click)="irCrearPartida(partida)">Crear personaje</ion-button>
+        </ng-template>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button>
