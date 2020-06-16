@@ -4,8 +4,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-list class="mr-3">
+<ion-content id="listaPartidasContent">
+  <ion-list class="mt-3 ml-3 mr-3">
     <ion-item *ngFor="let partida of partidasUsuario">
       <ion-avatar slot="start" *ngIf="esDirector(partida); else noDirector">
         <img src="assets/img/imageMaster.png">
@@ -16,16 +16,17 @@
         </ion-avatar>
       </ng-template>
       
-      <ion-label>
+      <ion-label class="col-8 mr-0 pl-0 pr-0">
         <h2>{{partida.nombre}}</h2>
         <h3>{{partida.estado | titlecase}}</h3>
         <p *ngIf="esDirector(partida); else noMaster">Master de la partida</p>
         <ng-template #noMaster>
           <p>Personaje Jugador</p>
-          <ion-button class="float-right" size="small" (click)="irCrearPartida(partida)">Crear personaje</ion-button>
         </ng-template>
       </ion-label>
+      <ion-button *ngIf="!esDirector(partida)" class="float-right ml-0 mr-0 h-50 w-100" size="small" (click)="irCrearPartida(partida)">Crear<br/>personaje</ion-button>
     </ion-item>
+
   </ion-list>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">

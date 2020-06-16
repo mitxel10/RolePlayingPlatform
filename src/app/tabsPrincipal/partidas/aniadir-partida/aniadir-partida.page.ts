@@ -247,7 +247,7 @@ export class AniadirPartidaPage implements OnInit {
   }
 
   dibujarFormulario() {
-    this.preguntasCaracteristicasService.getQuestionsList().subscribe((resultadoConsulta) => {
+    this.preguntasCaracteristicasService.getQuestionsList("1").subscribe((resultadoConsulta) => {
       resultadoConsulta.forEach((caracteristica: PreguntaCaracteristica<String>) => {
         if(caracteristica.controlType == "textbox") {
           console.log("anadiendoText");

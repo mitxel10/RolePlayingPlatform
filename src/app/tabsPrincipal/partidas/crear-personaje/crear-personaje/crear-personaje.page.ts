@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { PreguntasCaracteristicasService } from 'src/app/services/preguntas-caracteristicas-service/preguntas-caracteristicas.service';
 import { PreguntaCaracteristica } from 'src/app/models/pregunta-caracteristica';
@@ -26,7 +27,8 @@ export class CrearPersonajePage implements OnInit {
 
   dibujarFormulario() {
     this.questions = [];
-    this.preguntasCaracteristicasService.getQuestionsList().subscribe((resultadoConsulta) => {
+    this.preguntasCaracteristicasService.getQuestionsList(this.idPartida).subscribe((resultadoConsulta) => {
+      console.log(resultadoConsulta);
       resultadoConsulta.forEach((caracteristica: PreguntaCaracteristica<String>) => {
         if(caracteristica.controlType == "textbox") {
           console.log("anadiendoText");

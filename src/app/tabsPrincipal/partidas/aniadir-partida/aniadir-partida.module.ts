@@ -13,6 +13,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppModule } from 'src/app/app.module';
 import { DynamicFormComponent } from 'src/app/components/dynamic-form-component/dynamic-form/dynamic-form.component';
 import { DynamicFormQuestionComponent } from 'src/app/components/dynamic-form-question-component/dynamic-form-question/dynamic-form-question.component';
+import { SharedModule } from 'src/app/components/shared.module';
 
 @NgModule({
   imports: [
@@ -20,11 +21,10 @@ import { DynamicFormQuestionComponent } from 'src/app/components/dynamic-form-qu
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
-    AniadirPartidaPageRoutingModule
+    AniadirPartidaPageRoutingModule,
+    SharedModule
   ],
-  declarations: [AniadirPartidaPage,
-    MultiSelectComponent,
-    ListFilterPipe, DynamicFormComponent, DynamicFormQuestionComponent
+  declarations: [AniadirPartidaPage,MultiSelectComponent,ListFilterPipe
   ]
 })
 export class AniadirPartidaPageModule {}

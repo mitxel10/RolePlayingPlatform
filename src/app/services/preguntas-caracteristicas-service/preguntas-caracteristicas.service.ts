@@ -47,7 +47,7 @@ export class PreguntasCaracteristicasService {
     return of(questions.sort((a, b) => a.order - b.order));
   } */
 
-  getQuestionsList() {
-    return this.fireStore.collection('preguntasCaracteristicas', ref => ref.where('idPartida', '==', "1")).valueChanges();
+  getQuestionsList(idPartida: string) {
+    return this.fireStore.collection('preguntasCaracteristicas', ref => ref.where('idPartida', '==', idPartida)).valueChanges();
   }
 }

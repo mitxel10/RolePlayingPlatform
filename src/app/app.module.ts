@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
-import { ReactiveFormsModule }          from '@angular/forms';
+import { ReactiveFormsModule, FormsModule }          from '@angular/forms';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -19,11 +19,14 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 import { DynamicFormComponent } from './components/dynamic-form-component/dynamic-form/dynamic-form.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MultiSelectComponent } from './tabsPrincipal/partidas/multi-select/multi-select.component';
+import { ListFilterPipe } from './tabsPrincipal/partidas/multi-select/list-filter.pipe';
 
 @NgModule({
   imports: [
     IonicModule.forRoot(),
     BrowserModule, 
+    FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
