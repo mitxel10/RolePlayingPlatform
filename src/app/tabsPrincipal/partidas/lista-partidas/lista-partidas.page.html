@@ -24,12 +24,12 @@
           <p>Personaje Jugador</p>
         </ng-template>
       </ion-label>
-      <ion-button *ngIf="!esDirector(partida)" class="float-right ml-0 mr-0 h-50 w-100" size="small" (click)="irCrearPartida(partida)">Crear<br/>personaje</ion-button>
+      <ion-button *ngIf="!esDirector(partida)" class="float-right ml-0 mr-0 h-50 w-100 crearPersonajeBtn" size="small" (click)="irCrearPartida(partida)">Crear<br/>personaje</ion-button>
     </ion-item>
 
   </ion-list>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab class="aniadirPartidaBtn" vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button>
       <ion-icon name="add" (click)="irAniadirPartida()"></ion-icon>
     </ion-fab-button>

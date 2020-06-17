@@ -16,85 +16,91 @@
   <ion-slides #formSlider pager>
 
     <ion-slide>
+      <h3 class="text-center text-white">Datos básicos</h3>
+      <div style="padding: 5%">
 
-      <p *ngIf="submitAttempt" style="color: #ea6153;">Por favor, rellena los datos del formulario correctamente.</p>
+        <p *ngIf="submitAttempt" style="color: #ea6153;">Por favor, rellena los datos del formulario correctamente.</p>
 
-      <ion-list lines="none">
-          <form [formGroup]="datosBasicosForm">
-              <ion-item>
-                  <ion-label position="floating">Título de la partida</ion-label>
-                  <ion-input formControlName="tituloPartida" type="text" [class.invalid]="!datosBasicosForm.controls.tituloPartida.valid && (datosBasicosForm.controls.tituloPartida.dirty || submitAttempt)"></ion-input>
-              </ion-item>
+        <ion-list lines="none">
+            <form [formGroup]="datosBasicosForm">
+                <ion-item>
+                    <ion-label position="floating">Título de la partida</ion-label>
+                    <ion-input formControlName="tituloPartida" type="text" [class.invalid]="!datosBasicosForm.controls.tituloPartida.valid && (datosBasicosForm.controls.tituloPartida.dirty || submitAttempt)"></ion-input>
+                </ion-item>
 
-              <ion-item *ngIf="!datosBasicosForm.controls.tituloPartida.valid  && (datosBasicosForm.controls.tituloPartida.dirty || submitAttempt)">
-                  <p>Por favor, introduce un título válido.</p>
-              </ion-item>
+                <ion-item *ngIf="!datosBasicosForm.controls.tituloPartida.valid  && (datosBasicosForm.controls.tituloPartida.dirty || submitAttempt)">
+                    <p>Por favor, introduce un título válido.</p>
+                </ion-item>
 
-              <ion-item>
-                  <ion-label position="floating">Género</ion-label>
-                  <ion-input formControlName="genero" type="text" [class.invalid]="!datosBasicosForm.controls.genero.valid && (datosBasicosForm.controls.genero.dirty || submitAttempt)"></ion-input>
-              </ion-item>
+                <ion-item>
+                    <ion-label position="floating">Género</ion-label>
+                    <ion-input formControlName="genero" type="text" [class.invalid]="!datosBasicosForm.controls.genero.valid && (datosBasicosForm.controls.genero.dirty || submitAttempt)"></ion-input>
+                </ion-item>
 
-              <ion-item *ngIf="!datosBasicosForm.controls.genero.valid  && (datosBasicosForm.controls.genero.dirty || submitAttempt)">
-                  <p>Por favor, introduce un género válido.</p>
-              </ion-item>
+                <ion-item *ngIf="!datosBasicosForm.controls.genero.valid  && (datosBasicosForm.controls.genero.dirty || submitAttempt)">
+                    <p>Por favor, introduce un género válido.</p>
+                </ion-item>
 
-              <ion-item>
-                <ion-label position="floating">Historia</ion-label>
-                <ion-input formControlName="historia" type="text" [class.invalid]="!datosBasicosForm.controls.historia.valid && (datosBasicosForm.controls.historia.dirty || submitAttempt)"></ion-input>
-              </ion-item>
+                <ion-item>
+                  <ion-label position="floating">Historia</ion-label>
+                  <ion-input formControlName="historia" type="text" [class.invalid]="!datosBasicosForm.controls.historia.valid && (datosBasicosForm.controls.historia.dirty || submitAttempt)"></ion-input>
+                </ion-item>
 
-              <ion-item *ngIf="!datosBasicosForm.controls.historia.valid  && (datosBasicosForm.controls.historia.dirty || submitAttempt)">
-                  <p>Por favor, introduce una historia válida.</p>
-              </ion-item>
-          </form>
-      </ion-list>
+                <ion-item *ngIf="!datosBasicosForm.controls.historia.valid  && (datosBasicosForm.controls.historia.dirty || submitAttempt)">
+                    <p>Por favor, introduce una historia válida.</p>
+                </ion-item>
+            </form>
+        </ion-list>
+      </div>
     </ion-slide>
 
     <ion-slide>
-      <ion-list lines="none">
-          <form [formGroup]="configuracionDadosForm">
-              <!-- <ion-item>
-                  <ion-label position="floating">Username</ion-label>
-                  <ion-input [class.invalid]="!configuracionDadosForm.controls.username.valid && (configuracionDadosForm.controls.username.dirty || submitAttempt)" formControlName="username" type="text"></ion-input>
-              </ion-item>
+      <h3 class="text-center text-white">Configuración principal de los dados</h3>
+      <div style="padding: 5%">
+        <ion-list lines="none">
+            <form [formGroup]="configuracionDadosForm">
+                <!-- <ion-item>
+                    <ion-label position="floating">Username</ion-label>
+                    <ion-input [class.invalid]="!configuracionDadosForm.controls.username.valid && (configuracionDadosForm.controls.username.dirty || submitAttempt)" formControlName="username" type="text"></ion-input>
+                </ion-item>
 
-              <ion-item *ngIf="configuracionDadosForm.controls.username.pending">
-                  <p>Checking username...</p>
-              </ion-item>
+                <ion-item *ngIf="configuracionDadosForm.controls.username.pending">
+                    <p>Checking username...</p>
+                </ion-item>
 
-              <ion-item *ngIf="!configuracionDadosForm.controls.username.valid && !configuracionDadosForm.controls.username.pending && (configuracionDadosForm.controls.username.dirty || submitAttempt)">
-                  <p>Sorry, that username can not be used!</p>
-              </ion-item> -->
+                <ion-item *ngIf="!configuracionDadosForm.controls.username.valid && !configuracionDadosForm.controls.username.pending && (configuracionDadosForm.controls.username.dirty || submitAttempt)">
+                    <p>Sorry, that username can not be used!</p>
+                </ion-item> -->
 
-              <!-- <ion-item>
-                  <ion-label position="floating">Privacy</ion-label>
-                  <ion-select [class.invalid]="!configuracionDadosForm.controls.privacy.valid && (configuracionDadosForm.controls.privacy.dirty || submitAttempt)" formControlName="privacy">
-                      <ion-select-option value="public" checked="true">Public</ion-select-option>
-                      <ion-select-option value="friends">Friends Only</ion-select-option>
-                      <ion-select-option value="private">Private</ion-select-option>
-                  </ion-select>
-              </ion-item> -->
+                <!-- <ion-item>
+                    <ion-label position="floating">Privacy</ion-label>
+                    <ion-select [class.invalid]="!configuracionDadosForm.controls.privacy.valid && (configuracionDadosForm.controls.privacy.dirty || submitAttempt)" formControlName="privacy">
+                        <ion-select-option value="public" checked="true">Public</ion-select-option>
+                        <ion-select-option value="friends">Friends Only</ion-select-option>
+                        <ion-select-option value="private">Private</ion-select-option>
+                    </ion-select>
+                </ion-item> -->
 
-              <ion-item>
-                <ion-label position="floating">Número de dados</ion-label>
-                <ion-input formControlName="numDados" type="number" [class.invalid]="!configuracionDadosForm.controls.numDados.valid && (configuracionDadosForm.controls.numDados.dirty || submitAttempt)"></ion-input>
-              </ion-item>
+                <ion-item>
+                  <ion-label position="floating">Número de dados</ion-label>
+                  <ion-input formControlName="numDados" type="number" [class.invalid]="!configuracionDadosForm.controls.numDados.valid && (configuracionDadosForm.controls.numDados.dirty || submitAttempt)"></ion-input>
+                </ion-item>
 
-              <ion-item *ngIf="!configuracionDadosForm.controls.numDados.valid  && (configuracionDadosForm.controls.numDados.dirty || submitAttempt)">
-                <p>Por favor, introduce un número de dados válido (entero y al menos uno).</p>
-              </ion-item>
+                <ion-item *ngIf="!configuracionDadosForm.controls.numDados.valid  && (configuracionDadosForm.controls.numDados.dirty || submitAttempt)">
+                  <p>Por favor, introduce un número de dados válido (entero y al menos uno).</p>
+                </ion-item>
 
-              <ion-item>
-                <ion-label position="floating">Número de lados</ion-label>
-                <ion-input formControlName="numLados" type="number" [class.invalid]="!configuracionDadosForm.controls.numLados.valid && (configuracionDadosForm.controls.numLados.dirty || submitAttempt)"></ion-input>
-              </ion-item>
+                <ion-item>
+                  <ion-label position="floating">Número de lados</ion-label>
+                  <ion-input formControlName="numLados" type="number" [class.invalid]="!configuracionDadosForm.controls.numLados.valid && (configuracionDadosForm.controls.numLados.dirty || submitAttempt)"></ion-input>
+                </ion-item>
 
-              <ion-item *ngIf="!configuracionDadosForm.controls.numLados.valid  && (configuracionDadosForm.controls.numLados.dirty || submitAttempt)">
-                <p>Por favor, introduce un número de lados válido (entero y al menos una cara).</p>
-              </ion-item>
-          </form>
-      </ion-list>      
+                <ion-item *ngIf="!configuracionDadosForm.controls.numLados.valid  && (configuracionDadosForm.controls.numLados.dirty || submitAttempt)">
+                  <p>Por favor, introduce un número de lados válido (entero y al menos una cara).</p>
+                </ion-item>
+            </form>
+        </ion-list>
+      </div>
     </ion-slide>
 
     <ion-slide>

@@ -48,6 +48,6 @@ export class PreguntasCaracteristicasService {
   } */
 
   getQuestionsList(idPartida: string) {
-    return this.fireStore.collection('preguntasCaracteristicas', ref => ref.where('idPartida', '==', idPartida)).valueChanges();
+    return this.fireStore.collection('preguntasCaracteristicas', ref => ref.where('idPartida', '==', idPartida)).get();
   }
 }

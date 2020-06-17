@@ -1,4 +1,4 @@
-import { Component, Input, OnInit }  from '@angular/core';
+import { Component, Input, OnInit, EventEmitter, Output }  from '@angular/core';
 import { FormGroup }                 from '@angular/forms';
 
 import { PreguntaCaracteristica }              from '../../../models/pregunta-caracteristica';
@@ -13,6 +13,7 @@ import { QuestionsService }    from '../../../services/questions-service/questio
 export class DynamicFormComponent implements OnInit {
 
   @Input() questions: PreguntaCaracteristica<string>[] = [];
+  @Output() saveForm = new EventEmitter()
   form: FormGroup;
   payLoad = '';
 
@@ -23,6 +24,7 @@ export class DynamicFormComponent implements OnInit {
   }
 
   onSubmit() {
-    this.payLoad = JSON.stringify(this.form.getRawValue());
+    // this.payLoad = JSON.stringify(this.form.getRawValue());
+    this.saveForm.emit(this.form);
   }
 }

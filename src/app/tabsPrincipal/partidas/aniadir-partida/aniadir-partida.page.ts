@@ -243,10 +243,10 @@ export class AniadirPartidaPage implements OnInit {
       contadorCaracteristica++;
     }
 
-    this.dibujarFormulario();
+    /* this.dibujarFormulario(); */
   }
 
-  dibujarFormulario() {
+  /* dibujarFormulario() {
     this.preguntasCaracteristicasService.getQuestionsList("1").subscribe((resultadoConsulta) => {
       resultadoConsulta.forEach((caracteristica: PreguntaCaracteristica<String>) => {
         if(caracteristica.controlType == "textbox") {
@@ -278,7 +278,7 @@ export class AniadirPartidaPage implements OnInit {
         }
       });
     });
-  }
+  } */
 
   // ------------ GESTIÓN DE LA NAVEGACIÓN EN LOS SLIDES ------------
 
@@ -372,6 +372,6 @@ export class AniadirPartidaPage implements OnInit {
 
       contadorCaracteristica++;
     }
-    this.dibujarFormulario();
+    /* this.dibujarFormulario(); */
   }
 }

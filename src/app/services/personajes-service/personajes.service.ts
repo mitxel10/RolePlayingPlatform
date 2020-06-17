@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Personaje } from 'src/app/models/personaje';
+import { AuthenticationService } from '../authentication-service/authentication.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PersonajesService {
 
-  constructor(private fireStore: AngularFirestore) { }
+  constructor(private fireStore: AngularFirestore, private authenticationService: AuthenticationService) { }
 
   aniadirPersonaje(personaje: Personaje) {
     this.fireStore.collection("personajes").add({
@@ -21,5 +22,10 @@ export class PersonajesService {
     .catch(function(error) {
         console.error("Error añadiendo personaje: ", error);
     });
+  }
+
+  buscarPersonaje(idPartida: string) {
+    let idUsuario = this.authenticationService.getCurrentUserUid();
+    return this.fireStore.collection('personajes', ref => ref.where('idPartida', '==', idPartida).where('idUsuario', '==', idUsuario)).get();
   }
 }

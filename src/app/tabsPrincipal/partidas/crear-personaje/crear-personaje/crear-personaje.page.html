@@ -6,6 +6,6 @@
 
 <ion-content id="crearPersonajeContent">
   <div *ngIf="(questions.length > 0)" style="padding: 5%">
-    <app-dynamic-form [questions]="questions"></app-dynamic-form>
+    <app-dynamic-form [questions]="questions" (saveForm)="doSaveForm($event)"></app-dynamic-form>
   </div>
 </ion-content>
