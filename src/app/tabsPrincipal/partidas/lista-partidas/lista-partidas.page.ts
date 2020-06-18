@@ -51,7 +51,6 @@ export class ListaPartidasPage implements OnInit {
     });
 
     this.partidasService.getPartidasUsuarioEsDirector().subscribe(partidasDirector => {
-      /* this.partidasDirector = partidasDirector as Partida[]; */
       this.partidasDirector = [];
       partidasDirector.forEach(partidaDirector => {
         let partida = partidaDirector.data() as Partida;
@@ -63,7 +62,6 @@ export class ListaPartidasPage implements OnInit {
         this.partidasUsuario = this.partidasDirector;
       } else {
         this.partidasService.getPartidasUsuarioEsPersonaje(idsPartidasPersonaje).subscribe(partidasPersonaje => {
-          /* this.partidasPersonaje = partidasPersonaje as Partida[]; */
           this.partidasPersonaje = [];
           partidasPersonaje.forEach(partidaPersonaje => {
             let partida = partidaPersonaje.data() as Partida;

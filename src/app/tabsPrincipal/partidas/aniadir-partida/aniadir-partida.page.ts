@@ -243,42 +243,7 @@ export class AniadirPartidaPage implements OnInit {
       contadorCaracteristica++;
     }
 
-    /* this.dibujarFormulario(); */
   }
-
-  /* dibujarFormulario() {
-    this.preguntasCaracteristicasService.getQuestionsList("1").subscribe((resultadoConsulta) => {
-      resultadoConsulta.forEach((caracteristica: PreguntaCaracteristica<String>) => {
-        if(caracteristica.controlType == "textbox") {
-          console.log("anadiendoText");
-          this.questions.push(new TextboxQuestion({
-            key: caracteristica.key,
-            label: caracteristica.label,
-            value: '',
-            required: caracteristica.required,
-            order: caracteristica.order
-          }));
-        } else {
-          console.log("anadiendoSelect");
-          let arrayOpciones = [];
-          console.log(caracteristica.options);
-          if(caracteristica.options) {
-            for(let option of caracteristica.options) {
-              arrayOpciones.push({key: option.key, value:''});
-            }
-          }
-          this.questions.push(new DropdownQuestion({
-            key: caracteristica.label,
-            label: caracteristica.label,
-            options: arrayOpciones,
-            required: true,
-            order: caracteristica.order
-          }));
-          this.questions.sort((a, b) => a.order - b.order);
-        }
-      });
-    });
-  } */
 
   // ------------ GESTIÓN DE LA NAVEGACIÓN EN LOS SLIDES ------------
 
@@ -293,23 +258,6 @@ export class AniadirPartidaPage implements OnInit {
   // ------------ GUARDADO DE LA PARTIDA ------------
 
   save(){
-    /* this.submitAttempt = true;
-
-    if(!this.datosBasicosForm.valid){
-        this.formSlider.slideTo(0);
-    } else if(!this.configuracionDadosForm.valid){
-        this.formSlider.slideTo(1);
-    } else if(this.selectedUsers.length < 1) {
-        this.formSlider.slideTo(2);
-    } else {
-        console.log("success!")
-        console.log(this.datosBasicosForm.value);
-        console.log(this.configuracionDadosForm.value);
-
-        this.crearPartida();
-    } */
-
-    /* this.crearPartida(); */
     this.crearPartida();
   }
 
@@ -372,6 +320,5 @@ export class AniadirPartidaPage implements OnInit {
 
       contadorCaracteristica++;
     }
-    /* this.dibujarFormulario(); */
   }
 }
