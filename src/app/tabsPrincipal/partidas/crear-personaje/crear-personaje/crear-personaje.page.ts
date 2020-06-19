@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PreguntasCaracteristicasService } from 'src/app/services/preguntas-caracteristicas-service/preguntas-caracteristicas.service';
 import { PreguntaCaracteristica } from 'src/app/models/pregunta-caracteristica';
 import { TextboxQuestion } from 'src/app/models/question-textbox';
@@ -8,6 +8,9 @@ import { DropdownQuestion } from 'src/app/models/question-dropdown';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { PersonajesService } from 'src/app/services/personajes-service/personajes.service';
 import { Personaje } from 'src/app/models/personaje';
+import { EstadosPersonaje } from 'src/app/enums/EstadosPersonaje';
+import { PartidasService } from 'src/app/services/partidas-service/partidas.service';
+import { EstadosPartida } from 'src/app/enums/EstadosPartida';
 
 @Component({
   selector: 'app-crear-personaje',
@@ -21,7 +24,8 @@ export class CrearPersonajePage implements OnInit {
   public datosBasicosForm: FormGroup;
   public personaje: Personaje;
 
-  constructor(private route: ActivatedRoute, private preguntasCaracteristicasService: PreguntasCaracteristicasService, private personajesService: PersonajesService, private fireStore: AngularFirestore) { }
+  constructor(public router: Router, private route: ActivatedRoute, private preguntasCaracteristicasService: PreguntasCaracteristicasService, private personajesService: PersonajesService, 
+    private fireStore: AngularFirestore, private partidasService: PartidasService) { }
 
   ngOnInit() {
     this.idPartida = this.route.snapshot.paramMap.get('idPartida');
@@ -55,9 +59,9 @@ export class CrearPersonajePage implements OnInit {
             required: true,
             order: caracteristica.order
           }));
-          this.questions.sort((a, b) => a.order - b.order);
         }
       });
+      this.questions.sort((a, b) => a.order - b.order);
     });
   }
 
@@ -67,55 +71,45 @@ export class CrearPersonajePage implements OnInit {
         const personaje = personajes.docs[0];
         this.personaje = personaje.data() as Personaje;
         
-        console.log(formulario);
         Object.keys(formulario.controls).forEach(key => {
-          console.log(formulario.get(key).value);
-
           // Si se desea guardar el label en vez de idPregunta, cambiar arriba el key al añadir los questions
           this.fireStore.collection("caracteristicasPersonajes").add({
-            idPersonaje: this.idPartida,
+            idPersonaje: personaje.id,
             idPregunta: key,
             respuesta: formulario.get(key).value
           })
           .then(function() {
-              console.log("Característica de personaje añadida correctamente!");
+            console.log("Característica de personaje añadida correctamente!");
           })
           .catch(function(error) {
-              console.error("Error añadiendo característica de personaje: ", error);
+            console.error("Error añadiendo característica de personaje: ", error);
           });
-
         });
-
+        this.personajesService.actualizarEstadoPersonaje(personaje.id, EstadosPersonaje.PERSONALIZADO).then(actualizado => {
+          console.log("hola" + this.idPartida);
+          this.comprobarEstadoPartida();
+          this.irListaPartidas();
+        });
+      }
+    });    
+  }
+  
+  comprobarEstadoPartida() {
+    this.partidasService.getPersonajesPartida(this.idPartida).subscribe(personajesPartida => {
+      let todosPersonajesPersonalizados = true;
+      personajesPartida.forEach(personajePartida => {
+        let personaje = personajePartida.data() as Personaje;
+        if(personaje.estado != EstadosPersonaje.PERSONALIZADO) {
+          todosPersonajesPersonalizados = false;
+        }
+      });
+      if(todosPersonajesPersonalizados) {
+        this.partidasService.actualizarEstadoPartida(this.idPartida, EstadosPartida.EN_PROCESO);
       }
     });
+  }
 
-    
-    
-    
-    
-    /* personajes.forEach(partidaPersonaje => {
-      let partida = partidaPersonaje.data() as Personaje;
-      console.log(partida);
-      Object.keys(formulario.controls).forEach(key => {
-        console.log(formulario.get(key).value);
-    });
-  }); */
-
-      // this.fireStore.collection("caracteristicasPersonajes").add({
-      //   idPartida: this.idPartida,
-      //   key: caracteristica.value.name,
-      //   label: caracteristica.value.name,
-      //   controlType: caracteristica.value.type,
-      //   required: caracteristica.value.required,
-      //   options: caracteristica.value.options,
-      //   order: contadorCaracteristica
-      // })
-      // .then(function() {
-      //     console.log("Amigo añadido correctamente!");
-      // })
-      // .catch(function(error) {
-      //     console.error("Error añadiendo amigo: ", error);
-      // });
-    
+  irListaPartidas() {
+    this.router.navigate(['tabs/partidas']);
   }
 }

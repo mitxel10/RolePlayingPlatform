@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { ConfiguracionDados } from 'src/app/models/configuracionDados';
 import { Personaje } from 'src/app/models/personaje';
 import { firestore } from 'firebase';
+import { EstadosPartida } from 'src/app/enums/EstadosPartida';
 
 @Injectable({
   providedIn: 'root'
@@ -65,32 +66,21 @@ export class PartidasService {
 
   getPartidasUsuarioEsPersonaje(partidasUsuarioPersonaje: string[]) {
     return this.fireStore.collection('partidas', ref => ref.where(firestore.FieldPath.documentId(), "in", partidasUsuarioPersonaje)).get();
+  }
 
+  getPersonajesPartida(idPartida) {
+    return this.fireStore.collection('personajes', ref => ref.where('idPartida', '==', idPartida)).get();
+  }
 
-    /* let partidasUsuario = [];
-    let idUsuario = this.authenticationService.getCurrentUserUid();
-
-    const partidasDirector = this.fireStore.collection('partidas', ref => ref.where('director', '==', idUsuario));
-    const partidasPersonaje = this.fireStore.collection('partidas', ref => ref.where('director', '==', idUsuario));
-
-    const [partidasDirectorSnapshot, partidasPersonajeSnapshot] = await Promise.all([
-      partidasDirector,
-      partidasPersonaje
-    ]);
-
-    /* await partidasDirectorSnapshot.valueChanges().subscribe(partidasDirector => {
-      partidasPersonajeSnapshot.valueChanges().subscribe(partidasPersonaje => {
-        partidasUsuario = partidasDirector.concat(partidasPersonaje);
-        console.log("primero");
-      });
-    }); */
-
-    /* console.log("segundo");
-
-    return partidasDirectorSnapshot.valueChanges().subscribe(partidasDirector => {
-      partidasPersonajeSnapshot.valueChanges().subscribe(partidasPersonaje => {
-        return partidasDirector.concat(partidasPersonaje);
-      });
-    }); */
+  actualizarEstadoPartida(idPartida, estadoPartida: EstadosPartida) {
+    return this.fireStore.collection("partidas").doc(idPartida).update({
+      estado: estadoPartida
+    })
+    .then(function() {
+      console.log("Estado de personaje actualizado correctamente!");
+    })
+    .catch(function(error) {
+      console.error("Error actualizando estado de personaje: ", error);
+    });
   }
 }

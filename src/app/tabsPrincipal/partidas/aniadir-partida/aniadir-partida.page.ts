@@ -20,6 +20,7 @@ import { Personaje } from 'src/app/models/personaje';
 import { EstadosPersonaje } from 'src/app/enums/EstadosPersonaje';
 import { PersonajesService } from 'src/app/services/personajes-service/personajes.service';
 import { ConfiguracionDados } from 'src/app/models/configuracionDados';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-aniadir-partida',
@@ -45,7 +46,7 @@ export class AniadirPartidaPage implements OnInit {
   public tiposCaracteristica = [];
   public questions: PreguntaCaracteristica<any>[];
 
-  constructor(private amigosService: AmigosService, public formBuilder: FormBuilder, private fireStore: AngularFirestore, 
+  constructor(public router: Router, private amigosService: AmigosService, public formBuilder: FormBuilder, private fireStore: AngularFirestore, 
     private authService: AuthenticationService, private preguntasCaracteristicasService: PreguntasCaracteristicasService,
     private partidasService: PartidasService, private personajesService: PersonajesService) {
       
@@ -243,6 +244,7 @@ export class AniadirPartidaPage implements OnInit {
       contadorCaracteristica++;
     }
 
+    
   }
 
   // ------------ GESTIÓN DE LA NAVEGACIÓN EN LOS SLIDES ------------
@@ -259,12 +261,13 @@ export class AniadirPartidaPage implements OnInit {
 
   save(){
     this.crearPartida();
+    this.irListaPartidas();
   }
 
   crearPartida() {
     var partida = new Partida;
     partida.director = this.authService.currentUserId;
-    partida.estado = EstadosPartida.CREADA;
+    partida.estado = EstadosPartida.CREANDO_JUGADORES;
     partida.nombre = this.datosBasicosForm.get('tituloPartida').value;
     partida.historia = this.datosBasicosForm.get('historia').value;
 
@@ -320,5 +323,9 @@ export class AniadirPartidaPage implements OnInit {
 
       contadorCaracteristica++;
     }
+  }
+
+  irListaPartidas() {
+    this.router.navigate(['tabs/partidas']);
   }
 }

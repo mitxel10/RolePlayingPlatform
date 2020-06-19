@@ -1,6 +1,6 @@
 export enum EstadosPartida {
     CREADA = 'creada',
-    CREANDO_JUGADORES = 'creandoJugadores',
-    EN_PROCESO = 'enProceso',
+    CREANDO_JUGADORES = 'creando jugadores',
+    EN_PROCESO = 'en proceso',
     FINALIZADA = 'finalizada'
 }
