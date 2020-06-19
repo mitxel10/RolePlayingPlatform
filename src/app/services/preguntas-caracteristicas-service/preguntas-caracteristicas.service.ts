@@ -12,6 +12,24 @@ export class PreguntasCaracteristicasService {
 
   constructor(private fireStore: AngularFirestore) { }
 
+  aniadirPreguntasCaracteristicas(idPartida, caracteristica, order) {
+    this.fireStore.collection("preguntasCaracteristicas").add({
+      idPartida: idPartida,
+      key: caracteristica.value.name,
+      label: caracteristica.value.name,
+      controlType: caracteristica.value.type,
+      required: caracteristica.value.required,
+      options: caracteristica.value.options,
+      order: order
+    })
+    .then(function() {
+        console.log("PreguntaCaracteristica añadido correctamente!");
+    })
+    .catch(function(error) {
+        console.error("Error añadiendo PreguntaCaracteristica: ", error);
+    });
+  }
+
   getQuestionsList(idPartida: string) {
     return this.fireStore.collection('preguntasCaracteristicas', ref => ref.where('idPartida', '==', idPartida)).get();
   }

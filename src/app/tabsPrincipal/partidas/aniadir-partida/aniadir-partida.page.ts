@@ -111,8 +111,6 @@ export class AniadirPartidaPage implements OnInit {
       this.selectedUsers.push(item);
       this.selectedUsersValid = true;
     }
-    
-    console.log(this.selectedUsers);
   }
 
   removeUserFromSelectedList(item: any) {
@@ -188,7 +186,6 @@ export class AniadirPartidaPage implements OnInit {
   }
 
   tipoCaracteristicaSeleccionado(j, value) {
-    console.log(value);
     this.tiposCaracteristica[j] = value;
   }
 
@@ -214,36 +211,6 @@ export class AniadirPartidaPage implements OnInit {
   }
 
   onSubmit(form){
-    
-  }
-
-  saveForm() {
-    console.log(this.inputsCaracteristicasPersonajesForm.getRawValue());
-
-    const arrayCaracteristicas = this.inputsCaracteristicasPersonajesForm.controls.questions as FormArray;
-    let contadorCaracteristica = 1;
-    for(let caracteristica of arrayCaracteristicas.controls) {
-      console.log(caracteristica.value.options.controls);
-      let numero = Math.floor(Math.random() * (10000 - 0 + 1)) + 0;
-      this.fireStore.collection("preguntasCaracteristicas").add({
-        idPartida: "1",
-        key: caracteristica.value.name,
-        label: caracteristica.value.name,
-        controlType: caracteristica.value.type,
-        required: caracteristica.value.required,
-        options: caracteristica.value.options,
-        order: contadorCaracteristica
-      })
-      .then(function() {
-          console.log("Amigo añadido correctamente!");
-      })
-      .catch(function(error) {
-          console.error("Error añadiendo amigo: ", error);
-      });
-
-      contadorCaracteristica++;
-    }
-
     
   }
 
@@ -305,21 +272,7 @@ export class AniadirPartidaPage implements OnInit {
     let contadorCaracteristica = 1;
 
     for(let caracteristica of arrayCaracteristicas.controls) {
-      this.fireStore.collection("preguntasCaracteristicas").add({
-        idPartida: idPartida,
-        key: caracteristica.value.name,
-        label: caracteristica.value.name,
-        controlType: caracteristica.value.type,
-        required: caracteristica.value.required,
-        options: caracteristica.value.options,
-        order: contadorCaracteristica
-      })
-      .then(function() {
-          console.log("PreguntaCaracteristica añadido correctamente!");
-      })
-      .catch(function(error) {
-          console.error("Error añadiendo PreguntaCaracteristica: ", error);
-      });
+      this.preguntasCaracteristicasService.aniadirPreguntasCaracteristicas(idPartida, caracteristica, contadorCaracteristica);
 
       contadorCaracteristica++;
     }

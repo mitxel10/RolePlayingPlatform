@@ -8,9 +8,9 @@ import { EstadosPersonaje } from 'src/app/enums/EstadosPersonaje';
   providedIn: 'root'
 })
 export class PersonajesService {
-
+  
   constructor(private fireStore: AngularFirestore, private authenticationService: AuthenticationService) { }
-
+  
   aniadirPersonaje(personaje: Personaje) {
     this.fireStore.collection("personajes").add({
       idPartida: personaje.idPartida,
@@ -18,18 +18,18 @@ export class PersonajesService {
       estado: personaje.estado
     })
     .then(function() {
-        console.log("Personaje añadido correctamente!");
+      console.log("Personaje añadido correctamente!");
     })
     .catch(function(error) {
-        console.error("Error añadiendo personaje: ", error);
+      console.error("Error añadiendo personaje: ", error);
     });
   }
-
+  
   buscarPersonaje(idPartida: string) {
     let idUsuario = this.authenticationService.getCurrentUserUid();
     return this.fireStore.collection('personajes', ref => ref.where('idPartida', '==', idPartida).where('idUsuario', '==', idUsuario)).get();
   }
-
+  
   actualizarEstadoPersonaje(idPersonaje, estadoPersonaje: EstadosPersonaje) {
     return this.fireStore.collection("personajes").doc(idPersonaje).update({
       estado: estadoPersonaje
@@ -39,6 +39,20 @@ export class PersonajesService {
     })
     .catch(function(error) {
       console.error("Error actualizando estado de personaje: ", error);
+    });
+  }
+
+  aniadirCaracteristicasPersonaje(idPersonaje, keyPregunta, formulario) {
+    this.fireStore.collection("caracteristicasPersonajes").add({
+      idPersonaje: idPersonaje,
+      idPregunta: keyPregunta,
+      respuesta: formulario.get(keyPregunta).value
+    })
+    .then(function() {
+      console.log("Característica de personaje añadida correctamente!");
+    })
+    .catch(function(error) {
+      console.error("Error añadiendo característica de personaje: ", error);
     });
   }
 }

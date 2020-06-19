@@ -73,20 +73,9 @@ export class CrearPersonajePage implements OnInit {
         
         Object.keys(formulario.controls).forEach(key => {
           // Si se desea guardar el label en vez de idPregunta, cambiar arriba el key al añadir los questions
-          this.fireStore.collection("caracteristicasPersonajes").add({
-            idPersonaje: personaje.id,
-            idPregunta: key,
-            respuesta: formulario.get(key).value
-          })
-          .then(function() {
-            console.log("Característica de personaje añadida correctamente!");
-          })
-          .catch(function(error) {
-            console.error("Error añadiendo característica de personaje: ", error);
-          });
+          this.personajesService.aniadirCaracteristicasPersonaje(personaje.id, key, formulario);
         });
         this.personajesService.actualizarEstadoPersonaje(personaje.id, EstadosPersonaje.PERSONALIZADO).then(actualizado => {
-          console.log("hola" + this.idPartida);
           this.comprobarEstadoPartida();
           this.irListaPartidas();
         });

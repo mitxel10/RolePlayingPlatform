@@ -126,7 +126,7 @@
 
     <ion-slide>
       <h3 class="text-center text-white">Diseño de los personajes</h3>
-      <form [formGroup]="inputsCaracteristicasPersonajesForm" novalidate (ngSubmit)="onSubmit(inputsCaracteristicasPersonajesForm)" style="padding-top: 5%; padding-left: 5%; padding-right: 5%; padding-bottom: 8%;">     
+      <form [formGroup]="inputsCaracteristicasPersonajesForm" novalidate style="padding-top: 5%; padding-left: 5%; padding-right: 5%; padding-bottom: 8%;">     
         <ion-list margin-bottom id="listaCaracteristicas">
           <div formArrayName="questions" margin-bottom>
             <section [formGroupName]="j" *ngFor="let question of getQuestions(inputsCaracteristicasPersonajesForm); let j = index">
@@ -200,7 +200,6 @@
         </ion-list>
       </form>
 
-      <!-- <ion-button (click)="saveForm()" size="small">Guardar</ion-button> -->
       <!-- <pre> {{inputsCaracteristicasPersonajesForm.value | json}} </pre> -->
       <div *ngIf="(questions.length > 0)" style="padding: 5%">
         <h2>Formulario</h2>
