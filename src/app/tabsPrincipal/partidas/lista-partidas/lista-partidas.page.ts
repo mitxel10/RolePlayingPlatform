@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterEvent, NavigationEnd } from '@angular/router';
 import { Partida } from 'src/app/models/partida';
 import { PartidasService } from 'src/app/services/partidas-service/partidas.service';
 import { Personaje } from 'src/app/models/personaje';
 import { AuthenticationService } from 'src/app/services/authentication-service/authentication.service';
 import { User } from 'src/app/login-register/shared/user';
+import { filter } from 'rxjs/operators';
+import { EstadosPartida } from 'src/app/enums/EstadosPartida';
 
 @Component({
   selector: 'app-lista-partidas',
@@ -28,7 +30,11 @@ export class ListaPartidasPage implements OnInit {
 
   ngOnInit() {
     this.usuario = JSON.parse(localStorage.getItem('user'));
-    this.getPartidas();
+    this.router.events.pipe(
+      filter((event: RouterEvent) => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.getPartidas();
+    });
   }
 
   irAniadirPartida() {
@@ -78,8 +84,11 @@ export class ListaPartidasPage implements OnInit {
     return partida.director == this.usuario.uid;
   }
 
-
+  estaPartidaEnProceso(partida: Partida) {
+    return partida.estado == EstadosPartida.EN_PROCESO;
+  }
   irCrearPartida(partida: Partida) {
     this.router.navigate(['tabs/partidas/' + partida.id +  '/crear-personaje']);
   }
+
 }

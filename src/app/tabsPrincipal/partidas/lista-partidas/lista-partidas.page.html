@@ -24,7 +24,8 @@
           <p>Personaje Jugador</p>
         </ng-template>
       </ion-label>
-      <ion-button *ngIf="!esDirector(partida)" class="float-right ml-0 mr-0 h-50 w-100 crearPersonajeBtn" size="small" (click)="irCrearPartida(partida)">Crear<br/>personaje</ion-button>
+      <ion-button *ngIf="!esDirector(partida) && !estaPartidaEnProceso(partida)" class="float-right ml-0 mr-0 h-50 w-100 crearPersonajeBtn" size="small" (click)="irCrearPartida(partida)">Crear<br/>personaje</ion-button>
+      <ion-button *ngIf="estaPartidaEnProceso(partida)" class="float-right ml-0 mr-0 h-50 w-100 crearPersonajeBtn" size="small" (click)="irCrearPartida(partida)">Jugar<br/>partida</ion-button>
     </ion-item>
 
   </ion-list>
