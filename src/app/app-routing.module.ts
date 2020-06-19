@@ -15,11 +15,6 @@ const routes: Routes = [
     path: 'login',
     loadChildren: () => import('./login-register/login/login.module').then( m => m.LoginPageModule)
   },
-  /* {
-    path: 'tabs',
-    canActivate: [AuthGuard],
-    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
-  }, */
   {
     path: 'reset-password',
     loadChildren: () => import('./login-register/reset-password/reset-password.module').then( m => m.ResetPasswordPageModule)
@@ -32,7 +27,7 @@ const routes: Routes = [
 ];
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'})
   ],
   exports: [RouterModule]
 })
