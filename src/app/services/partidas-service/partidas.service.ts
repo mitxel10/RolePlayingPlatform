@@ -83,4 +83,8 @@ export class PartidasService {
       console.error("Error actualizando estado de personaje: ", error);
     });
   }
+
+  getDatosPartida(idPartida) {
+    return this.fireStore.collection('partidas').doc(idPartida).get();
+  }
 }
