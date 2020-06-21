@@ -92,6 +92,7 @@ export class ListaPartidasPage implements OnInit {
   }
 
   irJugarPartida(partida: Partida) {
-    this.router.navigate(['tabsPartida/home/' + partida.id]);
+    localStorage.setItem('idPartida', JSON.stringify(partida.id));
+    this.router.navigate(['tabsPartida/home']);
   }
 }

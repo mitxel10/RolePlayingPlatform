@@ -7,6 +7,8 @@ import { Personaje } from 'src/app/models/personaje';
 import { User } from 'src/app/login-register/shared/user';
 import { PersonajesService } from 'src/app/services/personajes-service/personajes.service';
 import { AuthenticationService } from 'src/app/services/authentication-service/authentication.service';
+import { UsuariosService } from 'src/app/services/usuarios-service/usuarios.service';
+import { isEmpty } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -21,12 +23,13 @@ export class HomePage implements OnInit {
   public usuariosPersonaje: User[];
 
   constructor(public router: Router, private route: ActivatedRoute, 
-    private partidasService: PartidasService, private authService: AuthenticationService) { }
+    private partidasService: PartidasService, private authService: AuthenticationService, private usuariosService: UsuariosService) { }
 
   ngOnInit() {
     this.partida = new Partida;
     this.personajes = [];
-    this.idPartida = this.route.snapshot.paramMap.get('idPartida');
+    this.usuariosPersonaje = [];
+    this.idPartida = JSON.parse(localStorage.getItem('idPartida'));
     this.getDatosPartida();
     this.getPersonajesPartida();
   }
@@ -37,19 +40,39 @@ export class HomePage implements OnInit {
     });
   }
 
-  getPersonajesPartida() {
-    this.partidasService.getPersonajesPartida(this.idPartida).subscribe(personajesPartida => {
+  async getPersonajesPartida() {
+    await this.partidasService.getPersonajesPartida(this.idPartida).subscribe(personajesPartida => {
       personajesPartida.forEach(personajePartida => {
         let idPersonaje = personajePartida.id;
         let personaje = personajePartida.data() as Personaje;
         this.personajes.push(personaje);
+        this.personajes.push(personaje);
+        this.personajes.push(personaje);
         this.aniadirUsuarioPersonaje(personaje.idUsuario);
       });
-      console.log(this.personajes);
     });
   }
 
-  aniadirUsuarioPersonaje(idUsuario) {
-    
+  async aniadirUsuarioPersonaje(idUsuario) {
+    await this.usuariosService.getDatosUsuario(idUsuario).subscribe(usuarioBuscado => {
+      this.usuariosPersonaje.push(usuarioBuscado.data() as User);
+      this.usuariosPersonaje.push(usuarioBuscado.data() as User);
+      this.usuariosPersonaje.push(usuarioBuscado.data() as User);
+    });
+  }
+
+  getDatosUsuario(idUsuario) {
+    let usuarios: User[];
+    usuarios =  this.usuariosPersonaje.filter(usuario => {
+      return usuario.uid === idUsuario
+    });
+
+    let nombreUsuario = "";
+
+    if(usuarios.length > 0){
+      nombreUsuario = usuarios[0].displayName;
+    }
+
+    return nombreUsuario;
   }
 }

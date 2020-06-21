@@ -7,15 +7,14 @@
 <ion-content id="homePartidaContent">
   <h1 class="text-center text-white">{{partida.nombre | uppercase}}</h1>
 
-  <ion-card *ngFor="let personaje of personajes">
+  <ion-card class="col-5 ml-3 mr-0 mb-1 float-left" *ngFor="let personaje of personajes">
     <ion-card-header>
-      <ion-card-subtitle>{{personaje.estado}}</ion-card-subtitle>
+      <ion-card-subtitle>{{getDatosUsuario(personaje.idUsuario)}}</ion-card-subtitle>
       <ion-card-title>Card Title</ion-card-title>
     </ion-card-header>
   
     <ion-card-content>
-      Keep close to Nature's heart... and break clear away, once in awhile,
-      and climb a mountain or spend a week in the woods. Wash your spirit clean.
+      <img src="assets/img/imageMaster.png" class="center"/>
     </ion-card-content>
   </ion-card>
 </ion-content>

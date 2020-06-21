@@ -9,7 +9,7 @@ const routes: Routes = [
     component: TabsPage,
     children: [
       {
-        path: 'home/:idPartida',
+        path: 'home',
         children: [
           {
             path: '',
@@ -19,15 +19,25 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'chat',
+        children: [
+          {
+            path: '',
+            loadChildren: () =>
+              import('../chat/chat.module').then(m => m.ChatPageModule)
+          }
+        ]
+      },
+      {
         path: '',
-        redirectTo: '/home/:idPartida',
+        redirectTo: '/home',
         pathMatch: 'full'
       }
     ]
   },
   {
     path: '',
-    redirectTo: '/home/:idPartida',
+    redirectTo: '/home',
     pathMatch: 'full'
   }
 ];
