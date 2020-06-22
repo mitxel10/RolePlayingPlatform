@@ -26,6 +26,7 @@ const routes: Routes = [
   },
   {
     path: 'tabsPartida',
+    canActivate: [AuthGuard],
     loadChildren: () => import('./tabsPartida/tabs/tabs.module').then( m => m.TabsPageModule)
   }
 ];

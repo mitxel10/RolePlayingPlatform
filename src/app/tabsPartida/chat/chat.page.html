@@ -1,9 +1,42 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>chat</ion-title>
+    <ion-title>Chat de la partida</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-list class="listaMensajes">
+    <ion-item *ngFor="let chat of chats" no-lines>
+      <div class="chat-message" text-right *ngIf="chat.idUsuario === usuario.uid">
+        <div class="right-bubble">
+          <p text-wrap>{{chat.mensaje}}</p>
+          <div class="msg-date fechaHora">
+            <span>{{chat.sendDate | date:'dd/MM/yyyy HH:mm'}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="chat-message" text-left *ngIf="chat.idUsuario !== usuario.uid">
+        <div class="left-bubble">
+          <span class="msg-name">{{chat.username}}</span>
+          <p text-wrap class="mb-1">{{chat.mensaje}}</p>
+          <div class="msg-date fechaHora">
+            <span class="msg-date">{{chat.sendDate | date:'dd/MM/yyyy HH:mm'}}</span>
+          </div>
+        </div>
+      </div>
+    </ion-item>
+  </ion-list>
 </ion-content>
+
+<ion-footer>
+  <ion-grid>
+    <ion-row>
+      <ion-col class="col-10">
+        <ion-input type="text" style="padding:0" placeholder="Escribe un mensaje" [(ngModel)]="data.message" name="message"></ion-input>
+      </ion-col>
+      <ion-col class="col-2" (click)="sendMessage()">
+        <ion-icon name="paper-plane"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>
