@@ -1,0 +1,11 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Datos del personaje</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content id="verPersonajeContent">
+  <div *ngIf="(questions.length > 0)" style="padding: 5%">
+    <app-dynamic-form [questions]="questions" (saveForm)="doSaveForm($event)"></app-dynamic-form>
+  </div>
+</ion-content>

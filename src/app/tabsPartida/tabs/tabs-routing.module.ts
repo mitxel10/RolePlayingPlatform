@@ -29,6 +29,16 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'personaje',
+        children: [
+          {
+            path: '',
+            loadChildren: () =>
+              import('../personaje/personaje.module').then(m => m.PersonajePageModule)
+          }
+        ]
+      },
+      {
         path: '',
         redirectTo: '/home',
         pathMatch: 'full'

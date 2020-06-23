@@ -3,13 +3,15 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Personaje } from 'src/app/models/personaje';
 import { AuthenticationService } from '../authentication-service/authentication.service';
 import { EstadosPersonaje } from 'src/app/enums/EstadosPersonaje';
+import { PreguntasCaracteristicasService } from '../preguntas-caracteristicas-service/preguntas-caracteristicas.service';
+import { CaracteristicaPersonaje } from 'src/app/models/caracteristicaPersonaje';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PersonajesService {
   
-  constructor(private fireStore: AngularFirestore, private authenticationService: AuthenticationService) { }
+  constructor(private fireStore: AngularFirestore, private authenticationService: AuthenticationService, private preguntasCaracteristicasService: PreguntasCaracteristicasService) { }
   
   aniadirPersonaje(personaje: Personaje) {
     this.fireStore.collection("personajes").add({
@@ -53,6 +55,25 @@ export class PersonajesService {
     })
     .catch(function(error) {
       console.error("Error añadiendo característica de personaje: ", error);
+    });
+  }
+
+  actualizarCaracteristicasPersonaje(idPersonaje, idPreguntaCaracteristica, formulario) {
+    this.preguntasCaracteristicasService.getCaracteristicasPersonajes(idPreguntaCaracteristica, idPersonaje).subscribe(caracteristasPersonajes => {
+      if(!caracteristasPersonajes.empty) {
+        let caracteristicaPersonajeDoc = caracteristasPersonajes.docs[0];
+        let idCaracteristicaPersonaje = caracteristicaPersonajeDoc.id;
+        
+        this.fireStore.collection("caracteristicasPersonajes").doc(idCaracteristicaPersonaje).update({
+          respuesta: formulario.get(idPreguntaCaracteristica).value
+        })
+        .then(function() {
+          console.log("Característica de personaje actualizada correctamente!");
+        })
+        .catch(function(error) {
+          console.error("Error actualizando característica de personaje: ", error);
+        });
+      }
     });
   }
 }

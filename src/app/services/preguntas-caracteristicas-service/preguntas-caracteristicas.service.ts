@@ -33,4 +33,8 @@ export class PreguntasCaracteristicasService {
   getQuestionsList(idPartida: string) {
     return this.fireStore.collection('preguntasCaracteristicas', ref => ref.where('idPartida', '==', idPartida)).get();
   }
+
+  getCaracteristicasPersonajes(idPregunta, idPersonaje) {
+    return this.fireStore.collection('caracteristicasPersonajes', ref => ref.where('idPregunta', '==', idPregunta).where('idPersonaje', '==', idPersonaje)).get();
+  }
 }
