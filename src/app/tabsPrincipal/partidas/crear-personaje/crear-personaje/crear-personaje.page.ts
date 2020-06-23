@@ -35,29 +35,29 @@ export class CrearPersonajePage implements OnInit {
   dibujarFormulario() {
     this.questions = [];
     this.preguntasCaracteristicasService.getQuestionsList(this.idPartida).subscribe((resultadoConsulta) => {
-      resultadoConsulta.forEach((caracteristicaDoc) => {
-        let caracteristica = caracteristicaDoc.data() as PreguntaCaracteristica<String>;
-        if(caracteristica.controlType == "textbox") {
+      resultadoConsulta.forEach((preguntaCaracteristicaDoc) => {
+        let preguntaCaracteristica = preguntaCaracteristicaDoc.data() as PreguntaCaracteristica<String>;
+        if(preguntaCaracteristica.controlType == "textbox") {
           this.questions.push(new TextboxQuestion({
-            key: caracteristicaDoc.id,
-            label: caracteristica.label,
+            key: preguntaCaracteristicaDoc.id,
+            label: preguntaCaracteristica.label,
             value: '',
-            required: caracteristica.required,
-            order: caracteristica.order
+            required: preguntaCaracteristica.required,
+            order: preguntaCaracteristica.order
           }));
         } else {
           let arrayOpciones = [];
-          if(caracteristica.options) {
-            for(let option of caracteristica.options) {
+          if(preguntaCaracteristica.options) {
+            for(let option of preguntaCaracteristica.options) {
               arrayOpciones.push({key: option.key, value:''});
             }
           }
           this.questions.push(new DropdownQuestion({
-            key: caracteristicaDoc.id,
-            label: caracteristica.label,
+            key: preguntaCaracteristicaDoc.id,
+            label: preguntaCaracteristica.label,
             options: arrayOpciones,
             required: true,
-            order: caracteristica.order
+            order: preguntaCaracteristica.order
           }));
         }
       });
