@@ -50,11 +50,6 @@ export class PartidasService {
   }
 
   getPartidasPersonajeUsuario() {
-    /* let idUsuario = this.authenticationService.getCurrentUserUid();
-    this.fireStore.collection('personajes', ref => ref.where('idUsuario', '==', idUsuario)).valueChanges().subscribe(users => {
-      this.usuariosPersonajes = users as Personaje[];
-    }); */
-
     let idUsuario = this.authenticationService.getCurrentUserUid();
     return this.fireStore.collection('personajes', ref => ref.where('idUsuario', '==', idUsuario)).valueChanges();
   }

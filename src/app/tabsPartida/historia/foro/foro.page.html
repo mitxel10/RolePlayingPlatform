@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{foro.titulo | uppercase}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list class="listaMensajes">
+    <ion-item *ngFor="let publicacion of publicaciones" no-lines>
+      <!-- <div class="chat-message" text-right *ngIf="chat.idUsuario === usuario.uid">
+        <div class="right-bubble">
+          <p text-wrap>{{chat.mensaje}}</p>
+          <div class="msg-date fechaHora">
+            <span>{{chat.sendDate | date:'dd/MM/yyyy HH:mm'}}</span>
+          </div>
+        </div>
+      </div> -->
+      <div class="chat-message" text-left>
+        <div class="left-bubble">
+          <span class="msg-name">{{publicacion.titulo}}</span>
+          <p text-wrap class="mb-1">{{publicacion.texto}}</p>
+          <div class="msg-date fechaHora">
+            <span class="msg-date">{{publicacion.sendDate | date:'dd/MM/yyyy HH:mm'}}</span>
+          </div>
+        </div>
+      </div>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <ion-grid>
+    <ion-row *ngIf="esDirector(); else noMaster">
+      <ion-col class="col-10">
+        <ion-input type="text" style="padding:0" placeholder="Escribe un título" [(ngModel)]="data.title" name="title"></ion-input>
+        <ion-input type="text" style="padding:0" placeholder="Escribe un mensaje" [(ngModel)]="data.message" name="message"></ion-input>
+      </ion-col>
+      <ion-col class="col-2" (click)="sendMessage()">
+        <ion-icon name="paper-plane"></ion-icon>
+      </ion-col>
+    </ion-row>
+
+    <ng-template #noMaster>
+      
+    </ng-template>
+  </ion-grid>
+</ion-footer>

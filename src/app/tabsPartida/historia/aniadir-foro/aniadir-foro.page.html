@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Añadir foro</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content id="aniadirForoContent">
+  <form #aniadirForoForm="ngForm" (ngSubmit)="aniadirForo()" style="padding: 5%">
+    <ion-list>
+      <div style="padding: 5%">
+        <ion-item>
+          <ion-label floating>Nombre del foro</ion-label>
+          <ion-input type="text" [(ngModel)]="data.nombreForo" name="nombreForo" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>Descripción</ion-label>
+          <ion-input type="text" [(ngModel)]="data.descripcionForo" name="descripcionForo" required></ion-input>
+        </ion-item>
+      </div>
+    </ion-list>
+    <div class="form-row fondo">
+      <ion-button id="aniadirForoButton" class="mt-3 font-weight-bold" type="submit" color="light" [disabled]="aniadirForoForm.form.invalid">Añadir</ion-button>
+    </div>
+  </form>
+</ion-content>

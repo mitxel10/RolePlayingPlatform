@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Historia de la partida</ion-title>
+    <ion-buttons end>
+      <ion-button (click)="addRoom()">
+        <ion-icon name="add-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content id="listaForosContent">
+  <ion-list class="mt-3 ml-3 mr-3">
+    <ion-item *ngFor="let foro of foros" (click)="joinRoom(foro.id)" class="pr-4">
+      <ion-label class="col-11 mr-0 pl-0 pr-0">
+        <h1>{{foro.titulo}}</h1>
+        <h3>{{foro.descripcion}}</h3>
+      </ion-label>
+      <ion-icon name="chatbox-ellipses-outline"></ion-icon>
+    </ion-item>
+  </ion-list>
+</ion-content>

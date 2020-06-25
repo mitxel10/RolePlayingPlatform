@@ -19,6 +19,16 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'historia',
+        children: [
+          {
+            path: '',
+            loadChildren: () =>
+              import('../historia/lista-foros/lista-foros.module').then(m => m.ListaForosPageModule)
+          }
+        ]
+      },
+      {
         path: 'chat',
         children: [
           {
