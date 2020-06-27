@@ -41,7 +41,14 @@
     </ion-row>
 
     <ng-template #noMaster>
-      
+      <ion-row>
+        <ion-col class="col-10">
+          <ion-input type="text" style="padding:0" placeholder="Escribe la configuración de los dados" [(ngModel)]="data.dice" name="dice"></ion-input>
+        </ion-col>
+        <ion-col class="col-2" (click)="lanzarDados()">
+          <ion-icon name="paper-plane"></ion-icon>
+        </ion-col>
+      </ion-row>
     </ng-template>
   </ion-grid>
 </ion-footer>
