@@ -3,5 +3,6 @@ export class Personaje {
     idPartida: string;
     estado: string;
     // descripcion: string;
-    // nombre: string;
+    nombre: string;
+    imagen: string;
 }

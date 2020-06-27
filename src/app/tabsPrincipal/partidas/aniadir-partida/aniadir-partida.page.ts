@@ -269,7 +269,10 @@ export class AniadirPartidaPage implements OnInit {
 
   crearPreguntasCaracteristicas(idPartida) {
     const arrayCaracteristicas = this.inputsCaracteristicasPersonajesForm.controls.questions as FormArray;
-    let contadorCaracteristica = 1;
+    let contadorCaracteristica = 3;
+
+    this.preguntasCaracteristicasService.aniadirPreguntasCaracteristicasDefault(idPartida, "Nombre", "textbox", true, [], 1);
+    this.preguntasCaracteristicasService.aniadirPreguntasCaracteristicasDefault(idPartida, "Imagen", "textbox", false, [], 2);
 
     for(let caracteristica of arrayCaracteristicas.controls) {
       this.preguntasCaracteristicasService.aniadirPreguntasCaracteristicas(idPartida, caracteristica, contadorCaracteristica);

@@ -71,9 +71,17 @@ export class CrearPersonajePage implements OnInit {
         const personaje = personajes.docs[0];
         this.personaje = personaje.data() as Personaje;
         
+        let numPregunta = 1;
         Object.keys(formulario.controls).forEach(key => {
           // Si se desea guardar el label en vez de idPregunta, cambiar arriba el key al añadir los questions
-          this.personajesService.aniadirCaracteristicasPersonaje(personaje.id, key, formulario);
+          if(numPregunta > 2) {
+            this.personajesService.aniadirCaracteristicasPersonaje(personaje.id, key, formulario);
+          } else if(numPregunta == 1) {
+            this.personajesService.actualizarPersonaje(personaje.id, "nombre", formulario.get(key).value);
+          } else {
+            this.personajesService.actualizarPersonaje(personaje.id, "imagen", formulario.get(key).value);
+          }
+          numPregunta++;
         });
         this.personajesService.actualizarEstadoPersonaje(personaje.id, EstadosPersonaje.PERSONALIZADO).then(actualizado => {
           this.comprobarEstadoPartida();

@@ -44,6 +44,18 @@ export class PersonajesService {
     });
   }
 
+  actualizarPersonaje(idPersonaje, campoActualizar, valor) {
+    return this.fireStore.collection("personajes").doc(idPersonaje).update({
+      [campoActualizar]: valor
+    })
+    .then(function() {
+      console.log("Estado de personaje actualizado correctamente!");
+    })
+    .catch(function(error) {
+      console.error("Error actualizando estado de personaje: ", error);
+    });
+  }
+
   aniadirCaracteristicasPersonaje(idPersonaje, keyPregunta, formulario) {
     this.fireStore.collection("caracteristicasPersonajes").add({
       idPersonaje: idPersonaje,

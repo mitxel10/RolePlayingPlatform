@@ -8,9 +8,9 @@
   <h1 class="text-center text-white">{{partida.nombre | uppercase}}</h1>
 
   <ion-card class="col-5 ml-3 mr-0 mb-1 float-left" *ngFor="let personaje of personajes">
-    <ion-card-header>
+    <ion-card-header class="pl-1 pr-1">
       <ion-card-subtitle>{{getDatosUsuario(personaje.idUsuario)}}</ion-card-subtitle>
-      <ion-card-title>Card Title</ion-card-title>
+      <ion-card-title>{{personaje.nombre}}</ion-card-title>
     </ion-card-header>
   
     <ion-card-content>
