@@ -25,6 +25,7 @@ export class PersonajePage implements OnInit {
   private idPartida: string;
   private idPersonaje: string;
   public questions: PreguntaCaracteristica<any>[];
+  public caracteristicasPersonaje: CaracteristicaPersonaje[];
   public datosBasicosForm: FormGroup;
   public personaje: Personaje;
 
@@ -34,7 +35,7 @@ export class PersonajePage implements OnInit {
   ngOnInit() {
     this.idPartida = JSON.parse(localStorage.getItem('idPartida'));
     this.obtenerIdPersonaje();
-    this.dibujarFormulario();
+    this.questions = [];
   }
   
   obtenerIdPersonaje() {
@@ -42,32 +43,41 @@ export class PersonajePage implements OnInit {
       if(!personajes.empty) {
         const personaje = personajes.docs[0];
         this.idPersonaje = personaje.id;
+
+        this.dibujarFormulario();
       }
     });
   }
 
   dibujarFormulario() {
     this.questions = [];
-    this.preguntasCaracteristicasService.getQuestionsList(this.idPartida).subscribe((resultadoConsulta) => {
-      resultadoConsulta.forEach((preguntaCaracteristicaDoc) => {
-        let preguntaCaracteristica = preguntaCaracteristicaDoc.data() as PreguntaCaracteristica<String>;
-        let idPreguntaCaracteristica = preguntaCaracteristicaDoc.id;
-        
-        this.preguntasCaracteristicasService.getCaracteristicasPersonajes(idPreguntaCaracteristica, this.idPersonaje).subscribe(caracteristasPersonajes => {
-          if(!caracteristasPersonajes.empty) {
-            let caracteristicaPersonajeData = caracteristasPersonajes.docs[0];
-            let caracteristicaPersonaje = caracteristicaPersonajeData.data() as CaracteristicaPersonaje;
-
-            this.aniadirRespuestaCaracteristicaPersonaje(preguntaCaracteristica, idPreguntaCaracteristica, caracteristicaPersonaje);
-          }
-        });
+    this.preguntasCaracteristicasService.getTodasCaracteristicasPersonajes(this.idPersonaje).subscribe((consultaCaracteristicasPersonaje) => {
+      this.caracteristicasPersonaje = consultaCaracteristicasPersonaje.docs.map(doc => {
+        return doc.data() as CaracteristicaPersonaje;
       });
-      this.questions.sort((a, b) => a.order - b.order);
+      this.preguntasCaracteristicasService.getQuestionsList(this.idPartida).subscribe((resultadoConsulta) => {
+        resultadoConsulta.forEach((preguntaCaracteristicaDoc) => {
+          let preguntaCaracteristica = preguntaCaracteristicaDoc.data() as PreguntaCaracteristica<String>;
+          let idPreguntaCaracteristica = preguntaCaracteristicaDoc.id;
+          let caracteristicaPersonaje = this.caracteristicasPersonaje.find(x => x.idPregunta === idPreguntaCaracteristica);
+          
+
+          // this.preguntasCaracteristicasService.getCaracteristicasPersonajes(idPreguntaCaracteristica, this.idPersonaje).subscribe(caracteristasPersonajes => {
+          //   if(!caracteristasPersonajes.empty) {
+          //     let caracteristicaPersonajeData = caracteristasPersonajes.docs[0];
+          //     let caracteristicaPersonaje = caracteristicaPersonajeData.data() as CaracteristicaPersonaje;
+          if(caracteristicaPersonaje) {
+              this.aniadirRespuestaCaracteristicaPersonaje(preguntaCaracteristica, idPreguntaCaracteristica, caracteristicaPersonaje);
+          }
+          //   }
+          // });
+        });
+        this.questions.sort((a, b) => a.order - b.order);
+      });
     });
   }
   
   aniadirRespuestaCaracteristicaPersonaje(preguntaCaracteristica: PreguntaCaracteristica<String>, idPreguntaCaracteristica: string, caracteristicaPersonaje: CaracteristicaPersonaje) {
-    console.log(preguntaCaracteristica.controlType);
     if (preguntaCaracteristica.controlType == "textbox") {
       this.questions.push(new TextboxQuestion({
         key: idPreguntaCaracteristica,
@@ -76,14 +86,14 @@ export class PersonajePage implements OnInit {
         required: preguntaCaracteristica.required,
         order: preguntaCaracteristica.order
       }));
-      console.log("añadiendoQuestionTextbox");
     } else if(preguntaCaracteristica.controlType == "stats") {
       this.questions.push(new StatsQuestion({
         key: idPreguntaCaracteristica,
         label: preguntaCaracteristica.label,
         value: caracteristicaPersonaje.respuesta,
         required: preguntaCaracteristica.required,
-        order: preguntaCaracteristica.order
+        order: preguntaCaracteristica.order,
+        stat: caracteristicaPersonaje.estadistica
       }));
     } else {
       let arrayOpciones = [];
@@ -109,14 +119,27 @@ export class PersonajePage implements OnInit {
         const personaje = personajes.docs[0];
         this.personaje = personaje.data() as Personaje;
         
-        Object.keys(formulario.controls).forEach(idPreguntaCaracteristica => {
+        Object.keys(formulario.controls).forEach((idPreguntaCaracteristica, index) => {
           // Si se desea guardar el label en vez de idPregunta, cambiar arriba el key al añadir los questions
-          this.personajesService.actualizarCaracteristicasPersonaje(personaje.id, idPreguntaCaracteristica, formulario);
+          this.actualizarCaracteristicaPersonaje(personaje, idPreguntaCaracteristica, index, formulario);
         });
 
         this.presentToast();
       }
     });    
+  }
+
+  private actualizarCaracteristicaPersonaje(personaje, idPreguntaCaracteristica: string, index: number, formulario: FormGroup) {
+    if(!idPreguntaCaracteristica.endsWith("stat2")) {
+      if(idPreguntaCaracteristica.endsWith("stat1")) {
+        let keyStat = Object.keys(formulario.controls)[index+1];
+        this.personajesService.actualizarCaracteristicasConStatPersonaje(personaje.id, idPreguntaCaracteristica, keyStat, formulario);
+      } else {
+        this.personajesService.actualizarCaracteristicasPersonaje(personaje.id, idPreguntaCaracteristica, formulario);
+      }
+    }
+
+    // this.personajesService.actualizarCaracteristicasPersonaje(personaje.id, idPreguntaCaracteristica, formulario);
   }
 
   async presentToast() {

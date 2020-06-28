@@ -20,7 +20,6 @@ export class DynamicFormComponent implements OnInit {
   constructor(private qcs: QuestionsService) {  }
 
   ngOnInit() {
-    console.log(this.questions.length);
     this.form = this.qcs.toFormGroup(this.questions);
   }
 

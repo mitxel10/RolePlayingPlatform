@@ -7,6 +7,7 @@ export class PreguntaCaracteristica<T> {
     order: number;
     controlType: string;
     type: string;
+    stat: string;
     options: {key: string, value: string}[];
   
     constructor(options: {
@@ -17,7 +18,8 @@ export class PreguntaCaracteristica<T> {
         required?: boolean,
         order?: number,
         controlType?: string,
-        type?: string
+        type?: string,
+        stat?: string,
       } = {}) {
       this.idPartida = options.idPartida || '';
       this.value = options.value;
@@ -27,5 +29,6 @@ export class PreguntaCaracteristica<T> {
       this.order = options.order === undefined ? 1 : options.order;
       this.controlType = options.controlType || '';
       this.type = options.type || '';
+      this.stat = options.stat || '';
     }
   }
