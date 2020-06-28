@@ -24,6 +24,7 @@ export class CrearPersonajePage implements OnInit {
   public questions: PreguntaCaracteristica<any>[];
   public datosBasicosForm: FormGroup;
   public personaje: Personaje;
+  public nombre: String;
 
   constructor(public router: Router, private route: ActivatedRoute, private preguntasCaracteristicasService: PreguntasCaracteristicasService, private personajesService: PersonajesService, 
     private fireStore: AngularFirestore, private partidasService: PartidasService) { }

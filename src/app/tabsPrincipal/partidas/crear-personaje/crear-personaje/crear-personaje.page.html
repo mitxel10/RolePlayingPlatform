@@ -5,6 +5,13 @@
 </ion-header>
 
 <ion-content id="crearPersonajeContent">
+  <div *ngIf="(questions.length > 0)" style="padding: 4%">
+    <ion-item>
+      <label for="nombre" class="col-3 pl-0 pr-1 pt-3 mr-3">Nombre</label>
+      <input type="text" [(ngModel)]="nombre" name="nombre" class="col-8 inputBasicosPersonaje" />
+    </ion-item>
+  </div>
+
   <div *ngIf="(questions.length > 0)" style="padding: 5%">
     <app-dynamic-form [questions]="questions" (saveForm)="doSaveForm($event)"></app-dynamic-form>
   </div>
