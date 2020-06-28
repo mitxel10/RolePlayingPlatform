@@ -12,6 +12,9 @@ import { EstadosPersonaje } from 'src/app/enums/EstadosPersonaje';
 import { PartidasService } from 'src/app/services/partidas-service/partidas.service';
 import { EstadosPartida } from 'src/app/enums/EstadosPartida';
 import { StatsQuestion } from 'src/app/models/question-stats';
+import { AngularFireUploadTask, AngularFireStorage } from '@angular/fire/storage';
+import { Observable } from 'rxjs';
+import { finalize, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-crear-personaje',
@@ -26,8 +29,21 @@ export class CrearPersonajePage implements OnInit {
   public personaje: Personaje;
   public nombre: String;
 
+  task: AngularFireUploadTask;
+  percentage: Observable<number>;
+  snapshot: Observable<any>;
+  UploadedFileURL: Observable<string>;
+  fileName:string;
+  fileSize:number;
+  isUploading:boolean;
+  isUploaded:boolean;
+  urlImagen: string;
+
   constructor(public router: Router, private route: ActivatedRoute, private preguntasCaracteristicasService: PreguntasCaracteristicasService, private personajesService: PersonajesService, 
-    private fireStore: AngularFirestore, private partidasService: PartidasService) { }
+    private fireStore: AngularFirestore, private storage: AngularFireStorage, private partidasService: PartidasService) {
+      this.isUploading = false;
+      this.isUploaded = false;
+    }
 
   ngOnInit() {
     this.idPartida = this.route.snapshot.paramMap.get('idPartida');
@@ -75,6 +91,44 @@ export class CrearPersonajePage implements OnInit {
     });
   }
 
+  uploadFile(event: FileList) {
+    const file = event.item(0)
+
+    if (file.type.split('/')[0] !== 'image') { 
+     console.error('unsupported file type :( ')
+     return;
+    }
+
+    this.isUploading = true;
+    this.isUploaded = false;
+
+
+    this.fileName = file.name;
+
+    const path = `freakyStorage/${new Date().getTime()}_${file.name}`;
+    const customMetadata = { app: 'Freaky Image Upload Demo' };
+    const fileRef = this.storage.ref(path);
+    this.task = this.storage.upload(path, file, { customMetadata });
+
+    this.percentage = this.task.percentageChanges();
+    this.snapshot = this.task.snapshotChanges().pipe(
+      finalize(() => {
+        this.UploadedFileURL = fileRef.getDownloadURL();
+        
+        this.UploadedFileURL.subscribe(resp=>{
+          this.urlImagen = resp;
+          this.isUploading = false;
+          this.isUploaded = true;
+        },error=>{
+          console.error(error);
+        })
+      }),
+      tap(snap => {
+          this.fileSize = snap.totalBytes;
+      })
+    )
+  }
+
   doSaveForm(formulario: FormGroup) {
     this.personajesService.buscarPersonaje(this.idPartida).subscribe(personajes => {
       if(!personajes.empty) {
@@ -84,16 +138,12 @@ export class CrearPersonajePage implements OnInit {
         let numPregunta = 1;
         Object.keys(formulario.controls).forEach((key, index) => {
           // Si se desea guardar el label en vez de idPregunta, cambiar arriba el key al añadir los questions
-          if(numPregunta > 2) {
-            this.aniadirCaracteristicaPersonaje(personaje, key, index, formulario);
-          } else if(numPregunta == 1) {
-            this.personajesService.actualizarPersonaje(personaje.id, "nombre", formulario.get(key).value);
-          } else {
-            this.personajesService.actualizarPersonaje(personaje.id, "imagen", formulario.get(key).value);
-          }
+          this.aniadirCaracteristicaPersonaje(personaje, key, index, formulario);
           numPregunta++;
         });
         this.personajesService.actualizarEstadoPersonaje(personaje.id, EstadosPersonaje.PERSONALIZADO).then(actualizado => {
+          this.personajesService.actualizarPersonaje(personaje.id, "nombre", this.nombre);
+          this.personajesService.actualizarPersonaje(personaje.id, "imagen", this.urlImagen);
           this.comprobarEstadoPartida();
           this.irListaPartidas();
         });
