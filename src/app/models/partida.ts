@@ -4,4 +4,5 @@ export class Partida {
     historia: string;
     estado: string;
     director: string;
+    imagenMapa: string;
 }

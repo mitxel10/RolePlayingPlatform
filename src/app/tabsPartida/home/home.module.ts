@@ -7,12 +7,14 @@ import { IonicModule } from '@ionic/angular';
 import { HomePageRoutingModule } from './home-routing.module';
 
 import { HomePage } from './home.page';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    DragDropModule,
     HomePageRoutingModule
   ],
   declarations: [HomePage]

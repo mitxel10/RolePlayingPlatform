@@ -105,8 +105,8 @@ export class CrearPersonajePage implements OnInit {
 
     this.fileName = file.name;
 
-    const path = `freakyStorage/${new Date().getTime()}_${file.name}`;
-    const customMetadata = { app: 'Freaky Image Upload Demo' };
+    const path = `imagenesPersonajes/${new Date().getTime()}_${file.name}`;
+    const customMetadata = { app: 'Imagen subida de un personaje de RolePlayingApp' };
     const fileRef = this.storage.ref(path);
     this.task = this.storage.upload(path, file, { customMetadata });
 
