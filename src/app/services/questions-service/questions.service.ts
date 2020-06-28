@@ -15,7 +15,7 @@ export class QuestionsService {
     questions.forEach(question => {
       if(question.controlType == "stats") {
         group[question.key+"stat1"] = question.required ? new FormControl(question.value || '', Validators.required) : new FormControl(question.value || '');
-        group[question.key+"stat2"] = question.required ? new FormControl(question.stat || '', Validators.required) : new FormControl("jjj" || '');
+        group[question.key+"stat2"] = question.required ? new FormControl(question.stat || '', Validators.required) : new FormControl(question.stat || '');
       } else {
         group[question.key] = question.required ? new FormControl(question.value || '', Validators.required) : new FormControl(question.value || '');
       }
