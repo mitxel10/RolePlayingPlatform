@@ -55,4 +55,8 @@ export class PreguntasCaracteristicasService {
   getCaracteristicasPersonajes(idPregunta, idPersonaje) {
     return this.fireStore.collection('caracteristicasPersonajes', ref => ref.where('idPregunta', '==', idPregunta).where('idPersonaje', '==', idPersonaje)).get();
   }
+
+  getTodasCaracteristicasPersonajes(idPersonaje) {
+    return this.fireStore.collection('caracteristicasPersonajes', ref => ref.where('idPersonaje', '==', idPersonaje)).get();
+  }
 }

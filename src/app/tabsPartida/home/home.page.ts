@@ -9,6 +9,7 @@ import { PersonajesService } from 'src/app/services/personajes-service/personaje
 import { AuthenticationService } from 'src/app/services/authentication-service/authentication.service';
 import { UsuariosService } from 'src/app/services/usuarios-service/usuarios.service';
 import { isEmpty } from 'rxjs/operators';
+import { CdkDragEnd } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-home',
@@ -21,6 +22,8 @@ export class HomePage implements OnInit {
   public partida: Partida;
   public personajes: Personaje[];
   public usuariosPersonaje: User[];
+  positionX: number;
+  positionY: number;
 
   constructor(public router: Router, private route: ActivatedRoute, 
     private partidasService: PartidasService, private authService: AuthenticationService, private usuariosService: UsuariosService) { }
@@ -75,4 +78,16 @@ export class HomePage implements OnInit {
 
     return nombreUsuario;
   }
+
+  getFirstTwoLettersPersonaje(personaje: Personaje) {
+    return personaje.nombre.substring(0,2);
+  }
+
+  getImagenMapa() {
+    if(this.partida.imagenMapa) {
+      return {'background-image': "url(" + this.partida.imagenMapa + ")"};
+    }
+  }
+
+  
 }

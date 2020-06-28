@@ -70,6 +70,23 @@ export class PersonajesService {
     });
   }
 
+  aniadirCaracteristicasConStatPersonaje(idPersonaje, keyPregunta, keyStat, formulario) {
+    let key = keyPregunta.replace("stat1", "");
+
+    this.fireStore.collection("caracteristicasPersonajes").add({
+      idPersonaje: idPersonaje,
+      idPregunta: key,
+      respuesta: formulario.get(keyPregunta).value,
+      estadistica: formulario.get(keyStat).value
+    })
+    .then(function() {
+      console.log("Característica de personaje añadida correctamente!");
+    })
+    .catch(function(error) {
+      console.error("Error añadiendo característica de personaje: ", error);
+    });
+  }
+
   actualizarCaracteristicasPersonaje(idPersonaje, idPreguntaCaracteristica, formulario) {
     this.preguntasCaracteristicasService.getCaracteristicasPersonajes(idPreguntaCaracteristica, idPersonaje).subscribe(caracteristasPersonajes => {
       if(!caracteristasPersonajes.empty) {
@@ -78,6 +95,27 @@ export class PersonajesService {
         
         this.fireStore.collection("caracteristicasPersonajes").doc(idCaracteristicaPersonaje).update({
           respuesta: formulario.get(idPreguntaCaracteristica).value
+        })
+        .then(function() {
+          console.log("Característica de personaje actualizada correctamente!");
+        })
+        .catch(function(error) {
+          console.error("Error actualizando característica de personaje: ", error);
+        });
+      }
+    });
+  }
+
+  actualizarCaracteristicasConStatPersonaje(idPersonaje, idPreguntaCaracteristica, keyStat, formulario) {
+    let key = idPreguntaCaracteristica.replace("stat1", "");
+    this.preguntasCaracteristicasService.getCaracteristicasPersonajes(key, idPersonaje).subscribe(caracteristasPersonajes => {
+      if(!caracteristasPersonajes.empty) {
+        let caracteristicaPersonajeDoc = caracteristasPersonajes.docs[0];
+        let idCaracteristicaPersonaje = caracteristicaPersonajeDoc.id;
+        
+        this.fireStore.collection("caracteristicasPersonajes").doc(idCaracteristicaPersonaje).update({
+          respuesta: formulario.get(idPreguntaCaracteristica).value,
+          estadistica: formulario.get(keyStat).value
         })
         .then(function() {
           console.log("Característica de personaje actualizada correctamente!");

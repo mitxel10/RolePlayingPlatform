@@ -25,7 +25,8 @@ export class PartidasService {
       director: partida.director,
       estado: partida.estado,
       nombre: partida.nombre,
-      historia: partida.historia
+      historia: partida.historia,
+      imagenMapa: partida.imagenMapa
     });
     /* .then(function() {
         console.log("Partida añadida correctamente!");

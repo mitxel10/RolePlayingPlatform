@@ -12,7 +12,7 @@ import { TextboxQuestion } from 'src/app/models/question-textbox';
 import { DropdownQuestion } from 'src/app/models/question-dropdown';
 import { Observable } from 'rxjs';
 import { PreguntasCaracteristicasService } from 'src/app/services/preguntas-caracteristicas-service/preguntas-caracteristicas.service';
-import { map } from 'rxjs/operators';
+import { map, finalize, tap } from 'rxjs/operators';
 import { PartidasService } from 'src/app/services/partidas-service/partidas.service';
 import { Partida } from 'src/app/models/partida';
 import { EstadosPartida } from 'src/app/enums/EstadosPartida';
@@ -21,6 +21,7 @@ import { EstadosPersonaje } from 'src/app/enums/EstadosPersonaje';
 import { PersonajesService } from 'src/app/services/personajes-service/personajes.service';
 import { ConfiguracionDados } from 'src/app/models/configuracionDados';
 import { Router } from '@angular/router';
+import { AngularFireUploadTask, AngularFireStorage } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-aniadir-partida',
@@ -38,23 +39,35 @@ export class AniadirPartidaPage implements OnInit {
   public submitAttempt: boolean = false;
   
   usersList = [];
-  selectedItems = [];
   dropdownSettings = {};
   selectedUsers = [];
   public selectedUsersValid: boolean;
+
+  task: AngularFireUploadTask;
+  percentage: Observable<number>;
+  snapshot: Observable<any>;
+  UploadedFileURL: Observable<string>;
+  fileName:string;
+  fileSize:number;
+  isUploading:boolean;
+  isUploaded:boolean;
+  urlImagen: string;
 
   public tiposCaracteristica = [];
   public questions: PreguntaCaracteristica<any>[];
 
   constructor(public router: Router, private amigosService: AmigosService, public formBuilder: FormBuilder, private fireStore: AngularFirestore, 
     private authService: AuthenticationService, private preguntasCaracteristicasService: PreguntasCaracteristicasService,
-    private partidasService: PartidasService, private personajesService: PersonajesService) {
+    private partidasService: PartidasService, private personajesService: PersonajesService, private storage: AngularFireStorage) {
       
       this.datosBasicosForm = formBuilder.group({
         tituloPartida: ['', Validators.compose([Validators.maxLength(100), Validators.required])],
         historia: ['', Validators.compose([Validators.maxLength(3000), Validators.required])],
         genero: ['', Validators.compose([Validators.maxLength(100), Validators.required])]
       });
+
+      this.isUploading = false;
+      this.isUploaded = false;
 
       this.configuracionDadosForm = formBuilder.group({
           /* username: ['', Validators.compose([Validators.required, Validators.pattern('[a-zA-Z]*')]), UsernameValidator.checkUsername], */
@@ -73,11 +86,6 @@ export class AniadirPartidaPage implements OnInit {
   ngOnInit() {
     this.initJugadoresSelect();
 
-    this.selectedItems = [
-      { item_id: 3, item_text: 'Pune' },
-      { item_id: 4, item_text: 'Navsari' }
-    ];
-
     this.dropdownSettings = {
       singleSelection: false,
       idField: 'item_id',
@@ -87,6 +95,44 @@ export class AniadirPartidaPage implements OnInit {
       itemsShowLimit: 10,
       allowSearchFilter: true
     };
+  }
+
+  uploadFile(event: FileList) {
+    const file = event.item(0)
+
+    if (file.type.split('/')[0] !== 'image') { 
+     console.error('unsupported file type :( ')
+     return;
+    }
+
+    this.isUploading = true;
+    this.isUploaded = false;
+
+
+    this.fileName = file.name;
+
+    const path = `imagenesMapas/${new Date().getTime()}_${file.name}`;
+    const customMetadata = { app: 'Imagen subida de un mapa de RolePlayingApp' };
+    const fileRef = this.storage.ref(path);
+    this.task = this.storage.upload(path, file, { customMetadata });
+
+    this.percentage = this.task.percentageChanges();
+    this.snapshot = this.task.snapshotChanges().pipe(
+      finalize(() => {
+        this.UploadedFileURL = fileRef.getDownloadURL();
+        
+        this.UploadedFileURL.subscribe(resp=>{
+          this.urlImagen = resp;
+          this.isUploading = false;
+          this.isUploaded = true;
+        },error=>{
+          console.error(error);
+        })
+      }),
+      tap(snap => {
+          this.fileSize = snap.totalBytes;
+      })
+    )
   }
 
   // ------------ GESTIÓN DEL SELECT DE JUGADORES PARTICIPANTES EN LA PARTIDA ------------
@@ -237,6 +283,7 @@ export class AniadirPartidaPage implements OnInit {
     partida.estado = EstadosPartida.CREANDO_JUGADORES;
     partida.nombre = this.datosBasicosForm.get('tituloPartida').value;
     partida.historia = this.datosBasicosForm.get('historia').value;
+    partida.imagenMapa = this.urlImagen;
 
     this.partidasService.aniadirPartida(partida).then((data => {
       let idPartida = data.id;
@@ -269,10 +316,7 @@ export class AniadirPartidaPage implements OnInit {
 
   crearPreguntasCaracteristicas(idPartida) {
     const arrayCaracteristicas = this.inputsCaracteristicasPersonajesForm.controls.questions as FormArray;
-    let contadorCaracteristica = 3;
-
-    this.preguntasCaracteristicasService.aniadirPreguntasCaracteristicasDefault(idPartida, "Nombre", "textbox", true, [], 1);
-    this.preguntasCaracteristicasService.aniadirPreguntasCaracteristicasDefault(idPartida, "Imagen", "textbox", false, [], 2);
+    let contadorCaracteristica = 1;
 
     for(let caracteristica of arrayCaracteristicas.controls) {
       this.preguntasCaracteristicasService.aniadirPreguntasCaracteristicas(idPartida, caracteristica, contadorCaracteristica);

@@ -16,6 +16,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 import { environment } from '../environments/environment';
 import { DynamicFormComponent } from './components/dynamic-form-component/dynamic-form/dynamic-form.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -33,6 +34,7 @@ import { ListFilterPipe } from './tabsPrincipal/partidas/multi-select/list-filte
     AngularFireAuthModule,
     AngularFireDatabaseModule,
     AngularFirestoreModule,
+    AngularFireStorageModule,
     DragDropModule
   ],
   declarations: [AppComponent],

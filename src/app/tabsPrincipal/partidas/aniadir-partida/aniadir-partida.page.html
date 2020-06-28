@@ -51,6 +51,40 @@
                 </ion-item>
             </form>
         </ion-list>
+
+        <div *ngIf="!isUploading && !isUploaded">
+          <h3 class="text-center text-white">Imagen del mapa</h3>
+        
+          <ion-button color="light" shape="round" size="small" class="btnSubirImagen col-12 pl-0 pr-0">
+            <input id="uploadBtn" type="file" title="fdsaa" class="upload" (change)="uploadFile($event.target.files)" />
+          </ion-button>
+        </div>
+    
+        <ion-card class="ion-text-center" *ngIf="isUploading && !isUploaded">
+          <ion-card-content>
+            <div *ngIf="percentage | async as pct">
+              Progreso: {{ pct | number }}%
+              <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
+            </div>
+            <div *ngIf="snapshot | async as snap">
+              Tamaño del archivo: {{ snap.totalBytes | fileSizePipe }} Transferido:
+              {{ snap.bytesTransferred | fileSizePipe }}
+              <div *ngIf="snapshot && snap.bytesTransferred != snap.totalBytes">
+                <ion-button color="warning" size="small" (click)="task.pause()" class="button is-warning">Pausar</ion-button>
+                <ion-button size="small" (click)="task.resume()" class="button is-info">Reanudar</ion-button>
+                <ion-button color="danger" size="small" (click)="task.cancel()" class="button is-danger">Cancelar</ion-button>
+              </div>
+            </div>
+          </ion-card-content>
+        </ion-card>
+    
+        <ion-card class="ion-text-center" *ngIf="!isUploading && isUploaded">
+          <ion-card-content>
+            <div *ngIf="UploadedFileURL | async as url">
+              <img [src]="url" />
+            </div>
+          </ion-card-content>
+        </ion-card>
       </div>
     </ion-slide>
 
@@ -167,8 +201,8 @@
                         </ion-item>
                     
                         <ion-item>
-                          <ion-label>Varias opciones a escoger</ion-label>
-                          <ion-radio slot="start" value=""></ion-radio>
+                          <ion-label>Texto con estadística</ion-label>
+                          <ion-radio slot="start" value="stats"></ion-radio>
                         </ion-item>
                       </ion-radio-group>
                     </ion-list>
