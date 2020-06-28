@@ -70,6 +70,23 @@ export class PersonajesService {
     });
   }
 
+  aniadirCaracteristicasConStatPersonaje(idPersonaje, keyPregunta, keyStat, formulario) {
+    let key = keyPregunta.replace("stat1", "");
+
+    this.fireStore.collection("caracteristicasPersonajes").add({
+      idPersonaje: idPersonaje,
+      idPregunta: keyPregunta,
+      respuesta: formulario.get(keyPregunta).value,
+      estadistica: formulario.get(keyStat).value
+    })
+    .then(function() {
+      console.log("Característica de personaje añadida correctamente!");
+    })
+    .catch(function(error) {
+      console.error("Error añadiendo característica de personaje: ", error);
+    });
+  }
+
   actualizarCaracteristicasPersonaje(idPersonaje, idPreguntaCaracteristica, formulario) {
     this.preguntasCaracteristicasService.getCaracteristicasPersonajes(idPreguntaCaracteristica, idPersonaje).subscribe(caracteristasPersonajes => {
       if(!caracteristasPersonajes.empty) {

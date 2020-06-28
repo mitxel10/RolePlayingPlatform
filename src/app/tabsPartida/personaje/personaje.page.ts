@@ -13,6 +13,7 @@ import { EstadosPersonaje } from 'src/app/enums/EstadosPersonaje';
 import { User } from 'src/app/login-register/shared/user';
 import { CaracteristicaPersonaje } from 'src/app/models/caracteristicaPersonaje';
 import { ToastController } from '@ionic/angular';
+import { StatsQuestion } from 'src/app/models/question-stats';
 
 @Component({
   selector: 'app-personaje',
@@ -64,8 +65,9 @@ export class PersonajePage implements OnInit {
       this.questions.sort((a, b) => a.order - b.order);
     });
   }
-
-  private aniadirRespuestaCaracteristicaPersonaje(preguntaCaracteristica: PreguntaCaracteristica<String>, idPreguntaCaracteristica: string, caracteristicaPersonaje: CaracteristicaPersonaje) {
+  
+  aniadirRespuestaCaracteristicaPersonaje(preguntaCaracteristica: PreguntaCaracteristica<String>, idPreguntaCaracteristica: string, caracteristicaPersonaje: CaracteristicaPersonaje) {
+    console.log(preguntaCaracteristica.controlType);
     if (preguntaCaracteristica.controlType == "textbox") {
       this.questions.push(new TextboxQuestion({
         key: idPreguntaCaracteristica,
@@ -74,8 +76,16 @@ export class PersonajePage implements OnInit {
         required: preguntaCaracteristica.required,
         order: preguntaCaracteristica.order
       }));
-    }
-    else {
+      console.log("añadiendoQuestionTextbox");
+    } else if(preguntaCaracteristica.controlType == "stats") {
+      this.questions.push(new StatsQuestion({
+        key: idPreguntaCaracteristica,
+        label: preguntaCaracteristica.label,
+        value: caracteristicaPersonaje.respuesta,
+        required: preguntaCaracteristica.required,
+        order: preguntaCaracteristica.order
+      }));
+    } else {
       let arrayOpciones = [];
       if (preguntaCaracteristica.options) {
         for (let option of preguntaCaracteristica.options) {
