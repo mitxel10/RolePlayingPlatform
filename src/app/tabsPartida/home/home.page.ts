@@ -89,5 +89,12 @@ export class HomePage implements OnInit {
     }
   }
 
-  
+  dragEnded($event: CdkDragEnd, personaje: Personaje) {
+    const { offsetLeft, offsetTop } = $event.source.element.nativeElement;
+    const { x, y } = $event.distance;
+    this.positionX = offsetLeft + x;
+    this.positionY = offsetTop + y;
+    // this.showPopup = true;
+    console.log(this.positionX + ":" + this.positionY + " - " + personaje.nombre);
+  }
 }
