@@ -22,6 +22,10 @@ import { PersonajesService } from 'src/app/services/personajes-service/personaje
 import { ConfiguracionDados } from 'src/app/models/configuracionDados';
 import { Router } from '@angular/router';
 import { AngularFireUploadTask, AngularFireStorage } from '@angular/fire/storage';
+import { File, FileEntry } from '@ionic-native/file';
+import { ToastController } from '@ionic/angular';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+declare var cordova: any;
 
 @Component({
   selector: 'app-aniadir-partida',
@@ -53,12 +57,24 @@ export class AniadirPartidaPage implements OnInit {
   isUploaded:boolean;
   urlImagen: string;
 
+  docUploadTask: AngularFireUploadTask;
+  docPercentage: Observable<number>;
+  docSnapshot: Observable<any>;
+  docUploadedFileURL: Observable<string>;
+  docFileName:string;
+  docFileSize:number;
+  docIsUploading:boolean;
+  docIsUploaded:boolean;
+  urldoc: string;
+  uploadProgress = 0;
+
   public tiposCaracteristica = [];
   public questions: PreguntaCaracteristica<any>[];
 
   constructor(public router: Router, private amigosService: AmigosService, public formBuilder: FormBuilder, private fireStore: AngularFirestore, 
     private authService: AuthenticationService, private preguntasCaracteristicasService: PreguntasCaracteristicasService,
-    private partidasService: PartidasService, private personajesService: PersonajesService, private storage: AngularFireStorage) {
+    private partidasService: PartidasService, private personajesService: PersonajesService, private storage: AngularFireStorage,
+    private toastCtrl: ToastController, private iab: InAppBrowser) {
       
       this.datosBasicosForm = formBuilder.group({
         tituloPartida: ['', Validators.compose([Validators.maxLength(100), Validators.required])],
@@ -100,10 +116,10 @@ export class AniadirPartidaPage implements OnInit {
   uploadFile(event: FileList) {
     const file = event.item(0)
 
-    if (file.type.split('/')[0] !== 'image') { 
-     console.error('unsupported file type :( ')
-     return;
-    }
+    // if (file.type.split('/')[0] !== 'image') { 
+    //  console.error('unsupported file type :( ')
+    //  return;
+    // }
 
     this.isUploading = true;
     this.isUploaded = false;
@@ -133,6 +149,66 @@ export class AniadirPartidaPage implements OnInit {
           this.fileSize = snap.totalBytes;
       })
     )
+  }
+
+  gotoFilePage(file){
+    cordova.InAppBrowser.open("http://repositorio.uchile.cl/bitstream/handle/2250/111676/lopez_jo.pdf?sequence=2","_system", "location=yes");
+  }
+
+  async uploadDoc(event: FileList) {
+    const file = event.item(0)
+
+    if (file.type.split('/')[0] !== 'image') { 
+     console.error('unsupported file type :( ')
+     return;
+    }
+
+    this.docFileName = file.name;
+
+    const randomId = Math.random()
+      .toString(36)
+      .substring(2, 8);
+
+    const path = `imagenesMapas/${new Date().getTime()}_${file.name}_${randomId}`;
+    const customMetadata = { app: 'Imagen subida de un mapa de RolePlayingApp' };
+    const fileRef = this.storage.ref(path);
+    this.docUploadTask = this.storage.upload(path, file, { customMetadata });
+
+    this.docPercentage = this.docUploadTask.percentageChanges();
+    this.docSnapshot = this.docUploadTask.snapshotChanges().pipe(
+      finalize(() => {
+        this.docUploadedFileURL = fileRef.getDownloadURL();
+        
+        this.docUploadedFileURL.subscribe(async resp=>{
+          this.urldoc = resp;
+          this.docIsUploading = false;
+          this.docIsUploaded = true;
+
+          const toast = await this.toastCtrl.create({
+            duration: 3000,
+            message: 'File upload finished!'
+          });
+          toast.present();
+        },error=>{
+          console.error(error);
+        })
+      }),
+      tap(snap => {
+          this.docFileSize = snap.totalBytes;
+      })
+    )  
+ 
+    this.docUploadTask.percentageChanges().subscribe(change => {
+      this.uploadProgress = change;
+    });
+  }
+
+  getMimeType(fileExt) {
+    if (fileExt == 'wav') return { type: 'audio/wav' };
+    else if (fileExt == 'jpg') return { type: 'image/jpg' };
+    else if (fileExt == 'mp4') return { type: 'video/mp4' };
+    else if (fileExt == 'MOV') return { type: 'video/quicktime' };
+    else if (fileExt == 'pdf') return { type: 'application/pdf' };
   }
 
   // ------------ GESTIÓN DEL SELECT DE JUGADORES PARTICIPANTES EN LA PARTIDA ------------

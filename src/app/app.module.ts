@@ -22,6 +22,7 @@ import { DynamicFormComponent } from './components/dynamic-form-component/dynami
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MultiSelectComponent } from './tabsPrincipal/partidas/multi-select/multi-select.component';
 import { ListFilterPipe } from './tabsPrincipal/partidas/multi-select/list-filter.pipe';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @NgModule({
   imports: [
@@ -43,6 +44,7 @@ import { ListFilterPipe } from './tabsPrincipal/partidas/multi-select/list-filte
     AngularFirestoreModule,
     StatusBar,
     SplashScreen,
+    InAppBrowser,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
