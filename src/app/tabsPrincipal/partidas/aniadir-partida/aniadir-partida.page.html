@@ -93,28 +93,6 @@
       <div style="padding: 5%">
         <ion-list lines="none">
             <form [formGroup]="configuracionDadosForm">
-                <!-- <ion-item>
-                    <ion-label position="floating">Username</ion-label>
-                    <ion-input [class.invalid]="!configuracionDadosForm.controls.username.valid && (configuracionDadosForm.controls.username.dirty || submitAttempt)" formControlName="username" type="text"></ion-input>
-                </ion-item>
-
-                <ion-item *ngIf="configuracionDadosForm.controls.username.pending">
-                    <p>Checking username...</p>
-                </ion-item>
-
-                <ion-item *ngIf="!configuracionDadosForm.controls.username.valid && !configuracionDadosForm.controls.username.pending && (configuracionDadosForm.controls.username.dirty || submitAttempt)">
-                    <p>Sorry, that username can not be used!</p>
-                </ion-item> -->
-
-                <!-- <ion-item>
-                    <ion-label position="floating">Privacy</ion-label>
-                    <ion-select [class.invalid]="!configuracionDadosForm.controls.privacy.valid && (configuracionDadosForm.controls.privacy.dirty || submitAttempt)" formControlName="privacy">
-                        <ion-select-option value="public" checked="true">Public</ion-select-option>
-                        <ion-select-option value="friends">Friends Only</ion-select-option>
-                        <ion-select-option value="private">Private</ion-select-option>
-                    </ion-select>
-                </ion-item> -->
-
                 <ion-item>
                   <ion-label position="floating">Número de dados</ion-label>
                   <ion-input formControlName="numDados" type="number" [class.invalid]="!configuracionDadosForm.controls.numDados.valid && (configuracionDadosForm.controls.numDados.dirty || submitAttempt)"></ion-input>
@@ -324,6 +302,79 @@
         <h2>Formulario</h2>
         <app-dynamic-form [questions]="questions"></app-dynamic-form>
       </div>
+    </ion-slide>
+
+    <ion-slide>
+      <h3 class="text-center text-white">Items de la partida</h3>
+      <form [formGroup]="inputsItemForm" novalidate style="padding-top: 5%; padding-left: 5%; padding-right: 5%; padding-bottom: 8%;">     
+        <ion-list margin-bottom id="listaCaracteristicas">
+          <div formArrayName="itemGroups" margin-bottom>
+            <section [formGroupName]="j" *ngFor="let itemGroup of getItemGroups(inputsItemForm); let j = index">
+              <ion-item-group>
+                <div class="caracteristica">
+                  <ion-item-divider color="light">
+                    <div class="col-10">
+                      Grupo de items #{{ j + 1 }}
+                    </div>
+                  </ion-item-divider>
+
+                  <ion-item class="mr-3">
+                    <ion-label position="floating" color="app-background">Nombre</ion-label>
+                    <ion-input type="text" maxlength="50" formControlName="name"></ion-input>
+                  </ion-item>
+
+                  <!-- <ion-item class="mr-3"><ion-label floating>Tipo:</ion-label></ion-item>
+                    <ion-list class="mr-3">
+                      <ion-radio-group class="" formControlName="type">
+                        <ion-item>
+                          <ion-label>Texto libre</ion-label>
+                          <ion-radio slot="start" value="textbox"></ion-radio>
+                        </ion-item>
+                    
+                        <ion-item>
+                          <ion-label>Única opcion a escoger</ion-label>
+                          <ion-radio slot="start" value="dropdown"></ion-radio>
+                        </ion-item>
+                    
+                        <ion-item>
+                          <ion-label>Texto con estadística</ion-label>
+                          <ion-radio slot="start" value="stats"></ion-radio>
+                        </ion-item>
+                      </ion-radio-group>
+                    </ion-list> -->
+      
+                  <div *ngIf="inputsItemForm.errors" class="alert alert-danger">
+                    {{ inputsItemForm.errors }}
+                  </div>
+                  
+                  <div>
+                    <ion-item-divider color="light" class="ml-3 mr-3 mt-2 col-11 font-italic font-weight-normal">Items</ion-item-divider>
+                      
+                    <div formArrayName="items" class="mr-3 ml-3">
+                      <section [formGroupName]="k" *ngFor="let item of getItems(itemGroup); let k=index">
+                        <ion-item class="col-11 float-left">
+                          <ion-label floating>Nombre:</ion-label>   
+                          <ion-input type="text" maxlength="50" formControlName="nombre"></ion-input>
+                        </ion-item>
+
+                        <ion-item class="col-11 float-left">
+                          <ion-label floating>Descripción:</ion-label>   
+                          <ion-input type="text" maxlength="50" formControlName="descripcion"></ion-input>
+                        </ion-item>
+                        <ion-icon name="remove-circle" *ngIf="getItems(itemGroup).length > 0" (click)="removeItem(j,k)" class="text-danger float-right mt-3"></ion-icon>
+                      </section>
+                    </div>
+                    <ion-button (click)="addItem(j)" size="small" color="success">Añadir item</ion-button>
+                  </div>
+                </div>
+              </ion-item-group> 
+
+              <ion-button *ngIf="getItemGroups(inputsItemForm).length > 1" (click)="removeItemGroup(j)" size="small" color="danger">Eliminar grupo de items</ion-button>
+            </section>
+            <ion-button (click)="addItemGroup()" class="mt-3">Añadir nuevo grupo de items</ion-button>
+          </div>
+        </ion-list>
+      </form>
     </ion-slide>
 
     <ion-slide class="mt-auto mb-5">

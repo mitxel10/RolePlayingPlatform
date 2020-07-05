@@ -22,6 +22,7 @@ import { PersonajesService } from 'src/app/services/personajes-service/personaje
 import { ConfiguracionDados } from 'src/app/models/configuracionDados';
 import { Router } from '@angular/router';
 import { AngularFireUploadTask, AngularFireStorage } from '@angular/fire/storage';
+import { ItemsService } from 'src/app/services/items-service/items.service';
 
 @Component({
   selector: 'app-aniadir-partida',
@@ -36,6 +37,7 @@ export class AniadirPartidaPage implements OnInit {
   public configuracionDadosForm: FormGroup;
   public inputsCaracteristicasPersonajesForm: FormGroup;
   public inputsCaracteristicasPNJForm: FormGroup;
+  public inputsItemForm: FormGroup;
 
   public submitAttempt: boolean = false;
   
@@ -59,7 +61,7 @@ export class AniadirPartidaPage implements OnInit {
   public questions: PreguntaCaracteristica<any>[];
 
   constructor(public router: Router, private amigosService: AmigosService, public formBuilder: FormBuilder, private fireStore: AngularFirestore, 
-    private authService: AuthenticationService, private preguntasCaracteristicasService: PreguntasCaracteristicasService,
+    private authService: AuthenticationService, private preguntasCaracteristicasService: PreguntasCaracteristicasService, private itemsService: ItemsService,
     private partidasService: PartidasService, private personajesService: PersonajesService, private storage: AngularFireStorage) {
       
       this.datosBasicosForm = formBuilder.group({
@@ -85,6 +87,11 @@ export class AniadirPartidaPage implements OnInit {
       this.inputsCaracteristicasPNJForm = new FormGroup({
         questions: new FormArray([
           this.initQuestion(),
+        ]),
+      });
+      this.inputsItemForm = new FormGroup({
+        itemGroups: new FormArray([
+          this.initItemsGroup(),
         ]),
       });
       this.questions = [];
@@ -202,9 +209,25 @@ export class AniadirPartidaPage implements OnInit {
     });
   }
 
+  initItemsGroup() {
+    return new FormGroup({
+      name: new FormControl('',Validators.required),
+      items: new FormArray([
+        this.initItems()
+      ])
+    });
+  }
+
   initOptions() {
     return new FormGroup({
       key: new FormControl('')
+    });
+  }
+
+  initItems() {
+    return new FormGroup({
+      nombre: new FormControl(''),
+      descripcion: new FormControl('')
     });
   }
 
@@ -220,6 +243,12 @@ export class AniadirPartidaPage implements OnInit {
     
   }
 
+  addItemGroup() {
+    const control = <FormArray>this.inputsItemForm.get(['itemGroups']);
+    control.push(this.initItemsGroup());
+    
+  }
+
   add(j) {
     const control = <FormArray>this.inputsCaracteristicasPersonajesForm.get(['questions',j,'options']);
     control.push(this.initOptions());
@@ -230,12 +259,26 @@ export class AniadirPartidaPage implements OnInit {
     control.push(this.initOptions());
   }
 
+  addItem(j) {
+    const control = <FormArray>this.inputsItemForm.get(['itemGroups',j,'items']);
+    control.push(this.initItems());
+  }
+
   getQuestions(form) {
     return form.controls.questions.controls;
   }
 
+  getItemGroups(form) {
+    return form.controls.itemGroups.controls;
+  }
+
   getOptions(form) {
     return form.controls.options.controls;
+
+  }
+
+  getItems(form) {
+    return form.controls.items.controls;
 
   }
 
@@ -247,7 +290,12 @@ export class AniadirPartidaPage implements OnInit {
   removeQuestionPnj(j){
     const control = <FormArray>this.inputsCaracteristicasPNJForm.get(['questions']);
     control.removeAt(j);
- }
+  }
+
+  removeItemGroup(j){
+    const control = <FormArray>this.inputsItemForm.get(['itemGroups']);
+    control.removeAt(j);
+  }
 
   removeOption(j,k){
    const control = <FormArray>this.inputsCaracteristicasPersonajesForm.get(['questions',j,'options']);
@@ -258,6 +306,11 @@ export class AniadirPartidaPage implements OnInit {
     const control = <FormArray>this.inputsCaracteristicasPNJForm.get(['questions',j,'options']);
     control.removeAt(k);
    }
+
+  removeItem(j,k){
+  const control = <FormArray>this.inputsItemForm.get(['itemGroups',j,'items']);
+  control.removeAt(k);
+  }
 
   tipoCaracteristicaSeleccionado(j, value) {
     this.tiposCaracteristica[j] = value;
@@ -339,6 +392,7 @@ export class AniadirPartidaPage implements OnInit {
       this.crearConfiguracionDados(idPartida);
       this.crearPreguntasCaracteristicas(idPartida);
       this.crearPreguntasCaracteristicasPNJ(idPartida);
+      this.crearItemsGroups(idPartida);
     }));
   }
     
@@ -381,6 +435,22 @@ export class AniadirPartidaPage implements OnInit {
       this.preguntasCaracteristicasService.aniadirPreguntasCaracteristicas(idPartida, caracteristica, contadorCaracteristica, "PNJ");
 
       contadorCaracteristica++;
+    }
+  }
+
+  crearItemsGroups(idPartida) {
+    const arrayItemGroups = this.inputsItemForm.controls.itemGroups as FormArray;
+
+    for(let itemGroup of arrayItemGroups.controls) {
+      this.itemsService.aniadirGruposItems(idPartida, itemGroup).then((data => {
+        let idGrupoItem = data.id;
+  
+        const arrayItems = itemGroup. as FormArray;
+
+        for(let itemGroup of arrayItemGroups.controls) {
+          this.itemsService.aniadirItems(idGrupoItem, itemGroup);
+        }
+      }));
     }
   }
 
