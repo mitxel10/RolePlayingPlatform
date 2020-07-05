@@ -68,6 +68,10 @@ export class PartidasService {
     return this.fireStore.collection('personajes', ref => ref.where('idPartida', '==', idPartida)).get();
   }
 
+  getPNJPartida(idPartida) {
+    return this.fireStore.collection('pnjs', ref => ref.where('idPartida', '==', idPartida)).get();
+  }
+
   actualizarEstadoPartida(idPartida, estadoPartida: EstadosPartida) {
     return this.fireStore.collection("partidas").doc(idPartida).update({
       estado: estadoPartida

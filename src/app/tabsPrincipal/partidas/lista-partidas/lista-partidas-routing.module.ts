@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ListaPartidasPage } from './lista-partidas.page';
 import { AniadirPartidaPage } from '../aniadir-partida/aniadir-partida.page';
 import { CrearPersonajePage } from '../crear-personaje/crear-personaje/crear-personaje.page';
+import { ListaPnjPage } from '../lista-pnj/lista-pnj.page';
 
 const routes: Routes = [
   {
@@ -17,6 +18,10 @@ const routes: Routes = [
   {
     path: ':idPartida/crear-personaje',
     component: CrearPersonajePage
+  },
+  {
+    path: ':idPartida/lista-pnj',
+    component: ListaPnjPage
   }
 ];
 

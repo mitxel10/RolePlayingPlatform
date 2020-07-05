@@ -5,6 +5,7 @@ import { AuthenticationService } from '../authentication-service/authentication.
 import { EstadosPersonaje } from 'src/app/enums/EstadosPersonaje';
 import { PreguntasCaracteristicasService } from '../preguntas-caracteristicas-service/preguntas-caracteristicas.service';
 import { CaracteristicaPersonaje } from 'src/app/models/caracteristicaPersonaje';
+import { PNJ } from 'src/app/models/pnj';
 
 @Injectable({
   providedIn: 'root'
@@ -124,6 +125,26 @@ export class PersonajesService {
           console.error("Error actualizando característica de personaje: ", error);
         });
       }
+    });
+  }
+
+  aniadirPnj(idPartida, nombre, urlImagen) {
+    return this.fireStore.collection("pnjs").add({
+      idPartida: idPartida,
+      nombre: nombre,
+      imagen: urlImagen,
+      estado: false
+    });
+  }
+  actualizarEstadoPnj(pnj : PNJ) {
+    return this.fireStore.collection("pnjs").doc(pnj.id).update({
+      estado: pnj.estado
+    })
+    .then(function() {
+      console.log("Estado de personaje actualizado correctamente!");
+    })
+    .catch(function(error) {
+      console.error("Error actualizando estado de personaje: ", error);
     });
   }
 }

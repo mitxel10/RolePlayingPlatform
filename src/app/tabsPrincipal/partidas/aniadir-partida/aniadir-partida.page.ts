@@ -35,6 +35,7 @@ export class AniadirPartidaPage implements OnInit {
 	public datosBasicosForm: FormGroup;
   public configuracionDadosForm: FormGroup;
   public inputsCaracteristicasPersonajesForm: FormGroup;
+  public inputsCaracteristicasPNJForm: FormGroup;
 
   public submitAttempt: boolean = false;
   
@@ -54,6 +55,7 @@ export class AniadirPartidaPage implements OnInit {
   urlImagen: string;
 
   public tiposCaracteristica = [];
+  public tiposCaracteristicaPNJ = [];
   public questions: PreguntaCaracteristica<any>[];
 
   constructor(public router: Router, private amigosService: AmigosService, public formBuilder: FormBuilder, private fireStore: AngularFirestore, 
@@ -76,6 +78,11 @@ export class AniadirPartidaPage implements OnInit {
       });
 
       this.inputsCaracteristicasPersonajesForm = new FormGroup({
+        questions: new FormArray([
+          this.initQuestion(),
+        ]),
+      });
+      this.inputsCaracteristicasPNJForm = new FormGroup({
         questions: new FormArray([
           this.initQuestion(),
         ]),
@@ -207,8 +214,19 @@ export class AniadirPartidaPage implements OnInit {
     
   }
 
+  addQuestionPnj() {
+    const control = <FormArray>this.inputsCaracteristicasPNJForm.get(['questions']);
+    control.push(this.initQuestion());
+    
+  }
+
   add(j) {
     const control = <FormArray>this.inputsCaracteristicasPersonajesForm.get(['questions',j,'options']);
+    control.push(this.initOptions());
+  }
+
+  addPnj(j) {
+    const control = <FormArray>this.inputsCaracteristicasPNJForm.get(['questions',j,'options']);
     control.push(this.initOptions());
   }
 
@@ -226,13 +244,27 @@ export class AniadirPartidaPage implements OnInit {
      control.removeAt(j);
   }
 
+  removeQuestionPnj(j){
+    const control = <FormArray>this.inputsCaracteristicasPNJForm.get(['questions']);
+    control.removeAt(j);
+ }
+
   removeOption(j,k){
    const control = <FormArray>this.inputsCaracteristicasPersonajesForm.get(['questions',j,'options']);
    control.removeAt(k);
   }
 
+  removeOptionPnj(j,k){
+    const control = <FormArray>this.inputsCaracteristicasPNJForm.get(['questions',j,'options']);
+    control.removeAt(k);
+   }
+
   tipoCaracteristicaSeleccionado(j, value) {
     this.tiposCaracteristica[j] = value;
+  }
+
+  tipoCaracteristicaSeleccionadoPNJ(j, value) {
+    this.tiposCaracteristicaPNJ[j] = value;
   }
 
   remove(j){
@@ -243,6 +275,21 @@ export class AniadirPartidaPage implements OnInit {
 
   move(shift, currentIndex) {
     const questions = this.inputsCaracteristicasPersonajesForm.get('questions') as FormArray;
+  
+    let newIndex: number = currentIndex + shift;
+    if(newIndex === -1) {
+      newIndex = questions.length - 1;
+    } else if(newIndex == questions.length) {
+      newIndex = 0;
+    }
+  
+    const currentGroup = questions.at(currentIndex);
+    questions.removeAt(currentIndex);
+    questions.insert(newIndex, currentGroup)
+  }
+
+  movePnj(shift, currentIndex) {
+    const questions = this.inputsCaracteristicasPNJForm.get('questions') as FormArray;
   
     let newIndex: number = currentIndex + shift;
     if(newIndex === -1) {
@@ -291,6 +338,7 @@ export class AniadirPartidaPage implements OnInit {
       this.crearPersonajes(idPartida);
       this.crearConfiguracionDados(idPartida);
       this.crearPreguntasCaracteristicas(idPartida);
+      this.crearPreguntasCaracteristicasPNJ(idPartida);
     }));
   }
     
@@ -319,7 +367,18 @@ export class AniadirPartidaPage implements OnInit {
     let contadorCaracteristica = 1;
 
     for(let caracteristica of arrayCaracteristicas.controls) {
-      this.preguntasCaracteristicasService.aniadirPreguntasCaracteristicas(idPartida, caracteristica, contadorCaracteristica);
+      this.preguntasCaracteristicasService.aniadirPreguntasCaracteristicas(idPartida, caracteristica, contadorCaracteristica, "PJ");
+
+      contadorCaracteristica++;
+    }
+  }
+
+  crearPreguntasCaracteristicasPNJ(idPartida) {
+    const arrayCaracteristicas = this.inputsCaracteristicasPNJForm.controls.questions as FormArray;
+    let contadorCaracteristica = 1;
+
+    for(let caracteristica of arrayCaracteristicas.controls) {
+      this.preguntasCaracteristicasService.aniadirPreguntasCaracteristicas(idPartida, caracteristica, contadorCaracteristica, "PNJ");
 
       contadorCaracteristica++;
     }

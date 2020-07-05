@@ -55,7 +55,7 @@ export class PersonajePage implements OnInit {
       this.caracteristicasPersonaje = consultaCaracteristicasPersonaje.docs.map(doc => {
         return doc.data() as CaracteristicaPersonaje;
       });
-      this.preguntasCaracteristicasService.getQuestionsList(this.idPartida).subscribe((resultadoConsulta) => {
+      this.preguntasCaracteristicasService.getQuestionsList(this.idPartida, "PJ").subscribe((resultadoConsulta) => {
         resultadoConsulta.forEach((preguntaCaracteristicaDoc) => {
           let preguntaCaracteristica = preguntaCaracteristicaDoc.data() as PreguntaCaracteristica<String>;
           let idPreguntaCaracteristica = preguntaCaracteristicaDoc.id;

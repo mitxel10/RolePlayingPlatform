@@ -87,8 +87,13 @@ export class ListaPartidasPage implements OnInit {
   estaPartidaEnProceso(partida: Partida) {
     return partida.estado == EstadosPartida.EN_PROCESO;
   }
+
   irCrearPersonaje(partida: Partida) {
     this.router.navigate(['tabs/partidas/' + partida.id +  '/crear-personaje']);
+  }
+
+  irListaPNJ(partida: Partida) {
+    this.router.navigate(['tabs/partidas/' + partida.id +  '/lista-pnj']);
   }
 
   irJugarPartida(partida: Partida) {

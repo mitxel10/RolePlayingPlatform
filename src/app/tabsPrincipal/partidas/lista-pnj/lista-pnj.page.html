@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>PNJ de la partida</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content id="homePartidaContent">
+  <h2 class="text-center text-white">Personajes no jugadores</h2>
+
+  <div *ngIf= "personajesPNJ.length === 0" class="ml-3 text-light">Aún no se han añadido personajes no jugadores</div>
+  <ion-card class="col-5 ml-3 mr-0 mb-1 float-left" *ngFor="let personaje of personajesPNJ">
+    <ion-card-header class="pl-1 pr-1">
+      <ion-card-title>{{personaje.nombre}}</ion-card-title>
+    </ion-card-header>
+  
+    <ion-card-content>
+      <img src={{personaje.imagen}} class="center"/>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="add" (click)="irAniadirPNJ()"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

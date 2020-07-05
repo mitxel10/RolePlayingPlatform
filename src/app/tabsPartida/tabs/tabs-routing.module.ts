@@ -49,6 +49,16 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'pnjs',
+        children: [
+          {
+            path: '',
+            loadChildren: () =>
+              import('../gestionPnjs/lista-pnjs/lista-pnjs.module').then(m => m. ListaPnjsPageModule)
+          }
+        ]
+      },
+      {
         path: '',
         redirectTo: '/home',
         pathMatch: 'full'
