@@ -45,6 +45,7 @@ export class ForoPage implements OnInit {
     this.data.dice = '';
 
     this.idForo = this.route.snapshot.paramMap.get('idForo');
+    localStorage.setItem('idForo', JSON.stringify(this.idForo));
     this.publicaciones$ = this.fireStore.collection<Publicacion>('publicaciones', ref => ref.where('idForo', '==', this.idForo)).snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {

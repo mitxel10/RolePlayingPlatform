@@ -5,6 +5,7 @@ import { PartidasService } from 'src/app/services/partidas-service/partidas.serv
 import { Partida } from 'src/app/models/partida';
 import { User } from 'src/app/login-register/shared/user';
 import { PersonajesService } from 'src/app/services/personajes-service/personajes.service';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-lista-pnjs',
@@ -19,7 +20,8 @@ export class ListaPnjsPage implements OnInit {
   public usuario: User;
   private partida: Partida;
 
-  constructor(public router: Router, private route: ActivatedRoute, private partidasService: PartidasService, private personajesService: PersonajesService) { }
+  constructor(public router: Router, private route: ActivatedRoute, private partidasService: PartidasService,
+    private personajesService: PersonajesService, private fireStore: AngularFirestore) { }
 
   ngOnInit() {
     this.personajesPNJ = [];
@@ -38,6 +40,33 @@ export class ListaPnjsPage implements OnInit {
 
   actualizarEstado(personaje: PNJ) {
     this.personajesService.actualizarEstadoPnj(personaje);
+
+    if(personaje.estado) {
+      this.sendCriatureMessage(personaje);
+    }
+  }
+
+  sendCriatureMessage(personaje: PNJ) {
+    let idForo = JSON.parse(localStorage.getItem('idForo'));
+
+    if(idForo != null) {
+      console.log("mandando mensaje");
+
+      this.fireStore.collection("publicaciones").add({
+        idForo: idForo,
+        titulo: "Aparición de PNJ",
+        texto: "Ha aparecido " + personaje.nombre,
+        tipo: "message",
+        sendDate: Date(),
+        imagen: personaje.imagen
+      })
+      .then(function() {
+        console.log("Publicación añadida correctamente!");
+      })
+      .catch(function(error) {
+        console.error("Error añadiendo publicación: ", error);
+      });
+    }
   }
 
   async getPNJPartida() {

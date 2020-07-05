@@ -4,4 +4,5 @@ export class Publicacion {
     texto: string;
     tipo: string;
     sendDate: Date;
+    imagen: string;
 }

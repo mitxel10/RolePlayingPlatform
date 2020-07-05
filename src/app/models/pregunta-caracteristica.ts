@@ -9,6 +9,7 @@ export class PreguntaCaracteristica<T> {
     type: string;
     stat: string;
     options: {key: string, value: string}[];
+    disabled: boolean;
   
     constructor(options: {
         idPartida?: string,
@@ -20,6 +21,7 @@ export class PreguntaCaracteristica<T> {
         controlType?: string,
         type?: string,
         stat?: string,
+        disabled?: boolean,
       } = {}) {
       this.idPartida = options.idPartida || '';
       this.value = options.value;
@@ -30,5 +32,6 @@ export class PreguntaCaracteristica<T> {
       this.controlType = options.controlType || '';
       this.type = options.type || '';
       this.stat = options.stat || '';
+      this.disabled = options.disabled || false;
     }
   }

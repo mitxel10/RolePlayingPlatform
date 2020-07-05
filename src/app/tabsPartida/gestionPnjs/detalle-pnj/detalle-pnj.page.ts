@@ -12,6 +12,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { TextboxQuestion } from 'src/app/models/question-textbox';
 import { StatsQuestion } from 'src/app/models/question-stats';
 import { DropdownQuestion } from 'src/app/models/question-dropdown';
+import { Partida } from 'src/app/models/partida';
+import { User } from 'src/app/login-register/shared/user';
 
 @Component({
   selector: 'app-detalle-pnj',
@@ -27,14 +29,26 @@ export class DetallePnjPage implements OnInit {
   public datosBasicosForm: FormGroup;
   public personaje: Personaje;
 
+  public usuario: User;
+  private partida: Partida;
+
   constructor(public router: Router, private route: ActivatedRoute, private preguntasCaracteristicasService: PreguntasCaracteristicasService, private personajesService: PersonajesService, 
     private fireStore: AngularFirestore, private partidasService: PartidasService, public toastController: ToastController) { }
 
   ngOnInit() {
     this.idPartida = JSON.parse(localStorage.getItem('idPartida'));
     this.idPersonaje = this.route.snapshot.paramMap.get('idPnj');
+    this.usuario = JSON.parse(localStorage.getItem('user'));
+    this.partida = new Partida();
+    this.partidasService.getDatosPartida(this.idPartida).subscribe(partidaBuscada =>{
+      this.partida = partidaBuscada.data() as Partida;
+    });
     this.questions = [];
     this.dibujarFormulario();
+  }
+
+  esDirector() {
+    return this.partida.director == this.usuario.uid;
   }
 
   dibujarFormulario() {
@@ -55,6 +69,7 @@ export class DetallePnjPage implements OnInit {
           }
         });
         this.questions.sort((a, b) => a.order - b.order);
+        console.log(document.getElementById('saveFormButton') as HTMLInputElement);
       });
     });
   }
@@ -66,7 +81,8 @@ export class DetallePnjPage implements OnInit {
         label: preguntaCaracteristica.label,
         value: caracteristicaPersonaje.respuesta,
         required: preguntaCaracteristica.required,
-        order: preguntaCaracteristica.order
+        order: preguntaCaracteristica.order,
+        disabled: !this.esDirector()
       }));
     } else if(preguntaCaracteristica.controlType == "stats") {
       this.questions.push(new StatsQuestion({
@@ -75,7 +91,8 @@ export class DetallePnjPage implements OnInit {
         value: caracteristicaPersonaje.respuesta,
         required: preguntaCaracteristica.required,
         order: preguntaCaracteristica.order,
-        stat: caracteristicaPersonaje.estadistica
+        stat: caracteristicaPersonaje.estadistica,
+        disabled: !this.esDirector()
       }));
     } else {
       let arrayOpciones = [];
@@ -90,8 +107,42 @@ export class DetallePnjPage implements OnInit {
         value: caracteristicaPersonaje.respuesta,
         options: arrayOpciones,
         required: true,
-        order: preguntaCaracteristica.order
+        order: preguntaCaracteristica.order,
+        disabled: !this.esDirector()
       }));
     }
+  }
+
+  doSaveForm(formulario: FormGroup) {
+    if(this.esDirector()) {
+      Object.keys(formulario.controls).forEach((idPreguntaCaracteristica, index) => {
+        // Si se desea guardar el label en vez de idPregunta, cambiar arriba el key al añadir los questions
+        this.actualizarCaracteristicaPersonaje(this.idPersonaje, idPreguntaCaracteristica, index, formulario);
+      });
+  
+      this.presentToast();   
+    }
+  }
+
+  private actualizarCaracteristicaPersonaje(idPersonaje, idPreguntaCaracteristica: string, index: number, formulario: FormGroup) {
+    if(!idPreguntaCaracteristica.endsWith("stat2")) {
+      if(idPreguntaCaracteristica.endsWith("stat1")) {
+        let keyStat = Object.keys(formulario.controls)[index+1];
+        this.personajesService.actualizarCaracteristicasConStatPersonaje(idPersonaje, idPreguntaCaracteristica, keyStat, formulario);
+      } else {
+        this.personajesService.actualizarCaracteristicasPersonaje(idPersonaje, idPreguntaCaracteristica, formulario);
+      }
+    }
+
+    // this.personajesService.actualizarCaracteristicasPersonaje(personaje.id, idPreguntaCaracteristica, formulario);
+  }
+
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Datos del PNJ modificados.',
+      duration: 3000,
+      position: "middle"
+    });
+    toast.present();
   }
 }

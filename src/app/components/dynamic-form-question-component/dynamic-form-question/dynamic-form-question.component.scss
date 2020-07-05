@@ -25,3 +25,7 @@ ion-select {
 .statQuestion {
   padding: 1px 2px;
 }
+
+.select-disabled, .item-select-disabled ion-label {
+  opacity: 1;
+ }
