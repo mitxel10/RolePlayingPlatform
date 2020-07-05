@@ -15,7 +15,7 @@ const routes: Routes = [
     component: AniadirPnjPage
   },
   {
-    path: ':idPartida',
+    path: ':idPnj',
     component: DetallePnjPage
   }
 ];

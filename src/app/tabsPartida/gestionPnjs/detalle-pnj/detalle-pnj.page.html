@@ -1,9 +1,11 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>detalle-pnj</ion-title>
+    <ion-title>Detalle de PNJ</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
+<ion-content id="verPersonajeContent">
+  <div *ngIf="(questions.length > 0)" style="padding: 5%">
+    <app-dynamic-form [questions]="questions" (saveForm)="doSaveForm($event)"></app-dynamic-form>
+  </div>
 </ion-content>
