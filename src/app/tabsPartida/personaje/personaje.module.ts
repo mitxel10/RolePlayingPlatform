@@ -8,6 +8,7 @@ import { PersonajePageRoutingModule } from './personaje-routing.module';
 
 import { PersonajePage } from './personaje.page';
 import { SharedModule } from 'src/app/components/shared.module';
+import { ItemsPersonajePageModule } from './items-personaje/items-personaje.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { SharedModule } from 'src/app/components/shared.module';
     FormsModule,
     IonicModule,
     PersonajePageRoutingModule,
-    SharedModule
+    SharedModule,
+    ItemsPersonajePageModule
   ],
   declarations: [PersonajePage]
 })

@@ -23,10 +23,18 @@ export class ItemsService {
       descripcion: item.descripcion
     })
     .then(function() {
-        console.log("PreguntaCaracteristica añadido correctamente!");
+        console.log("Item añadido correctamente!");
     })
     .catch(function(error) {
-        console.error("Error añadiendo PreguntaCaracteristica: ", error);
+        console.error("Item añadiendo PreguntaCaracteristica: ", error);
     });
+  }
+
+  obtenerItemGroupsPartida(idPartida: string) {
+    return this.fireStore.collection('grupoItems', ref => ref.where('idPartida', '==', idPartida)).get();
+  }
+
+  obtenerItemsPartida(idGrupo) {
+    return this.fireStore.collection('items', ref => ref.where('idGrupo', '==', idGrupo)).get();
   }
 }

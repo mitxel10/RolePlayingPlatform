@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Inventario</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content id="itemsContent">
+  <ion-list *ngFor="let itemGroup of itemGroupsPartida" class="ml-3 mr-3 mt-3">
+    <ion-list-header>
+      {{itemGroup.nombre}}
+    </ion-list-header>
+
+    <ion-item *ngFor="let item of itemGroup.items">
+      <ion-avatar slot="start">
+        <ion-input type="number" class="cantidadItems h-100 text-center" [(ngModel)]="item.cantidadPersonaje" (ngModelChange)="actualizacionInventario($event, item)"></ion-input>
+      </ion-avatar>
+      <ion-label class="col-12 mr-0 pl-0 pr-0 labelItem">
+        <h2>{{item.nombre}}</h2>
+        <h3 class="descItem">{{item.descripcion}}</h3>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

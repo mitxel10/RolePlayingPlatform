@@ -1,0 +1,20 @@
+.cantidadItems {
+    border-style: solid;
+    border-color: rgb(83, 96, 131);
+    text-align: center;
+}
+
+.descItem {
+    word-break: break-word;
+   white-space: pre-wrap;
+   -moz-white-space: pre-wrap;
+   color: grey;
+}
+
+.labelItem {
+    max-width: none;
+}
+
+#itemsContent {
+    --background: rgb(83, 96, 131);
+}

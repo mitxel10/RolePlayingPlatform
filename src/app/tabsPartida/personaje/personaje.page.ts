@@ -150,4 +150,8 @@ export class PersonajePage implements OnInit {
     });
     toast.present();
   }
+
+  goToItems() {
+    this.router.navigate(['tabsPartida/personaje/' + this.idPersonaje + '/items']);
+  }
 }
