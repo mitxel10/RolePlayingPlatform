@@ -16,10 +16,11 @@ export class ItemsService {
     })
   }
 
-  aniadirItems(idGrupoItem, itemGroup) {
+  aniadirItems(idGrupoItem, item) {
     this.fireStore.collection("items").add({
-      nombre: idPartida,
-      descripcion: itemGroup.value.name
+      idGrupo: idGrupoItem,
+      nombre: item.nombre,
+      descripcion: item.descripcion
     })
     .then(function() {
         console.log("PreguntaCaracteristica añadido correctamente!");

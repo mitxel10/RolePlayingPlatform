@@ -445,10 +445,8 @@ export class AniadirPartidaPage implements OnInit {
       this.itemsService.aniadirGruposItems(idPartida, itemGroup).then((data => {
         let idGrupoItem = data.id;
   
-        const arrayItems = itemGroup. as FormArray;
-
-        for(let itemGroup of arrayItemGroups.controls) {
-          this.itemsService.aniadirItems(idGrupoItem, itemGroup);
+        for(let itemGrupo of itemGroup.value.items) {
+          this.itemsService.aniadirItems(idGrupoItem, itemGrupo);
         }
       }));
     }
