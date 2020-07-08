@@ -31,7 +31,7 @@
 
 <ion-footer>
   <ion-grid>
-    <ion-row *ngIf="esDirector(); else noMaster">
+    <ion-row *ngIf="esDirector(); else noMaster" id="inputsPublicacion">
       <ion-col class="col-10">
         <ion-input type="text" style="padding:0" placeholder="Escribe un título" [(ngModel)]="data.title" name="title"></ion-input>
         <ion-input type="text" style="padding:0" placeholder="Escribe un mensaje" [(ngModel)]="data.message" name="message"></ion-input>
@@ -41,15 +41,13 @@
       </ion-col>
     </ion-row>
 
-    <ng-template #noMaster>
-      <ion-row>
-        <ion-col class="col-10">
-          <ion-input type="text" style="padding:0" placeholder="Escribe la configuración de los dados" [(ngModel)]="data.dice" name="dice"></ion-input>
-        </ion-col>
-        <ion-col class="col-2" (click)="lanzarDados()">
-          <ion-icon name="paper-plane"></ion-icon>
-        </ion-col>
-      </ion-row>
-    </ng-template>
+    <ion-row>
+      <ion-col class="col-10">
+        <ion-input type="text" style="padding:0" placeholder="Escribe la configuración de los dados" [(ngModel)]="data.dice" name="dice"></ion-input>
+      </ion-col>
+      <ion-col class="col-2" (click)="lanzarDados()">
+        <ion-icon name="paper-plane"></ion-icon>
+      </ion-col>
+    </ion-row>
   </ion-grid>
 </ion-footer>

@@ -13,6 +13,8 @@ import { Partida } from 'src/app/models/partida';
 import { DiceRoller } from 'rpg-dice-roller';
 import { Personaje } from 'src/app/models/personaje';
 import { PersonajesService } from 'src/app/services/personajes-service/personajes.service';
+import { DadosService } from 'src/app/services/dados-service/dados.service';
+import { ConfiguracionDados } from 'src/app/models/configuracionDados';
 
 @Component({
   selector: 'app-foro',
@@ -35,9 +37,10 @@ export class ForoPage implements OnInit {
   private partida: Partida;
   public usuario: User;
   public personaje: Personaje;
+  private confDadosPartida: ConfiguracionDados;
 
   constructor(private route: ActivatedRoute, private fireStore: AngularFirestore,
-    private forosService: ForosService, private partidasService: PartidasService,
+    private forosService: ForosService, private partidasService: PartidasService, private dadosService: DadosService,
     private personajesService: PersonajesService, public toastController: ToastController) {
     this.data.type = 'message';
     this.data.message = '';
@@ -63,13 +66,14 @@ export class ForoPage implements OnInit {
     this.foro = new Foro();
     this.buscarDatosForo();
   }
-
+  
   buscarDatosForo() {
     this.forosService.buscarForo(this.idForo).subscribe(foro => {
       this.foro = foro.data() as Foro;
-
+      
       this.idPartida = this.foro.idPartida;
       this.buscarDatosPersonaje();
+      this.obtenerConfiguracionInicialDados();
 
       this.partidasService.getDatosPartida(this.idPartida).subscribe(partidaBuscada =>{
         this.partida = partidaBuscada.data() as Partida;
@@ -118,6 +122,17 @@ export class ForoPage implements OnInit {
     this.data.message = '';
   }
 
+  obtenerConfiguracionInicialDados() {
+    this.dadosService.buscarConfiguracionCados(this.idPartida).subscribe(resultado => {
+      if(!resultado.empty) {
+        const confDadosData = resultado.docs[0];
+        this.confDadosPartida = confDadosData.data() as ConfiguracionDados;
+
+        this.data.dice = this.confDadosPartida.numDados + "d" + this.confDadosPartida.numLados;
+      }
+    });
+  }
+
   lanzarDados() {
     const regExp = /^(?!\d+$)(([1-9]\d*)?[Dd]?[1-9]\d*( ?[+-] ?)?)+(?<![+-] ?)$/;
     if(regExp.test(this.data.dice)) {
@@ -134,7 +149,16 @@ export class ForoPage implements OnInit {
       let resultadosTotal = resultadosLanzamientoDados[1].trim();
 
       let titulo = "Lanzamiento de dados";
-      let texto = this.personaje.idUsuario + " ha lanzado los dados (" + configDadosLanzados + ") y ha sacado el resultado " + resultadosTotal + resultadosDados;
+      
+      let jugadorLanzador = '';
+      if(this.esDirector()) {
+        jugadorLanzador = "El master";
+      } else {
+        jugadorLanzador = this.personaje.nombre;
+      }
+
+      
+      let texto = jugadorLanzador + " ha lanzado los dados (" + configDadosLanzados + ") y ha sacado el resultado " + resultadosTotal + resultadosDados;
 
       this.sendDiceMessage(titulo, texto);
     } else {
@@ -174,6 +198,6 @@ export class ForoPage implements OnInit {
     .catch(function(error) {
       console.error("Error añadiendo publicación: ", error);
     });
-    this.data.dice = '';
+    this.data.dice =  this.confDadosPartida.numDados + "d" + this.confDadosPartida.numLados
   }
 }

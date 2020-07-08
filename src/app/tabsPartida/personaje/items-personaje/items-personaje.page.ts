@@ -3,7 +3,6 @@ import { ItemsService } from 'src/app/services/items-service/items.service';
 import { GrupoItem } from 'src/app/models/grupoItem';
 import { Item } from 'src/app/models/item';
 import { ActivatedRoute } from '@angular/router';
-import { timeStamp } from 'console';
 import { InventarioService } from 'src/app/services/inventario-service/inventario.service';
 import { Inventario } from 'src/app/models/inventario';
 
