@@ -8,6 +8,7 @@ import { HomePageRoutingModule } from './home-routing.module';
 
 import { HomePage } from './home.page';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { ReglasPageModule } from './reglas/reglas.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     FormsModule,
     IonicModule,
     DragDropModule,
-    HomePageRoutingModule
+    HomePageRoutingModule,
+    ReglasPageModule
   ],
   declarations: [HomePage]
 })

@@ -56,6 +56,17 @@ export class AniadirPartidaPage implements OnInit {
   isUploaded:boolean;
   urlImagen: string;
 
+  docTask: AngularFireUploadTask;
+  docPercentage: Observable<number>;
+  docSnapshot: Observable<any>;
+  UploadedDocURL: Observable<string>;
+  docName:string;
+  docSize:number;
+  docIsUploading:boolean;
+  docIsUploaded:boolean;
+  urlDoc: string;
+  reglasSubidas: boolean;
+
   public tiposCaracteristica = [];
   public tiposCaracteristicaPNJ = [];
   public questions: PreguntaCaracteristica<any>[];
@@ -147,6 +158,35 @@ export class AniadirPartidaPage implements OnInit {
           this.fileSize = snap.totalBytes;
       })
     )
+  }
+
+  uploadDoc(event: FileList) {
+    const file = event.item(0);
+
+    if (file.type.split('/')[1] !== 'pdf') { 
+      console.error('unsupported file type :( ')
+      return;
+    }
+
+    this.docName = file.name;
+
+    const path = `imagenesMapas/${new Date().getTime()}_${file.name}`;
+    const customMetadata = { app: 'Imagen subida de un mapa de RolePlayingApp' };
+    const fileRef = this.storage.ref(path);
+
+
+
+
+    this.docTask = fileRef.put(file);
+    this.docTask.snapshotChanges().pipe(
+      finalize(() => {
+        fileRef.getDownloadURL().subscribe(url => {
+          this.urlDoc = url;
+          this.reglasSubidas = true;
+          console.log(url);
+        });
+      })
+    ).subscribe();
   }
 
   // ------------ GESTIÓN DEL SELECT DE JUGADORES PARTICIPANTES EN LA PARTIDA ------------
@@ -384,6 +424,7 @@ export class AniadirPartidaPage implements OnInit {
     partida.nombre = this.datosBasicosForm.get('tituloPartida').value;
     partida.historia = this.datosBasicosForm.get('historia').value;
     partida.imagenMapa = this.urlImagen;
+    partida.docReglas = this.urlDoc;
 
     this.partidasService.aniadirPartida(partida).then((data => {
       let idPartida = data.id;

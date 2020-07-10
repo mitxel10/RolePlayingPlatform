@@ -47,7 +47,7 @@ export class AniadirAmigoPage implements OnInit {
           }
         },
         {
-          text: 'Añádir',
+          text: 'Añadir',
           handler: () => {
             console.log('Amigo añadido');
             const idUsuario = this.authService.currentUserId;

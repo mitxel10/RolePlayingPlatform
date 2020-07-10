@@ -85,6 +85,17 @@
             </div>
           </ion-card-content>
         </ion-card>
+
+        <div class="mb-3">
+          <h3 class="text-center text-white">Reglas del juego</h3>
+          <h6 class="text-center text-white">Sube el PDF con las reglas necesarias para la partida.</h6>
+        
+          <ion-button color="light" shape="round" size="small" class="btnSubirImagen col-12 pl-0 pr-0">
+            <input id="uploadBtn" type="file" title="fdsaa" class="upload" (change)="uploadDoc($event.target.files)" />
+          </ion-button>
+
+          <h6 *ngIf="reglasSubidas" class="text-center text-white">Reglas asignadas a la partida con éxito.</h6>
+        </div>
       </div>
     </ion-slide>
 

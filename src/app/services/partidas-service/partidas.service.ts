@@ -26,7 +26,8 @@ export class PartidasService {
       estado: partida.estado,
       nombre: partida.nombre,
       historia: partida.historia,
-      imagenMapa: partida.imagenMapa
+      imagenMapa: partida.imagenMapa,
+      docReglas: partida.docReglas
     });
     /* .then(function() {
         console.log("Partida añadida correctamente!");

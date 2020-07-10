@@ -97,4 +97,8 @@ export class HomePage implements OnInit {
     // this.showPopup = true;
     console.log(this.positionX + ":" + this.positionY + " - " + personaje.nombre);
   }
+
+  goToReglas() {
+    this.router.navigate(['tabsPartida/home/reglas']);
+  }
 }

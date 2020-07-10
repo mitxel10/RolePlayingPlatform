@@ -5,4 +5,5 @@ export class Partida {
     estado: string;
     director: string;
     imagenMapa: string;
+    docReglas: string;
 }
