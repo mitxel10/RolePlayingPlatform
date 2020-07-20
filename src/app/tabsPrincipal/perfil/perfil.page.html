@@ -1,9 +1,19 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>perfil</ion-title>
+    <ion-title>Perfil</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content id="perfilContent">
+
+  <div class="bg-light col-10 centrar mt-5 pb-5">
+
+    <img src="assets/img/user.png" class="centrar col-10 ml-4 mt-3"/>
+
+    <h5>Nombre: {{usuario.displayName}}</h5>
+    <h5>Correo electrónico: {{usuario.email}}</h5>
+  </div>
+
+  <ion-button type="submit" color="danger" (click)="authService.SignOut()" expand="block" class="logoutButton">Logout</ion-button>
 
 </ion-content>
