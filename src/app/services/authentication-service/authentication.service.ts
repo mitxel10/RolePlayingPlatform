@@ -104,7 +104,8 @@ export class AuthenticationService {
       email: user.email,
       displayName: userName,
       photoURL: user.photoURL,
-      emailVerified: user.emailVerified
+      emailVerified: user.emailVerified,
+      idUltimaPartida: ''
     }
     return userRef.set(userData, {
       merge: true

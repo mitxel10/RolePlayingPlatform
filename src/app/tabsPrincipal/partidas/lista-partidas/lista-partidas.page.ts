@@ -7,6 +7,7 @@ import { AuthenticationService } from 'src/app/services/authentication-service/a
 import { User } from 'src/app/login-register/shared/user';
 import { filter } from 'rxjs/operators';
 import { EstadosPartida } from 'src/app/enums/EstadosPartida';
+import { UsuariosService } from 'src/app/services/usuarios-service/usuarios.service';
 
 @Component({
   selector: 'app-lista-partidas',
@@ -25,7 +26,8 @@ export class ListaPartidasPage implements OnInit {
   constructor(
     public router: Router,
     private partidasService: PartidasService,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private usuariosService: UsuariosService
   ) { }
 
   ngOnInit() {
@@ -98,6 +100,7 @@ export class ListaPartidasPage implements OnInit {
 
   irJugarPartida(partida: Partida) {
     localStorage.setItem('idPartida', JSON.stringify(partida.id));
+    this.usuariosService.actualizarUltimaPartida(this.usuario.uid, partida.id);
     this.router.navigate(['tabsPartida/home']);
   }
 }

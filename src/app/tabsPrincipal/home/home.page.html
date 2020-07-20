@@ -1,11 +1,44 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>home</ion-title>
+    <ion-title>Inicio</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-hooooome
+<ion-content id="homeContent">
+  <h4 class="text-center text-white mb-2 mt-5">¡Bienvenido, {{usuario.displayName}}!</h4>
 
-<ion-button type="submit" (click)="authService.SignOut()" expand="block">Logout</ion-button>
+  <div *ngIf="ultimaPartida; else noPartida">
+
+    <h5 class="text-center text-white mt-5">Accede de nuevo a tu última partida:</h5>
+    <div class="border border-light rounded ml-3 mr-3 mt-5">
+      <h4 class="text-center text-white mt-4 ml-3">{{ultimaPartida.nombre}}</h4>
+      <ion-card class="col-8 centrar " *ngIf="esDirector; else noDirector">
+        <ion-card-header class="pl-1 pr-1">
+          <ion-card-subtitle class="text-center">Máster de la partida</ion-card-subtitle>
+        </ion-card-header>
+      
+        <ion-card-content>
+          <img src="assets/img/imageMaster.png" class="center"/>
+        </ion-card-content>
+      </ion-card>
+  
+      <ng-template #noDirector>
+        <ion-card class="col-8 centrar">
+          <ion-card-header class="pl-1 pr-1">
+            <ion-card-subtitle>Nombre del personaje</ion-card-subtitle>
+            <ion-card-title>{{personajeUltimaPartida.nombre}}</ion-card-title>
+          </ion-card-header>
+        
+          <ion-card-content>
+            <img src={{personajeUltimaPartida.imagen}} class="center"/>
+          </ion-card-content>
+        </ion-card>
+      </ng-template>
+
+      <ion-button (click)="jugarPartida()" class="col-8 centrar mb-5" expand="block">Jugar</ion-button>
+    </div>
+  </div>
+  <ng-template #noPartida>
+    <h5 class="text-center text-white mt-5">Aún no has jugado a ninguna partida</h5>
+  </ng-template>
 </ion-content>
