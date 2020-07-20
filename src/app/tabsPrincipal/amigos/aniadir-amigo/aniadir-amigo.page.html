@@ -1,37 +1,23 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Atrás"></ion-back-button>
+    </ion-buttons>
     <ion-title>Añadir un nuevo amigo</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<!-- <ion-content>
-  <form (ngSubmit)="submitSearch($event)">
-    <ion-searchbar [(ngModel)]="searchQuery" [showCancelButton]="true" placeholder="Buscar amigos"
-    (ionCancel)="clearSearch($event)">
-    </ion-searchbar>
-  </form>
-
-</ion-content> -->
-
-<!-- <form (ngSubmit)="submitSearch($event)">
-  <ion-searchbar [(ngModel)]="searchQuery" [ngModelOptions]="{standalone: true}" [showCancelButton]="true" placeholder="Global Search"
-  (ionCancel)="clearSearch($event)"
-  (ionInput)="menuFocusMode($event)"
-  (ionFocus)="menuFocusMode($event)">
-  </ion-searchbar>
-</form> -->
-
 <ion-content id="aniadirAmigoContent" class="ion-padding">
- 
+
+  <ion-fab class="aniadirPartidaBtn" vertical="top" horizontal="end" slot="fixed">
+    <ion-fab-button class="botonInfo" color="light" size="small" (click)="info()">
+      <ion-icon name="information-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
   <!-- Search Bar -->
-  <ion-searchbar placeholder="Filtrar" [(ngModel)]="term" animated="true" class="searchbarinput"></ion-searchbar>
- 
-  <!-- List Items -->
-  <!-- <ion-list>
-    <ion-item *ngFor="let item of filterData | filter:term">
-      <ion-label>{{item.firstName}} {{item.lastName}}</ion-label>
-    </ion-item>
-  </ion-list> -->
+  <ion-searchbar placeholder="Filtrar" [(ngModel)]="term" animated="true" class="searchbarinput mt-3"></ion-searchbar>
+
 
   <ion-card *ngFor="let user of usersData | filter:term" (click)="presentConfirm(user.uid, user.displayName)">
     <ion-card-header>
