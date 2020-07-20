@@ -5,8 +5,16 @@
 </ion-header>
 
 <ion-content id="homePartidaContent">
+  <ion-fab class="aniadirPartidaBtn" vertical="top" horizontal="end" slot="fixed">
+    <ion-fab-button class="botonInfo" color="light" size="small" (click)="info()">
+      <ion-icon name="information-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
   <h1 class="text-center text-white">{{partida.nombre | uppercase}}</h1>
-  <h2 class="text-center text-white">Mapa</h2>
+
+  <p class="text-white text-justify pl-3 pr-3">{{partida.historia}}</p>
+
   <ion-card-content>
     <div class="example-boundary" [ngStyle]="getImagenMapa()">
       <div class="circle" cdkDragBoundary=".example-boundary" cdkDrag (cdkDragEnded)="dragEnded($event, personaje)" *ngFor="let personaje of personajes">

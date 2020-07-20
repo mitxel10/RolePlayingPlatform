@@ -10,6 +10,7 @@ import { AuthenticationService } from 'src/app/services/authentication-service/a
 import { UsuariosService } from 'src/app/services/usuarios-service/usuarios.service';
 import { isEmpty } from 'rxjs/operators';
 import { CdkDragEnd } from '@angular/cdk/drag-drop';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -25,7 +26,7 @@ export class HomePage implements OnInit {
   positionX: number;
   positionY: number;
 
-  constructor(public router: Router, private route: ActivatedRoute, 
+  constructor(public router: Router, private route: ActivatedRoute, public toastController: ToastController,
     private partidasService: PartidasService, private authService: AuthenticationService, private usuariosService: UsuariosService) { }
 
   ngOnInit() {
@@ -49,8 +50,6 @@ export class HomePage implements OnInit {
         let idPersonaje = personajePartida.id;
         let personaje = personajePartida.data() as Personaje;
         this.personajes.push(personaje);
-        this.personajes.push(personaje);
-        this.personajes.push(personaje);
         this.aniadirUsuarioPersonaje(personaje.idUsuario);
       });
     });
@@ -58,8 +57,6 @@ export class HomePage implements OnInit {
 
   async aniadirUsuarioPersonaje(idUsuario) {
     await this.usuariosService.getDatosUsuario(idUsuario).subscribe(usuarioBuscado => {
-      this.usuariosPersonaje.push(usuarioBuscado.data() as User);
-      this.usuariosPersonaje.push(usuarioBuscado.data() as User);
       this.usuariosPersonaje.push(usuarioBuscado.data() as User);
     });
   }
@@ -80,7 +77,7 @@ export class HomePage implements OnInit {
   }
 
   getFirstTwoLettersPersonaje(personaje: Personaje) {
-    return personaje.nombre.substring(0,2);
+    return personaje.nombre.substring(0,2).toUpperCase();
   }
 
   getImagenMapa() {
@@ -100,5 +97,27 @@ export class HomePage implements OnInit {
 
   goToReglas() {
     this.router.navigate(['tabsPartida/home/reglas']);
+  }
+
+  async info() {
+    const toast = await this.toastController.create({
+      header: 'Ayuda para pantalla inicial de la partida',
+      message: 'En esta pantalla se pueden visualizar los datos básicos de la partida, ' + 
+      'para así tener una idea inicial de ella. Por un lado, se pueden ver el título y descripción<br/>' + 
+      'Después en el tablero se puede visualizar el mapa de la partida, con la posición de los jugadores. Asimismo, se puede desplazar la ficha de cada uno.<br/>' + 
+      'Finalmente, se pueden ver los personajes participantes de la partida, con nombre e imagen, y finalmente se puede pulsar sobre el botón para ver las reglas de la partida.',
+      position: 'top',
+      cssClass: 'toastAyuda',
+      buttons: [
+        {
+          text: 'Aceptar',
+          role: 'cancel',
+          handler: () => {
+            console.log('Ayuda aceptada');
+          }
+        }
+      ]
+    });
+    toast.present();
   }
 }

@@ -23,6 +23,7 @@ import { ConfiguracionDados } from 'src/app/models/configuracionDados';
 import { Router } from '@angular/router';
 import { AngularFireUploadTask, AngularFireStorage } from '@angular/fire/storage';
 import { ItemsService } from 'src/app/services/items-service/items.service';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-aniadir-partida',
@@ -73,7 +74,7 @@ export class AniadirPartidaPage implements OnInit {
 
   constructor(public router: Router, private amigosService: AmigosService, public formBuilder: FormBuilder, private fireStore: AngularFirestore, 
     private authService: AuthenticationService, private preguntasCaracteristicasService: PreguntasCaracteristicasService, private itemsService: ItemsService,
-    private partidasService: PartidasService, private personajesService: PersonajesService, private storage: AngularFireStorage) {
+    private partidasService: PartidasService, private personajesService: PersonajesService, private storage: AngularFireStorage, public toastController: ToastController) {
       
       this.datosBasicosForm = formBuilder.group({
         tituloPartida: ['', Validators.compose([Validators.maxLength(100), Validators.required])],
@@ -410,10 +411,57 @@ export class AniadirPartidaPage implements OnInit {
     this.formSlider.slidePrev();
   }
 
+  // ------------ AYUDAS ------------
+  async infoAniadirPersonaje() {
+    const toast = await this.toastController.create({
+      header: 'Ayuda para diseño de personajes',
+      message: 'En esta pantalla se pueden diseñar las caracteristicas que tendrán los personajes de la partida, esto es, ' + 
+      'los campos que los jugadores deberán rellenar para sus personajes, indicando los valores que mas se acerquen a su idea del personaje. ' + 
+      'Los tipos de campos que se le mostrarán al jugador son los siguientes<br/>' + 
+      '- Texto libre: Campo en el que el jugador tendrá total libertad para escribir su respuesta<br/>' +
+      '- Única opción a escoger: Campo en el que el jugador tendrá que elegir una opcion para su respuesta<br/>' +
+      '- Texto con estadística: Campo en el que el jugador tendrá dos campos para escribir su respuesta, una para la respuesta a la pregunta y otro para la estadistica de esa respuesta<br/>',
+      position: 'top',
+      cssClass: 'toastAyuda',
+      buttons: [
+        {
+          text: 'Aceptar',
+          role: 'cancel',
+          handler: () => {
+            console.log('Ayuda aceptada');
+          }
+        }
+      ]
+    });
+    toast.present();
+  }
+
+  async infoAniadirItems() {
+    const toast = await this.toastController.create({
+      header: 'Ayuda para adición de ítems',
+      message: 'En esta pantalla se pueden añadir los ítems que los personajes tendran a su disposición durante la partida, ' + 
+      'ya sean herramientas, tecnologías, hechizos, armaduras, ropa, etc.<br/>' + 
+      'Para ello, primero se debe añadir un grupo de ítems, y despues los ítems que se quieran añadir dentro del grupo. Se pueden añadir/borrar todos los grupos e ítems que se deseen',
+      position: 'top',
+      cssClass: 'toastAyuda',
+      buttons: [
+        {
+          text: 'Aceptar',
+          role: 'cancel',
+          handler: () => {
+            console.log('Ayuda aceptada');
+          }
+        }
+      ]
+    });
+    toast.present();
+  }
+
   // ------------ GUARDADO DE LA PARTIDA ------------
 
   save(){
     this.crearPartida();
+    this.presentToast();
     this.irListaPartidas();
   }
 
@@ -491,6 +539,15 @@ export class AniadirPartidaPage implements OnInit {
         }
       }));
     }
+  }
+
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Partida creada satisfactoriamente.',
+      duration: 3000,
+      position: "bottom"
+    });
+    toast.present();
   }
 
   irListaPartidas() {
