@@ -2,9 +2,9 @@
   <ion-toolbar>
     <ion-title>Historia de la partida</ion-title>
     <ion-buttons end>
-      <ion-button (click)="addRoom()">
+      <!-- <ion-button (click)="addRoom()">
         <ion-icon name="add-outline"></ion-icon>
-      </ion-button>
+      </ion-button> -->
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -19,4 +19,10 @@
       <ion-icon name="chatbox-ellipses-outline"></ion-icon>
     </ion-item>
   </ion-list>
+
+  <ion-fab class="aniadirForoBtn" vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="add" (click)="addRoom()"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
