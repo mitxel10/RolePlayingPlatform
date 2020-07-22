@@ -193,6 +193,11 @@
                           <ion-label>Única opcion a escoger</ion-label>
                           <ion-radio slot="start" value="dropdown"></ion-radio>
                         </ion-item>
+
+                        <ion-item>
+                          <ion-label>Varias opciones a escoger</ion-label>
+                          <ion-radio slot="start" value="dropdownMultiple"></ion-radio>
+                        </ion-item>
                     
                         <ion-item>
                           <ion-label>Texto con estadística</ion-label>
@@ -205,7 +210,7 @@
                     {{ inputsCaracteristicasPersonajesForm.errors }}
                   </div>
                   
-                  <div *ngIf="tiposCaracteristica[j] == 'dropdown' || tiposCaracteristica[j] == 'checkbox'">
+                  <div *ngIf="tiposCaracteristica[j] == 'dropdown' || tiposCaracteristica[j] == 'dropdownMultiple'">
                     <ion-item-divider color="light" class="ml-3 mr-3 mt-2 col-11 font-italic font-weight-normal">Opciones</ion-item-divider>
                       
                     <div formArrayName="options" class="mr-3 ml-3">
@@ -282,6 +287,11 @@
                           <ion-label>Única opcion a escoger</ion-label>
                           <ion-radio slot="start" value="dropdown"></ion-radio>
                         </ion-item>
+
+                        <ion-item>
+                          <ion-label>Varias opciones a escoger</ion-label>
+                          <ion-radio slot="start" value="dropdownMultiple"></ion-radio>
+                        </ion-item>
                     
                         <ion-item>
                           <ion-label>Texto con estadística</ion-label>
@@ -294,7 +304,7 @@
                     {{ inputsCaracteristicasPNJForm.errors }}
                   </div>
                   
-                  <div *ngIf="tiposCaracteristicaPNJ[j] == 'dropdown' || tiposCaracteristicaPNJ[j] == 'checkbox'">
+                  <div *ngIf="tiposCaracteristicaPNJ[j] == 'dropdown' || tiposCaracteristicaPNJ[j] == 'dropdownMultiple'">
                     <ion-item-divider color="light" class="ml-3 mr-3 mt-2 col-11 font-italic font-weight-normal">Opciones</ion-item-divider>
                       
                     <div formArrayName="options" class="mr-3 ml-3">

@@ -14,6 +14,7 @@ import { User } from 'src/app/login-register/shared/user';
 import { CaracteristicaPersonaje } from 'src/app/models/caracteristicaPersonaje';
 import { ToastController } from '@ionic/angular';
 import { StatsQuestion } from 'src/app/models/question-stats';
+import { DropdownMultipleQuestion } from 'src/app/models/question-dropdownMultiple';
 
 @Component({
   selector: 'app-personaje',
@@ -94,6 +95,21 @@ export class PersonajePage implements OnInit {
         required: preguntaCaracteristica.required,
         order: preguntaCaracteristica.order,
         stat: caracteristicaPersonaje.estadistica
+      }));
+    } else if(preguntaCaracteristica.controlType == "dropdownMultiple") {
+      let arrayOpciones = [];
+      if(preguntaCaracteristica.options) {
+        for(let option of preguntaCaracteristica.options) {
+          arrayOpciones.push({key: option.key, value:''});
+        }
+      }
+      this.questions.push(new DropdownMultipleQuestion({
+        key: idPreguntaCaracteristica,
+        label: preguntaCaracteristica.label,
+        value: caracteristicaPersonaje.respuesta,
+        options: arrayOpciones,
+        required: true,
+        order: preguntaCaracteristica.order
       }));
     } else {
       let arrayOpciones = [];

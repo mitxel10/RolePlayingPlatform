@@ -15,6 +15,7 @@ import { StatsQuestion } from 'src/app/models/question-stats';
 import { AngularFireUploadTask, AngularFireStorage } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
 import { finalize, tap } from 'rxjs/operators';
+import { DropdownMultipleQuestion } from 'src/app/models/question-dropdownMultiple';
 
 @Component({
   selector: 'app-crear-personaje',
@@ -69,6 +70,20 @@ export class CrearPersonajePage implements OnInit {
             label: preguntaCaracteristica.label,
             value: '',
             required: preguntaCaracteristica.required,
+            order: preguntaCaracteristica.order
+          }));
+        } else if(preguntaCaracteristica.controlType == "dropdownMultiple") {
+          let arrayOpciones = [];
+          if(preguntaCaracteristica.options) {
+            for(let option of preguntaCaracteristica.options) {
+              arrayOpciones.push({key: option.key, value:''});
+            }
+          }
+          this.questions.push(new DropdownMultipleQuestion({
+            key: preguntaCaracteristicaDoc.id,
+            label: preguntaCaracteristica.label,
+            options: arrayOpciones,
+            required: true,
             order: preguntaCaracteristica.order
           }));
         } else {
