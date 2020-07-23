@@ -1,7 +1,8 @@
-import { Component, OnInit, SecurityContext } from '@angular/core';
+import { Component, OnInit, SecurityContext, ViewChild } from '@angular/core';
 import { Partida } from 'src/app/models/partida';
 import { PartidasService } from 'src/app/services/partidas-service/partidas.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-reglas',
@@ -10,9 +11,14 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 })
 export class ReglasPage implements OnInit {
 
+  @ViewChild(PdfViewerComponent, {static: false}) private pdfComponent: PdfViewerComponent;
+
   private idPartida: string;
   public partida: Partida;
   public src: string;
+  // public zoom: number = 1.0;
+  // public textoBusqueda: string;
+  // originalSize: boolean = true;
 
   constructor(private partidasService: PartidasService, private sanitized: DomSanitizer) { }
 

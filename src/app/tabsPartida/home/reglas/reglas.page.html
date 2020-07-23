@@ -8,9 +8,5 @@
 </ion-header>
 
 <ion-content id="reglasContent">
-  <div class="pdf-container">
-    <pdf-viewer [src]="src"
-                [original-size]="false"
-    ></pdf-viewer>
-  </div>
+    <ngx-extended-pdf-viewer [src]="src" useBrowserLocale="true" [textLayer]="true" [showHandToolButton]="true" height="90vh"></ngx-extended-pdf-viewer>
 </ion-content>
