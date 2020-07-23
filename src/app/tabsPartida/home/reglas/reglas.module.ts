@@ -9,6 +9,7 @@ import { ReglasPageRoutingModule } from './reglas-routing.module';
 import { ReglasPage } from './reglas.page';
 
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     FormsModule,
     IonicModule,
     ReglasPageRoutingModule,
-    PdfViewerModule
+    PdfViewerModule,
+    NgxExtendedPdfViewerModule
   ],
   declarations: [ReglasPage]
 })
