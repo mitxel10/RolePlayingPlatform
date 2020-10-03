@@ -3,19 +3,19 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>verify-email</ion-title>
+    <ion-title>Verificación de email</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content id="verifyContent">
   <ion-grid>
     <ion-row>
-      <h2>Ionic 4 Firebase Verify Email</h2>
+      <h2>Verifique el correo electrónico que ha empleado para el registro en la aplicación</h2>
       <p>
-        Please check your email and click on the link to verfiy your email address.
+        Comprueba la bandeja de entrada para acceder al correo que se ha mandado para finalizar el proceso de registro.
       </p>
       <ion-button type="submit" (click)="authService.SendVerificationMail()" expand="block">
-        Resend Verification Email
+        Reenviar correo de verificación
       </ion-button>
     </ion-row>
   </ion-grid>
